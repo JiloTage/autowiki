@@ -16,45 +16,46 @@
       <a href="#article-list">記事一覧</a>
     </nav>
   </header>
-
   <div class="index-header">
     <h1>Auto-Wiki</h1>
     <p>自己増殖する知識ベース — 記事は自動的に拡張され、相互にリンクされます</p>
   </div>
-
   <div class="stats-bar">
-    <span>記事数: <span class="stat-value" id="stat-articles">0</span></span>
-    <span>リンク数: <span class="stat-value" id="stat-links">0</span></span>
+    <span>記事数: <span class="stat-value" id="stat-articles">13</span></span>
+    <span>リンク数: <span class="stat-value" id="stat-links">71</span></span>
   </div>
-
   <div class="search-container">
     <input type="text" id="search-input" class="search-input" placeholder="記事を検索...">
   </div>
   <div class="search-results" id="search-results"></div>
-
   <div id="graph" class="graph-container"></div>
-
   <div class="article-list" id="article-list">
     <h2>全記事一覧</h2>
     <table class="article-list-table">
       <thead>
-        <tr>
-          <th>記事名</th>
-          <th>概要</th>
-          <th>更新日</th>
-          <th>リンク数</th>
-        </tr>
+        <tr><th>記事名</th><th>概要</th><th>更新日</th><th>リンク数</th></tr>
       </thead>
       <tbody>
+        <tr><td><a href="articles/personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></td><td>LLMを活用した恋愛AIサービスの企画・市場・ビジネスモデル</td><td>2026-03-18</td><td>17</td></tr>
+        <tr><td><a href="articles/llm-personality-analysis.html">LLMパーソナリティ解析技術</a></td><td>LLMによる性格特性・愛着スタイル・コミュニケーション傾向の自動推定</td><td>2026-03-18</td><td>18</td></tr>
+        <tr><td><a href="articles/profile-optimization-strategy.html">プロフィール最適化戦略</a></td><td>データドリブンなプロフィール写真・自己紹介文の最適化手法</td><td>2026-03-18</td><td>14</td></tr>
+        <tr><td><a href="articles/matching-app-market.html">マッチングアプリ市場動向と競争環境</a></td><td>日本のマッチングアプリ市場規模・プレイヤー・アルゴリズム分析</td><td>2026-03-18</td><td>17</td></tr>
+        <tr><td><a href="articles/conversational-ai-coaching.html">会話AIコーチング技術</a></td><td>LLMベースのリアルタイム会話支援・メッセージング戦略</td><td>2026-03-18</td><td>18</td></tr>
+        <tr><td><a href="articles/ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></td><td>フリーミアム・サブスク・成果報酬型の収益モデル比較</td><td>2026-03-18</td><td>13</td></tr>
+        <tr><td><a href="articles/matching-algorithm-design.html">マッチングアルゴリズム設計論</a></td><td>ELO・協調フィルタリング・深層学習によるマッチング設計</td><td>2026-03-18</td><td>14</td></tr>
+        <tr><td><a href="articles/ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a></td><td>CNNベース写真品質判定・魅力度予測のマルチ軸評価</td><td>2026-03-18</td><td>13</td></tr>
+        <tr><td><a href="articles/ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></td><td>透明性・公平性・プライバシー保護の倫理設計原則</td><td>2026-03-18</td><td>13</td></tr>
+        <tr><td><a href="articles/conversation-repair-strategy.html">会話修復戦略</a></td><td>既読スルー・フェードアウト対策と再エンゲージメント</td><td>2026-03-18</td><td>13</td></tr>
+        <tr><td><a href="articles/prompt-engineering-personality.html">プロンプトエンジニアリングによるパーソナリティ推定</a></td><td>Big Five・愛着スタイル推定のプロンプト設計パターン</td><td>2026-03-18</td><td>7</td></tr>
+        <tr><td><a href="articles/dating-persona-design.html">デーティングペルソナ設計</a></td><td>価値観マッピング・LLM動的生成・一致度評価のペルソナ設計</td><td>2026-03-18</td><td>8</td></tr>
+        <tr><td><a href="articles/dating-psychology-ai.html">恋愛心理学とAI</a></td><td>愛着理論・進化心理学・認知バイアスのAI統合</td><td>2026-03-18</td><td>8</td></tr>
       </tbody>
     </table>
   </div>
-
   <footer class="wiki-footer">
     <p>Auto-Wiki — Claude Code Skill による自動生成wiki</p>
   </footer>
 </div>
-
 <script src="assets/js/graph.js"></script>
 <script src="assets/js/search.js"></script>
 <script>

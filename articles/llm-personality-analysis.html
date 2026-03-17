@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLMパーソナリティ解析技術 - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; LLMパーソナリティ解析技術
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">LLMパーソナリティ解析技術</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">大規模言語モデル（LLM）を用いてユーザーの性格特性・愛着スタイル・コミュニケーション傾向を自然言語対話から自動推定する技術体系について、心理学的基盤・NLPパイプライン・学習データ設計・精度評価・倫理的課題を包括的に解説する。</div>
+
+      <p><b>LLMパーソナリティ解析技術</b>とは、大規模言語モデル（LLM）の自然言語理解能力を活用し、ユーザーとの対話テキストから心理学的な性格特性・愛着パターン・行動傾向を自動的に推定・分類する技術の総称である。従来の質問紙ベースの心理測定（サイコメトリクス）がユーザーに明示的な自己申告を求めるのに対し、本技術は自然な会話の中から暗黙的にパーソナリティ情報を抽出する点に革新性がある。<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>をはじめとする恋愛支援サービスにおいて、ユーザー理解の基盤技術として中核的役割を果たす。</p>
+
+      <h2 id="big-five-model">Big Five性格特性モデルとLLMによる推定</h2>
+
+      <p>パーソナリティ解析の理論的基盤として最も広く採用されているのが、<b>Big Five（五因子モデル）</b>である。開放性（Openness）、誠実性（Conscientiousness）、外向性（Extraversion）、協調性（Agreeableness）、神経症的傾向（Neuroticism）の5次元でパーソナリティを記述するこのモデルは、心理学研究で数十年にわたり妥当性が検証されてきた。</p>
+
+      <h3 id="big-five-dimensions">五因子の定義とLLM検出シグナル</h3>
+
+      <p>LLMが対話テキストから各因子を推定する際に着目する言語的シグナルは以下の通りである：</p>
+
+      <table>
+        <thead>
+          <tr><th>因子</th><th>高スコアの特徴</th><th>LLM検出シグナル</th><th>恋愛文脈での意味</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>開放性</b></td><td>好奇心旺盛、創造的、多様な経験を好む</td><td>抽象的語彙の多用、話題の多様性、比喩表現、新奇な提案への肯定的反応</td><td>新しいデートプランへの受容性、異文化・異業種パートナーへの寛容度</td></tr>
+          <tr><td><b>誠実性</b></td><td>計画的、責任感が強い、目標志向</td><td>時系列的な語り、具体的数値の使用、約束・計画への言及頻度</td><td>交際の真剣度、長期的関係構築への意欲</td></tr>
+          <tr><td><b>外向性</b></td><td>社交的、活動的、刺激を求める</td><td>ポジティブ感情語の頻度、社交イベントへの言及、応答の積極性・テンポ</td><td>デートの好みスタイル、コミュニケーション頻度の期待値</td></tr>
+          <tr><td><b>協調性</b></td><td>思いやり、協力的、信頼傾向</td><td>他者への配慮表現、同意・共感語の頻度、対立回避的な言い回し</td><td>パートナーとの衝突解決スタイル、妥協傾向</td></tr>
+          <tr><td><b>神経症的傾向</b></td><td>感情の不安定さ、ストレス反応性</td><td>否定語・不安語の頻度、条件付き表現、過去のネガティブ経験への言及</td><td>恋愛における不安・嫉妬傾向、関係安定性リスク</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="estimation-approach">LLMベースの推定アプローチ</h3>
+
+      <p>Big Fiveスコアの推定には、大きく3つのアプローチが存在する：</p>
+
+      <ol>
+        <li><b>プロンプトエンジニアリング方式</b>：LLMに対して「以下の対話テキストからBig Five各因子のスコアを0〜100で推定せよ」と直接指示する手法。追加の学習データ不要で迅速に実装可能だが、推定の一貫性と精度に課題がある。<a href="prompt-engineering-personality.html">プロンプトエンジニアリングによるパーソナリティ推定</a>の技法が重要となる。</li>
+        <li><b>ファインチューニング方式</b>：心理測定の正解ラベル付きデータセットでLLMをファインチューニングし、対話テキストから直接スコアを回帰予測するモデルを構築する。精度は最も高いが、大規模なラベル付きデータが必要。</li>
+        <li><b>ハイブリッド方式</b>：プロンプトエンジニアリングで粗い推定を行った後、ファインチューニング済みの小型モデルで補正する二段構成。精度とコストのバランスに優れ、実用上最も採用されるアーキテクチャである。</li>
+      </ol>
+
+      <h2 id="attachment-style">愛着スタイル理論と恋愛心理学のLLM統合</h2>
+
+      <p>Big Fiveが一般的なパーソナリティを記述するのに対し、<b>愛着スタイル理論</b>（Attachment Theory）は対人関係、特に親密な関係における行動パターンを説明する枠組みである。John BowlbyとMary Ainsworthの理論を成人の恋愛関係に拡張した成人愛着理論は、恋愛コンサルティングにおいて極めて高い実用価値を持つ。</p>
+
+      <h3 id="attachment-types">4つの愛着スタイルとLLM分類</h3>
+
+      <p>成人の愛着スタイルは「自己モデル」（自己肯定感）と「他者モデル」（他者への信頼感）の2軸で4類型に分類される：</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+quadrantChart
+    title 愛着スタイル2軸モデル
+    x-axis "他者モデル（低）" --> "他者モデル（高）"
+    y-axis "自己モデル（低）" --> "自己モデル（高）"
+    quadrant-1 "安定型（Secure）"
+    quadrant-2 "拒絶・回避型（Dismissive）"
+    quadrant-3 "恐れ・回避型（Fearful）"
+    quadrant-4 "不安・とらわれ型（Preoccupied）"
+      </pre></div>
+
+      <ul>
+        <li><b>安定型（Secure）</b>：自己肯定感が高く他者も信頼できる。親密さに心地よさを感じ、健全な依存関係を構築できる。LLMシグナル：肯定的な関係記述、バランスの取れた自己開示、将来の関係への楽観的言及。</li>
+        <li><b>不安・とらわれ型（Preoccupied）</b>：自己肯定感が低く、他者からの承認を強く求める。見捨てられ不安が強い。LLMシグナル：頻繁な確認要求、過度な自己批判、相手の反応への過敏な言及、即時応答への期待表明。</li>
+        <li><b>拒絶・回避型（Dismissive）</b>：自己肯定感は高いが他者への信頼が低い。独立性を過度に重視し、親密さを避ける。LLMシグナル：感情表現の回避、自己完結的な語り、他者への依存を否定する表現。</li>
+        <li><b>恐れ・回避型（Fearful）</b>：自己肯定感も他者への信頼も低い。親密さを望みながらも恐れる矛盾を抱える。LLMシグナル：矛盾する感情表現、接近と回避の揺れ、過去のトラウマ的経験への言及。</li>
+      </ul>
+
+      <h3 id="romance-psychology-integration">恋愛心理学モデルの統合</h3>
+
+      <p>愛着スタイルに加えて、以下の恋愛心理学モデルをLLMに統合することで、より多角的なパーソナリティ解析が実現する：</p>
+
+      <ul>
+        <li><b>Sternbergの愛の三角理論</b>：親密さ・情熱・コミットメントの3成分でユーザーの恋愛観を分析。対話中の「理想の関係像」に関する語りからバランスを推定する。</li>
+        <li><b>Leeの愛のスタイル論</b>：エロス（情熱的）、ルダス（遊戯的）、ストルゲ（友愛的）、プラグマ（実利的）、マニア（狂気的）、アガペ（利他的）の6スタイルに分類。マッチング相手との相性予測に活用する。</li>
+        <li><b>関係性維持行動モデル</b>：ユーザーが重視する関係維持戦略（肯定的態度、開放性、保証、ネットワーク共有、タスク分担）を対話から推定し、長期的なマッチング成功予測に反映する。</li>
+      </ul>
+
+      <h2 id="nlp-pipeline">自然言語処理によるパーソナリティ抽出パイプライン</h2>
+
+      <p>ユーザーの対話テキストからパーソナリティ特徴量を抽出するまでの一連の処理パイプラインを以下に示す。各段階で異なるNLP技術が協調して動作する。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+flowchart LR
+    A["対話テキスト入力"] --> B["前処理"]
+    B --> C["特徴量抽出"]
+    C --> D["マルチモデル推論"]
+    D --> E["スコア統合"]
+    E --> F["パーソナリティプロファイル"]
+
+    B --> B1["正規化・トークン化"]
+    B --> B2["感情トリガー検出"]
+    B --> B3["対話行為分類"]
+
+    C --> C1["語彙特徴量<br/>（LIWC準拠）"]
+    C --> C2["文体特徴量<br/>（文長・複雑度）"]
+    C --> C3["意味特徴量<br/>（埋め込みベクトル）"]
+    C --> C4["対話動態特徴量<br/>（ターン・応答パターン）"]
+
+    D --> D1["Big Five推定モデル"]
+    D --> D2["愛着スタイル分類器"]
+    D --> D3["コミュニケーションスタイル分類器"]
+    D --> D4["恋愛価値観推定モデル"]
+      </pre></div>
+
+      <h3 id="feature-extraction">特徴量抽出の詳細</h3>
+
+      <p>パーソナリティ推定の精度を左右する4種の特徴量群：</p>
+
+      <ol>
+        <li><b>語彙特徴量（LIWC準拠）</b>：Linguistic Inquiry and Word Count（LIWC）のカテゴリ体系に基づき、感情語・認知プロセス語・社会的語彙・時間的参照などの出現頻度を算出する。日本語対応のためMeCab形態素解析と独自辞書を組み合わせたJ-LIWCを構築している。</li>
+        <li><b>文体特徴量</b>：平均文長、従属節の深さ、受動態使用率、敬語レベル、絵文字・顔文字使用パターンなど。日本語特有の丁寧さの段階変化は、対人距離感や関係構築段階の指標となる。</li>
+        <li><b>意味特徴量</b>：対話テキストをLLMのエンコーダ層で埋め込みベクトルに変換し、意味空間上でのパーソナリティ類似度を計算する。<a href="vector-embedding-personality.html">ベクトル埋め込みによるパーソナリティ表現</a>は、従来のバグオブワーズでは捉えられなかった文脈依存的な性格特徴の抽出を可能にする。</li>
+        <li><b>対話動態特徴量</b>：応答速度、ターン長の変化、話題転換の頻度、質問と応答の比率、自己開示の深さの時系列的変化など。対話の流れの中でのパーソナリティの動的側面を捉える。</li>
+      </ol>
+
+      <h3 id="multi-model-inference">マルチモデル推論アーキテクチャ</h3>
+
+      <p>単一のLLMだけでなく、複数の専門モデルのアンサンブルによって推定の頑健性を確保する：</p>
+
+      <ul>
+        <li><b>基盤LLM（Claude / GPT-4o）</b>：対話コンテキストの全体理解とゼロショット推定を担当。プロンプトに心理学的フレームワークを組み込み、構造化された推定結果を出力する。</li>
+        <li><b>ファインチューニング済み分類モデル</b>：Big Five各因子・愛着スタイルに特化した軽量モデル。ラベル付きデータで学習し、高速かつ高精度な分類を実現する。</li>
+        <li><b>メタ学習統合器</b>：複数モデルの推定結果を入力とし、最終的なスコアを出力する統合モデル。各モデルの信頼度とユーザーの対話量に応じて動的に重み付けを調整する。</li>
+      </ul>
+
+      <h2 id="fine-tuning">ファインチューニングと学習データ設計</h2>
+
+      <p>LLMパーソナリティ解析の精度は、学習データの質と量に決定的に依存する。ここでは、恋愛文脈に特化したファインチューニングの戦略と学習データ設計について述べる。</p>
+
+      <h3 id="training-data">学習データの収集と構成</h3>
+
+      <p>高品質な学習データセットの構成要素：</p>
+
+      <table>
+        <thead>
+          <tr><th>データソース</th><th>規模目標</th><th>ラベル付与方法</th><th>品質管理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>心理測定連携データ</b></td><td>10,000対話セッション</td><td>標準化質問紙（NEO-PI-R等）の回答スコアを正解ラベルとして対話データに紐付け</td><td>検査の信頼性係数α≧0.80</td></tr>
+          <tr><td><b>専門家アノテーション</b></td><td>5,000対話セッション</td><td>臨床心理士3名以上の合議によるパーソナリティ評定</td><td>評定者間一致度κ≧0.70</td></tr>
+          <tr><td><b>合成対話データ</b></td><td>50,000対話セッション</td><td>既知のパーソナリティプロファイルを持つペルソナでLLMが生成した対話</td><td>人間による妥当性検証（サンプル10%）</td></tr>
+          <tr><td><b>縦断的行動データ</b></td><td>3,000ユーザー×6ヶ月</td><td>マッチング成功・交際継続をアウトカムとした行動ラベル</td><td>アウトカム定義の標準化</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="fine-tuning-strategy">ファインチューニング戦略</h3>
+
+      <p>段階的なファインチューニングにより、汎用LLMを恋愛パーソナリティ解析に最適化する：</p>
+
+      <ol>
+        <li><b>Phase 1 — ドメイン適応</b>：心理学論文・恋愛相談テキスト・カウンセリング記録（匿名化済み）で継続事前学習。心理学的語彙と恋愛文脈の理解力を底上げする。</li>
+        <li><b>Phase 2 — タスク特化学習</b>：心理測定ラベル付きデータでSupervised Fine-Tuningを実施。Big Five各因子の回帰タスクと愛着スタイルの分類タスクを同時最適化するマルチタスク学習を採用。</li>
+        <li><b>Phase 3 — RLHF（人間フィードバックによる強化学習）</b>：臨床心理士のフィードバックを報酬モデルに組み込み、推定結果の説明可能性と臨床的妥当性を向上させる。「なぜそのスコアになったか」の説明品質が向上する。</li>
+        <li><b>Phase 4 — オンライン学習</b>：実際のサービス運用データから継続的にモデルを更新。ユーザーの自己評価フィードバックとマッチング成功結果を活用した漸進的な精度改善を行う。</li>
+      </ol>
+
+      <h2 id="accuracy-evaluation">精度評価と検証手法</h2>
+
+      <p>パーソナリティ解析の信頼性を担保するためには、多角的な精度評価フレームワークが不可欠である。</p>
+
+      <h3 id="evaluation-metrics">評価指標体系</h3>
+
+      <ul>
+        <li><b>収束的妥当性</b>：標準化心理測定（NEO-PI-R、ECR-R等）との相関係数。Big Five各因子でr≧0.65、愛着スタイル分類でF1≧0.75を目標とする。</li>
+        <li><b>弁別的妥当性</b>：異なるパーソナリティ次元間の推定が適切に独立しているかを検証。各因子間の相関が理論的予測と整合することを確認する。</li>
+        <li><b>予測的妥当性</b>：推定されたパーソナリティプロファイルが、実際のマッチング成功・交際継続を有意に予測できるかを検証。AUC≧0.70を目標とする。</li>
+        <li><b>テスト-リテスト信頼性</b>：同一ユーザーの2週間間隔での推定結果の一貫性。ICC（級内相関係数）≧0.80を目標とする。</li>
+        <li><b>対話量-精度曲線</b>：最低何ターンの対話で信頼できる推定が可能かを検証。実用的な閾値（目標：20ターン以上でBig Five r≧0.60）を設定する。</li>
+      </ul>
+
+      <h3 id="bias-detection">バイアス検出と公平性評価</h3>
+
+      <p>パーソナリティ推定における系統的バイアスの検出と緩和は、<a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a>において最重要課題の一つである：</p>
+
+      <ul>
+        <li><b>性別バイアス</b>：同一のテキストに対して、話者の性別情報の有無でスコアが変動しないかを検証する。特に協調性・神経症的傾向で性別ステレオタイプ的なバイアスが生じやすい。</li>
+        <li><b>年齢バイアス</b>：年齢層によるスコア分布の偏りが、心理学的に妥当な範囲内であるかを確認する。</li>
+        <li><b>言語スタイルバイアス</b>：方言・若者言葉・ビジネス文体など、言語スタイルの違いがパーソナリティ推定に不当な影響を与えないかを検証する。</li>
+        <li><b>文化的バイアス</b>：Big Fiveモデル自体が西洋文化で発展した理論であるため、日本の文化的文脈での適用妥当性を継続的に検証する。「建前と本音」「空気を読む」といった日本的コミュニケーション特性への対応が課題となる。</li>
+      </ul>
+
+      <h2 id="ethics">倫理的課題と責任あるAI設計</h2>
+
+      <p>LLMパーソナリティ解析技術は強力なツールである一方、深刻な倫理的懸念を伴う。<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のようなサービスでの実装にあたっては、以下の原則を厳守する必要がある。</p>
+
+      <h3 id="ethical-principles">倫理設計原則</h3>
+
+      <ol>
+        <li><b>透明性と説明可能性</b>：ユーザーに対して「どのような技術で」「何を」「どの程度の精度で」分析しているかを明示する。ブラックボックスな性格判定は許容されない。</li>
+        <li><b>同意とコントロール</b>：パーソナリティ解析の開始・中断・データ削除をユーザーが自由に制御できる権限を保証する。分析結果の共有範囲もユーザーが決定する。</li>
+        <li><b>分析結果の限界の明示</b>：LLMによる推定は確率的なものであり、臨床診断や確定的な性格判断ではないことを常に明示する。過信を防ぐため、信頼区間を併記する。</li>
+        <li><b>非差別性</b>：パーソナリティ推定結果がマッチング機会の不当な制限に使用されないよう、<a href="ai-fairness-matching.html">AIマッチングの公平性設計</a>を組み込む。</li>
+        <li><b>データ最小化とプライバシー</b>：分析に必要最小限のデータのみを収集し、目的外利用を禁止する。生の対話データは分析完了後に匿名化処理を施す。</li>
+      </ol>
+
+      <h3 id="risk-mitigation">リスク軽減策</h3>
+
+      <ul>
+        <li><b>心理的安全性の確保</b>：パーソナリティ分析結果がユーザーの自己肯定感を損なわないよう、ポジティブフレーミングと成長可能性の強調を設計原則とする。「あなたは神経症的傾向が高い」ではなく「感受性が豊かで、繊細な気配りができるタイプ」のように翻訳する。</li>
+        <li><b>臨床的懸念の検知</b>：対話中にうつ傾向・自殺念慮・DV被害などの兆候を検知した場合、適切な専門機関への橋渡し機能を実装する。パーソナリティ解析を超えた臨床的対応はAIの役割範囲外であることを明確にする。</li>
+        <li><b>定期的な倫理監査</b>：外部の倫理委員会による四半期ごとのシステム監査を実施し、バイアス・公平性・プライバシー保護の状況を検証する。</li>
+      </ul>
+
+      <h2 id="matching-application">マッチングアプリ文脈での応用</h2>
+
+      <p>LLMパーソナリティ解析技術は、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>において以下の具体的な機能として応用される。</p>
+
+      <h3 id="compatibility-prediction">相性予測モデル</h3>
+
+      <p>2人のユーザーのパーソナリティプロファイルから、関係の成功確率を多角的に予測する：</p>
+
+      <ul>
+        <li><b>Big Five相補性スコア</b>：各因子の類似性と相補性のバランスから相性を算出。研究により、開放性・誠実性は類似度が高いほど、外向性は中程度の差異が最適であることが示されている。</li>
+        <li><b>愛着スタイル適合度</b>：安定型同士の組み合わせが最も安定するが、不安型×回避型のような「引き合うが不安定な」パターンを予めユーザーに認識させ、関係構築戦略を調整する。</li>
+        <li><b>コミュニケーションスタイル一致度</b>：テキストコミュニケーションのリズム・深度・スタイルの一致度を予測し、「メッセージが続く」関係の可能性を評価する。</li>
+        <li><b>価値観クラスタリング</b>：恋愛観・結婚観・ライフスタイル選好のベクトル空間上での距離を計算し、長期的な価値観の一致度を予測する。</li>
+      </ul>
+
+      <h3 id="personalized-strategy">パーソナリティ適応型戦略生成</h3>
+
+      <p><a href="conversational-ai-coaching.html">会話AIコーチング技術</a>と連携し、ユーザーのパーソナリティに最適化されたマッチング戦略を動的に生成する：</p>
+
+      <ul>
+        <li><b>内向型ユーザー向け</b>：少数精鋭のターゲティング、深い対話を重視したメッセージ戦略、1対1の静かなデートプラン提案。</li>
+        <li><b>外向型ユーザー向け</b>：広範なアプローチ戦略、テンポの速い会話展開、グループ活動やアクティブなデートプラン。</li>
+        <li><b>不安型愛着ユーザー向け</b>：安心感を重視したコミュニケーション戦略、相手の意図の過剰解釈を防ぐ認知リフレーミング支援。</li>
+        <li><b>回避型愛着ユーザー向け</b>：段階的な親密さの構築、ユーザーの独立性を尊重した関係設計、感情表現のスモールステップ練習。</li>
+      </ul>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#big-five-model">Big Five性格特性モデルとLLMによる推定</a></li>
+          <li class="toc-h3"><a href="#big-five-dimensions">五因子の定義とLLM検出シグナル</a></li>
+          <li class="toc-h3"><a href="#estimation-approach">LLMベースの推定アプローチ</a></li>
+          <li><a href="#attachment-style">愛着スタイル理論と恋愛心理学のLLM統合</a></li>
+          <li class="toc-h3"><a href="#attachment-types">4つの愛着スタイルとLLM分類</a></li>
+          <li class="toc-h3"><a href="#romance-psychology-integration">恋愛心理学モデルの統合</a></li>
+          <li><a href="#nlp-pipeline">自然言語処理によるパーソナリティ抽出パイプライン</a></li>
+          <li class="toc-h3"><a href="#feature-extraction">特徴量抽出の詳細</a></li>
+          <li class="toc-h3"><a href="#multi-model-inference">マルチモデル推論アーキテクチャ</a></li>
+          <li><a href="#fine-tuning">ファインチューニングと学習データ設計</a></li>
+          <li class="toc-h3"><a href="#training-data">学習データの収集と構成</a></li>
+          <li class="toc-h3"><a href="#fine-tuning-strategy">ファインチューニング戦略</a></li>
+          <li><a href="#accuracy-evaluation">精度評価と検証手法</a></li>
+          <li class="toc-h3"><a href="#evaluation-metrics">評価指標体系</a></li>
+          <li class="toc-h3"><a href="#bias-detection">バイアス検出と公平性評価</a></li>
+          <li><a href="#ethics">倫理的課題と責任あるAI設計</a></li>
+          <li class="toc-h3"><a href="#ethical-principles">倫理設計原則</a></li>
+          <li class="toc-h3"><a href="#risk-mitigation">リスク軽減策</a></li>
+          <li><a href="#matching-application">マッチングアプリ文脈での応用</a></li>
+          <li class="toc-h3"><a href="#compatibility-prediction">相性予測モデル</a></li>
+          <li class="toc-h3"><a href="#personalized-strategy">パーソナリティ適応型戦略生成</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+          <li><a href="prompt-engineering-personality.html">プロンプトエンジニアリングによるパーソナリティ推定</a></li>
+          <li><a href="vector-embedding-personality.html">ベクトル埋め込みによるパーソナリティ表現</a></li>
+          <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+          <li><a href="ai-fairness-matching.html">AIマッチングの公平性設計</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="prompt-engineering-personality.html">プロンプトエンジニアリングによるパーソナリティ推定</a></li>
+        <li><a href="vector-embedding-personality.html">ベクトル埋め込みによるパーソナリティ表現</a></li>
+        <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+        <li><a href="ai-fairness-matching.html">AIマッチングの公平性設計</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul><li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li></ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

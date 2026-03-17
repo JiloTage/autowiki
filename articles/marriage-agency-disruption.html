@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>結婚相談所業界のAI代替 - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a> &gt; 結婚相談所業界のAI代替
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">結婚相談所業界のAI代替</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">結婚相談所業界の収益構造・価値連鎖をAI技術による代替可能性の観点から分析し、仲人機能のAI化・コスト優位性・ハイブリッドモデル設計・規制リスクを包括的に考察する。</div>
+
+      <p><b>結婚相談所業界のAI代替</b>とは、IBJ・オーネット・ツヴァイ等の大手結婚相談所が担ってきた「仲人」機能――会員審査・マッチング提案・お見合い設定・交際フォローアップ・成婚支援――をAI技術によって再構築し、従来の1/5〜1/10のコストで同等以上のサービス品質を実現しようとする産業構造変革のことである。<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>で示された価格比較が示すとおり、結婚相談所の年間コスト22〜66万円に対し、AIサービスは6〜12万円で24時間365日のパーソナライズド支援を提供できる。<a href="matching-app-market.html">マッチングアプリ市場</a>が「出会いの場」の提供に留まる一方、結婚相談所は「成婚までの伴走」に価値を置いてきたが、<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>と<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>の進化がこの領域にも本格的なディスラプションをもたらしつつある。</p>
+
+      <h2 id="industry-overview">結婚相談所業界の現状と構造</h2>
+
+      <p>日本の結婚相談所業界は、少子化対策への社会的関心の高まりと「婚活」概念の普及により2010年代以降に市場拡大を続け、2025年時点で推定市場規模は約4,000〜5,000億円とされる。しかしその内実は、寡占的な連盟ネットワーク構造と高コスト体質という構造的課題を抱えている。</p>
+
+      <h3 id="major-players">主要プレイヤーと収益モデル</h3>
+
+      <p>結婚相談所業界は大きく「連盟型」と「直営型」に分類される。</p>
+
+      <table>
+        <thead>
+          <tr><th>事業者</th><th>形態</th><th>会員数（推定）</th><th>入会金</th><th>月会費</th><th>成婚料</th><th>年間総コスト目安</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>IBJメンバーズ</b></td><td>連盟型（IBJ）</td><td>約8.7万人</td><td>18〜38万円</td><td>1.7万円</td><td>22万円</td><td>約60〜80万円</td></tr>
+          <tr><td><b>オーネット</b></td><td>直営型</td><td>約4.2万人</td><td>11.6万円</td><td>1.6万円</td><td>なし</td><td>約31万円</td></tr>
+          <tr><td><b>ツヴァイ</b></td><td>直営型（IBJ提携）</td><td>約9.7万人</td><td>11.8万円</td><td>1.5万円</td><td>22万円</td><td>約52万円</td></tr>
+          <tr><td><b>パートナーエージェント</b></td><td>直営型</td><td>約1.1万人</td><td>10.4万円</td><td>1.4〜2.5万円</td><td>5.5万円</td><td>約33〜46万円</td></tr>
+          <tr><td><b>地域個人相談所（IBJ加盟）</b></td><td>連盟型</td><td>IBJ共有</td><td>5〜15万円</td><td>0.5〜1.5万円</td><td>10〜30万円</td><td>約26〜60万円</td></tr>
+        </tbody>
+      </table>
+
+      <p>特筆すべきは<b>IBJ連盟の支配的地位</b>である。IBJは自社会員データベース（約8.7万人）を加盟相談所（約4,200社）に共有する「プラットフォーム型」ビジネスモデルを展開し、加盟店からのシステム利用料・会員情報利用料で安定収益を確保している。この構造は、AIサービスが代替を試みる際の最大の参入障壁でもある。</p>
+
+      <h3 id="revenue-structure">収益構造の3層モデル</h3>
+
+      <p>結婚相談所の収益は以下の3層で構成される：</p>
+
+      <ol>
+        <li><b>入会金（フロント収益）</b>：会員審査・プロフィール作成・カウンセリングの対価。10〜38万円と高額だが、初期コストの大部分は人件費（カウンセラーによる初回面談3〜5時間）に費やされる。</li>
+        <li><b>月会費（ストック収益）</b>：マッチング提案・活動サポート・システム利用の対価。月1.4〜2.5万円で、在籍期間の平均12〜18ヶ月にわたり継続収入となる。</li>
+        <li><b>成婚料（成果報酬収益）</b>：成婚退会時に発生する報酬。5.5〜22万円で、相談所にとって最も利益率の高い収益源である一方、成婚率の低さ（業界平均10〜20%）がリスク要因となる。</li>
+      </ol>
+
+      <h2 id="value-chain-analysis">結婚相談所の価値連鎖とAI代替可能性</h2>
+
+      <p>結婚相談所が提供するサービスを機能分解し、各機能のAI代替可能性を評価する。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["結婚相談所の価値連鎖"] --> B["入会審査・本人確認"]
+    A --> C["プロフィール作成支援"]
+    A --> D["マッチング提案"]
+    A --> E["お見合い設定・調整"]
+    A --> F["交際フォローアップ"]
+    A --> G["成婚支援・退会手続き"]
+
+    B --> B1["AI代替可能性: 高"]
+    B1 --> B2["eKYC・書類OCR・\nデータベース照合で自動化"]
+
+    C --> C1["AI代替可能性: 非常に高"]
+    C1 --> C2["LLMによる文章生成・\nAI写真スコアリング"]
+
+    D --> D1["AI代替可能性: 非常に高"]
+    D1 --> D2["協調フィルタリング・\n深層学習マッチング"]
+
+    E --> E1["AI代替可能性: 中"]
+    E1 --> E2["日程調整AI・\nチャットボット仲介"]
+
+    F --> F1["AI代替可能性: 高"]
+    F1 --> F2["会話コーチング・\n感情分析・進捗管理"]
+
+    G --> G1["AI代替可能性: 中〜低"]
+    G1 --> G2["人間の共感・祝福が\n心理的価値を持つ"]
+      </pre></div>
+
+      <h3 id="high-replaceability">AI代替可能性が高い機能</h3>
+
+      <p><b>マッチング提案</b>は結婚相談所の中核機能であるが、実態としては仲人の「経験と勘」に依存する属人的なプロセスであり、むしろAIが最も得意とする領域である。<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>による深層的な性格特性分析と、数万件の成婚データに基づくパターンマッチングは、個人の仲人が持つ数百〜数千件の経験値を桁違いに上回る。</p>
+
+      <p><b>プロフィール作成支援</b>においても、AIは結婚相談所のカウンセラーを凌駕する潜在力を持つ。従来のカウンセラーは1回2〜3時間の面談で写真選定・文章添削を行うが、AIは即座にA/Bテスト結果に基づく最適な表現を提案し、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のフレームワークを用いて継続的な改善サイクルを回すことができる。</p>
+
+      <h3 id="hybrid-necessity">人間介在が必要な機能</h3>
+
+      <p><b>お見合い設定</b>の調整業務はAIで自動化可能だが、「断り」の伝達や繊細な感情への対応には人間の共感力が求められる場面が存在する。また<b>成婚支援</b>のフェーズでは、プロポーズのタイミング相談や家族紹介のアドバイスなど、文化的・感情的な文脈理解が深く求められるため、完全なAI代替は現時点では困難である。</p>
+
+      <h2 id="cost-advantage">AIサービスのコスト優位性</h2>
+
+      <p>結婚相談所のコスト構造とAIサービスのコスト構造を比較し、ディスラプションの経済的根拠を明確にする。</p>
+
+      <h3 id="cost-comparison-detail">詳細コスト比較</h3>
+
+      <table>
+        <thead>
+          <tr><th>コスト項目</th><th>結婚相談所（年間）</th><th>AIサービス（年間）</th><th>削減率</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>入会金・初期費用</td><td>10〜38万円</td><td>0円</td><td>100%</td></tr>
+          <tr><td>月会費（12ヶ月）</td><td>16.8〜30万円</td><td>3.6〜11.8万円</td><td>61〜79%</td></tr>
+          <tr><td>成婚料</td><td>5.5〜22万円</td><td>0〜3万円</td><td>86〜100%</td></tr>
+          <tr><td>お見合い料（10回分）</td><td>0〜5万円</td><td>0円</td><td>100%</td></tr>
+          <tr><td><b>年間総コスト</b></td><td><b>32〜95万円</b></td><td><b>3.6〜14.8万円</b></td><td><b>84〜96%</b></td></tr>
+        </tbody>
+      </table>
+
+      <p>このコスト差の源泉は<b>限界費用構造の根本的な違い</b>にある。結婚相談所は会員1人あたり1名の仲人カウンセラー（担当制）を配置し、月2〜4回の面談・電話・メール対応に人件費を投じる。1人のカウンセラーが担当できる会員数は20〜50名が限界であり、スケールに対してコストが線形に増加する。一方、AIサービスはインフラ費用とLLM API費用のみが変動コストであり、ユーザー数が増加するほど1人あたりコストが逓減する規模の経済が強く働く。</p>
+
+      <h3 id="value-density">価値密度の比較</h3>
+
+      <p>コストだけでなく「価値密度」――単位時間あたりに得られる支援の質と量――においてもAIは優位性を持つ。</p>
+
+      <table>
+        <thead>
+          <tr><th>指標</th><th>結婚相談所</th><th>AIサービス</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>対応可能時間</td><td>平日10〜19時</td><td>24時間365日</td></tr>
+          <tr><td>月間マッチング提案数</td><td>2〜10件</td><td>制限なし（条件次第）</td></tr>
+          <tr><td>応答速度</td><td>翌営業日〜3日</td><td>即時（数秒）</td></tr>
+          <tr><td>パーソナライズ精度</td><td>カウンセラーの経験依存</td><td>データドリブン・継続学習</td></tr>
+          <tr><td>プロフィール改善サイクル</td><td>月1回の面談時</td><td>リアルタイム・随時</td></tr>
+          <tr><td>メッセージ支援</td><td>なし〜簡易的</td><td><a href="conversational-ai-coaching.html">会話AIコーチング</a>で包括支援</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="nakoudo-ai">「仲人」機能のAI化</h2>
+
+      <p>結婚相談所の差別化要因であり、マッチングアプリとの最大の違いでもある「仲人」機能をAIでどこまで再現・超越できるかが、業界ディスラプションの成否を決定する。</p>
+
+      <h3 id="matching-proposal-ai">マッチング提案のAI化</h3>
+
+      <p>従来の仲人によるマッチング提案は、「この人とこの人は合いそう」という直感的判断に基づくことが多い。AIによるマッチング提案は以下の点で質的に異なる：</p>
+
+      <ol>
+        <li><b>多次元パーソナリティ分析</b>：<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>を用いた Big Five特性・愛着スタイル・価値観ベクトルの定量化により、表面的な条件（年齢・年収・学歴）を超えた深層的な相性評価が可能になる。</li>
+        <li><b>成婚パターンデータベース</b>：数万組の成婚カップルのデータから抽出された成功パターンとの類似度スコアリングにより、仲人の「勘」を科学的根拠に置き換える。</li>
+        <li><b>動的最適化</b>：交際中のフィードバック（デートの感想・不安・満足度）をリアルタイムに学習し、次のマッチング提案の精度を継続的に向上させる。</li>
+      </ol>
+
+      <h3 id="followup-ai">フォローアップのAI化</h3>
+
+      <p>結婚相談所の仲人が最も時間を費やすのが、交際中の会員へのフォローアップである。「デートの後どうでしたか」「次はどこに行きますか」「相手の反応はどうでしたか」といった定期的なコミュニケーションをAIが代替する場合、以下のアプローチが考えられる：</p>
+
+      <ul>
+        <li><b>感情分析ベースの自動チェックイン</b>：メッセージのトーンや頻度の変化を検知し、適切なタイミングでフォローアップを発動</li>
+        <li><b>交際ステージ別コーチング</b>：初回デート→2回目→交際開始→真剣交際→プロポーズの各フェーズに応じたアドバイスの自動提供</li>
+        <li><b>危機予兆検知</b>：<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>を応用し、コミュニケーション停滞やネガティブパターンを早期に検知して介入</li>
+      </ul>
+
+      <h3 id="omiai-setup-ai">お見合い設定のAI化</h3>
+
+      <p>お見合いの日程調整・場所提案・事前情報共有は自動化の余地が大きい。カレンダーAPI連携による空き時間の自動マッチング、位置情報に基づくカフェ・レストランの推薦、相手のプロフィール要約の自動生成などを組み合わせることで、仲人の事務的業務の80%以上を代替できると推定される。</p>
+
+      <h2 id="hybrid-model">ハイブリッドモデルの設計</h2>
+
+      <p>完全なAI代替ではなく、「AI＋人間アドバイザー」のハイブリッドモデルが、現実的な移行戦略として最も有望である。</p>
+
+      <h3 id="hybrid-architecture">ハイブリッドアーキテクチャ</h3>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    subgraph AI_LAYER["AI レイヤー（常時稼働）"]
+        A1["パーソナリティ解析エンジン"]
+        A2["マッチング最適化AI"]
+        A3["会話コーチングAI"]
+        A4["日程調整・場所推薦AI"]
+        A5["感情分析・危機検知AI"]
+    end
+
+    subgraph HUMAN_LAYER["人間アドバイザー（スポット介入）"]
+        H1["重要局面のカウンセリング"]
+        H2["繊細な断り・フィードバック伝達"]
+        H3["プロポーズ・家族紹介相談"]
+        H4["クレーム・トラブル対応"]
+    end
+
+    subgraph TRIGGER["エスカレーショントリガー"]
+        T1["感情スコア急変"]
+        T2["交際ステージ転換"]
+        T3["ユーザーからの相談要請"]
+        T4["AI信頼度スコア低下"]
+    end
+
+    A5 --> T1
+    A2 --> T2
+    A3 --> T3
+    A1 --> T4
+
+    T1 --> H1
+    T2 --> H3
+    T3 --> H1
+    T4 --> H4
+      </pre></div>
+
+      <h3 id="tiered-service">段階的サービス設計</h3>
+
+      <p>ハイブリッドモデルにおけるサービス階層は以下のように設計する：</p>
+
+      <table>
+        <thead>
+          <tr><th>プラン</th><th>月額</th><th>AI機能</th><th>人間サポート</th><th>想定ターゲット</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>AIベーシック</b></td><td>2,980円</td><td>全AI機能利用可</td><td>なし</td><td>コスト重視・自走型</td></tr>
+          <tr><td><b>AIスタンダード</b></td><td>9,800円</td><td>全AI機能＋優先マッチング</td><td>月1回のビデオ面談（30分）</td><td>バランス型</td></tr>
+          <tr><td><b>AIプレミアム</b></td><td>19,800円</td><td>全AI機能＋VIPマッチング</td><td>月2回の面談＋チャット随時</td><td>手厚いサポート希望</td></tr>
+          <tr><td><b>AIコンシェルジュ</b></td><td>39,800円</td><td>全AI機能＋専属AI</td><td>週1回の面談＋専任担当</td><td>結婚相談所からの移行層</td></tr>
+        </tbody>
+      </table>
+
+      <p>最上位の「AIコンシェルジュ」プランでさえ年間約48万円であり、大手結婚相談所の平均コスト（60〜80万円）を大幅に下回る。かつ、AIによる24時間サポートが加わることで、体感的なサービス品質は従来の結婚相談所を上回る可能性がある。</p>
+
+      <h3 id="advisor-efficiency">アドバイザーの生産性革命</h3>
+
+      <p>ハイブリッドモデルの最大の効果は、人間アドバイザーの生産性を劇的に向上させる点にある。従来1人のカウンセラーが20〜50名を担当していたのに対し、AIが定型業務を代替することで<b>1人あたり200〜500名</b>の会員をサポートできるようになる。これにより人件費を1/5〜1/10に圧縮しつつ、人間アドバイザーは「高付加価値なエモーショナルサポート」に集中できる。</p>
+
+      <h2 id="regulation-risk">規制・法的リスクと信頼性の課題</h2>
+
+      <p>結婚相談所業界のAI代替を推進する上で、法的・制度的な障壁と信頼構築の課題を正確に認識する必要がある。</p>
+
+      <h3 id="legal-framework">関連法規制</h3>
+
+      <ul>
+        <li><b>特定商取引法</b>：結婚相手紹介サービスは特定継続的役務提供に該当し、書面交付義務・クーリングオフ（8日間）・中途解約権が適用される。AIサービスであっても月額課金型で継続的に提供する場合は同法の規制対象となる可能性が高い。</li>
+        <li><b>個人情報保護法</b>：婚活データは要配慮個人情報（性的指向・宗教・病歴等を含みうる）に該当する場合があり、<a href="llm-personality-analysis.html">LLMパーソナリティ解析</a>で推定される心理特性データの取扱いには厳格な同意取得と安全管理措置が求められる。</li>
+        <li><b>景品表示法</b>：「成婚率〇%」「マッチング率〇倍」等のAI性能に関する表示は、合理的根拠を示せなければ優良誤認表示に該当するリスクがある。</li>
+        <li><b>結婚相手紹介サービス業の認定制度</b>：経済産業省の認定制度（マル適マーク）への対応が、AIサービスの信頼性担保において重要な差別化要因となる。</li>
+      </ul>
+
+      <h3 id="trust-building">信頼性構築の課題</h3>
+
+      <p>結婚相談所の利用者は「人生を左右する重要な決断」を委ねるため、サービスへの信頼が極めて重要である。AIサービスが直面する信頼性の課題は以下のとおり：</p>
+
+      <ol>
+        <li><b>本人確認の厳格性</b>：結婚相談所は独身証明書・収入証明書・学歴証明書の原本確認を行うことで「安心・安全」を担保している。AIサービスがeKYCのみに依存する場合、虚偽登録のリスクが高まるとユーザーが懸念する可能性がある。</li>
+        <li><b>AIの判断根拠の不透明性</b>：「なぜこの人を紹介されたのか」という説明責任において、仲人は自身の言葉で理由を説明できるが、AIのマッチングアルゴリズムはブラックボックスになりがちである。<a href="ai-explainability-dating.html">AI説明可能性と恋愛マッチング</a>の技術がこの課題の解決に不可欠である。</li>
+        <li><b>感情的安心感の欠如</b>：婚活中の不安・焦り・落胆に対して「人間に話を聞いてもらえる」安心感は、現時点ではAIでは完全には代替できない。ハイブリッドモデルにおける人間アドバイザーの存在意義がここにある。</li>
+        <li><b>セキュリティ意識</b>：婚活データの漏洩は個人の名誉に直結するため、<a href="dating-data-privacy-framework.html">婚活データプライバシーフレームワーク</a>の構築と第三者認証の取得が市場参入の必須条件となる。</li>
+      </ol>
+
+      <h3 id="disruption-timeline">ディスラプションの時間軸</h3>
+
+      <p>結婚相談所業界のAI代替は段階的に進行すると予測される：</p>
+
+      <table>
+        <thead>
+          <tr><th>フェーズ</th><th>時期（推定）</th><th>変化の内容</th><th>影響を受ける事業者</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Phase 1: 補完</b></td><td>2025〜2027年</td><td>既存相談所がAIツールを導入し業務効率化</td><td>中小個人相談所（コスト削減）</td></tr>
+          <tr><td><b>Phase 2: 代替</b></td><td>2027〜2029年</td><td>AIファーストの婚活サービスが台頭、低価格帯市場を奪取</td><td>直営型大手（オーネット等）</td></tr>
+          <tr><td><b>Phase 3: 再定義</b></td><td>2029〜2032年</td><td>ハイブリッドモデルが主流化、従来型は高付加価値ニッチに</td><td>連盟型（IBJ等）</td></tr>
+          <tr><td><b>Phase 4: 統合</b></td><td>2032年以降</td><td>AI婚活プラットフォームが業界標準に、人間仲人はプレミアムオプション化</td><td>業界全体</td></tr>
+        </tbody>
+      </table>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#industry-overview">結婚相談所業界の現状と構造</a></li>
+          <li class="toc-h3"><a href="#major-players">主要プレイヤーと収益モデル</a></li>
+          <li class="toc-h3"><a href="#revenue-structure">収益構造の3層モデル</a></li>
+          <li><a href="#value-chain-analysis">結婚相談所の価値連鎖とAI代替可能性</a></li>
+          <li class="toc-h3"><a href="#high-replaceability">AI代替可能性が高い機能</a></li>
+          <li class="toc-h3"><a href="#hybrid-necessity">人間介在が必要な機能</a></li>
+          <li><a href="#cost-advantage">AIサービスのコスト優位性</a></li>
+          <li class="toc-h3"><a href="#cost-comparison-detail">詳細コスト比較</a></li>
+          <li class="toc-h3"><a href="#value-density">価値密度の比較</a></li>
+          <li><a href="#nakoudo-ai">「仲人」機能のAI化</a></li>
+          <li class="toc-h3"><a href="#matching-proposal-ai">マッチング提案のAI化</a></li>
+          <li class="toc-h3"><a href="#followup-ai">フォローアップのAI化</a></li>
+          <li class="toc-h3"><a href="#omiai-setup-ai">お見合い設定のAI化</a></li>
+          <li><a href="#hybrid-model">ハイブリッドモデルの設計</a></li>
+          <li class="toc-h3"><a href="#hybrid-architecture">ハイブリッドアーキテクチャ</a></li>
+          <li class="toc-h3"><a href="#tiered-service">段階的サービス設計</a></li>
+          <li class="toc-h3"><a href="#advisor-efficiency">アドバイザーの生産性革命</a></li>
+          <li><a href="#regulation-risk">規制・法的リスクと信頼性の課題</a></li>
+          <li class="toc-h3"><a href="#legal-framework">関連法規制</a></li>
+          <li class="toc-h3"><a href="#trust-building">信頼性構築の課題</a></li>
+          <li class="toc-h3"><a href="#disruption-timeline">ディスラプションの時間軸</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="ai-explainability-dating.html">AI説明可能性と恋愛マッチング</a></li>
+        <li><a href="dating-data-privacy-framework.html">婚活データプライバシーフレームワーク</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul><li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li></ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

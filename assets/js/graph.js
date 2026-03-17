@@ -31,14 +31,18 @@
       .style('opacity', 0)
       .style('display', 'none');
 
-    // Load data
-    fetch(GRAPH_DATA_URL)
-      .then(r => r.json())
-      .then(data => renderGraph(data, g, width, height, tooltip))
-      .catch(err => {
-        container.innerHTML = '<p style="text-align:center;color:#72777d;padding:40px;">グラフデータを読み込めません</p>';
-        console.error('Graph load error:', err);
-      });
+    // Load data: prefer inline data (for file:// protocol), fallback to fetch
+    if (window.__GRAPH_DATA__) {
+      renderGraph(window.__GRAPH_DATA__, g, width, height, tooltip);
+    } else {
+      fetch(GRAPH_DATA_URL)
+        .then(r => r.json())
+        .then(data => renderGraph(data, g, width, height, tooltip))
+        .catch(err => {
+          container.innerHTML = '<p style="text-align:center;color:#72777d;padding:40px;">グラフデータを読み込めません</p>';
+          console.error('Graph load error:', err);
+        });
+    }
   }
 
   function renderGraph(data, g, width, height, tooltip) {

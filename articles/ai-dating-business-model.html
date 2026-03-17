@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI恋愛サービスの収益モデル - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; AI恋愛サービスの収益モデル
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">AI恋愛サービスの収益モデル</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">AI恋愛コンサルティングサービスにおけるフリーミアム・サブスクリプション・成果報酬型の各収益モデルを比較分析し、ユニットエコノミクス（CAC・LTV・LTV/CAC比率）に基づく持続可能な成長戦略と収益シミュレーションを体系的に解説する。</div>
+
+      <p><b>AI恋愛サービスの収益モデル</b>とは、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>をはじめとするAI駆動の恋愛支援サービスが持続的に成長するための収益構造設計のことである。<a href="matching-app-market.html">マッチングアプリ市場</a>が成熟期に入り、単なるマッチングの「場」の提供から「成果の最大化」へとユーザーニーズがシフトする中、AIによる恋愛コンサルティングは従来の結婚相談所や人間コンサルタントとは根本的に異なる収益構造を実現できる。本稿では、課金モデルの設計から顧客生涯価値（LTV）の最適化、ユニットエコノミクスの精緻なシミュレーションまでを包括的に分析する。</p>
+
+      <h2 id="revenue-model-comparison">課金モデルの比較分析</h2>
+
+      <p>AI恋愛サービスが採用しうる主要な課金モデルは、フリーミアム型・サブスクリプション型・成果報酬型の3つに大別される。それぞれの特性と適用条件を整理する。</p>
+
+      <h3 id="freemium-model">フリーミアムモデル</h3>
+
+      <p>無料で基本機能（簡易パーソナリティ診断、プロフィール採点1回）を提供し、高度な機能へのアクセスに課金する構造である。最大のメリットはユーザー獲得の障壁が極めて低い点にあり、<a href="matching-app-market.html">マッチングアプリ市場</a>の競争環境下で初期ユーザー基盤を迅速に構築できる。一方、無料ユーザーへのサービス提供コスト（特にLLM API呼び出しコスト）が利益を圧迫するリスクがあるため、無料枠の機能制限設計が収益性を左右する。</p>
+
+      <ul>
+        <li><b>無料→有料の転換トリガー</b>：パーソナリティ診断結果の「詳細版」へのアクセス制限、メッセージ提案回数の上限到達、A/Bテスト機能のロック解除など</li>
+        <li><b>想定転換率</b>：業界平均3〜5%、最適化後7〜10%（恋愛サービスは「切実さ」が高いため汎用SaaSより高い転換率が見込める）</li>
+        <li><b>注意点</b>：無料ユーザーへの「価値の実感」を十分に提供しつつ、「もっと欲しい」というモチベーションを生む絶妙なバランスが必要</li>
+      </ul>
+
+      <h3 id="subscription-model">サブスクリプションモデル</h3>
+
+      <p>月額定額制で継続的なサービス提供を行う。恋愛支援は本質的に「継続的な改善プロセス」であるため、サブスクリプションとの親和性が高い。プラン構成は通常3〜4段階（ライト・スタンダード・プレミアム・VIP）で設計し、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>の価格帯（月額4,980円〜29,800円）が参考水準となる。</p>
+
+      <h3 id="performance-model">成果報酬型モデル</h3>
+
+      <p>「マッチング成立」「初デート実現」「交際開始」などの成果指標に連動した課金モデルである。ユーザーにとってはリスクが低く導入障壁が下がる一方、成果の定義と計測が困難であること、成功後の解約率が極端に高くなることが課題となる。ハイブリッド型として「基本サブスク＋成果ボーナス課金」という設計も検討に値する。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["課金モデル選択"] --> B["フリーミアム型"]
+    A --> C["サブスクリプション型"]
+    A --> D["成果報酬型"]
+    B --> B1["無料: 簡易診断・採点1回"]
+    B --> B2["有料: 詳細分析・メッセージ支援"]
+    B --> B3["転換率: 5〜10%"]
+    C --> C1["ライト: 月2,980円"]
+    C --> C2["スタンダード: 月4,980円"]
+    C --> C3["プレミアム: 月9,800円"]
+    C --> C4["VIP: 月29,800円"]
+    D --> D1["マッチング成立: 500円/件"]
+    D --> D2["デート実現: 3,000円/件"]
+    D --> D3["交際開始: 10,000円"]
+    B2 --> E["推奨: ハイブリッド型"]
+    C2 --> E
+    D1 --> E
+    E --> F["フリーミアム + サブスク + 成果ボーナス"]
+      </pre></div>
+
+      <table>
+        <thead>
+          <tr><th>モデル</th><th>メリット</th><th>デメリット</th><th>適用場面</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>フリーミアム</b></td><td>ユーザー獲得が容易、バイラル効果</td><td>LLMコスト負担、低転換率リスク</td><td>市場初期参入・認知拡大フェーズ</td></tr>
+          <tr><td><b>サブスクリプション</b></td><td>予測可能な収益、LTV最大化</td><td>解約率管理が必要、価格感度</td><td>安定成長フェーズ</td></tr>
+          <tr><td><b>成果報酬</b></td><td>ユーザーリスク低、導入障壁低</td><td>成果計測困難、収益予測不安定</td><td>差別化・信頼構築フェーズ</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="ltv-optimization">LTV最適化とチャーン防止戦略</h2>
+
+      <p>AI恋愛サービス特有の課題は「成功すると解約する」という構造的なチャーン（解約）問題である。ユーザーが理想の相手と交際を開始した時点でサービスの必要性が消失するため、平均利用期間は4〜6ヶ月と比較的短い。この制約下でLTV（顧客生涯価値）を最大化するための戦略を考察する。</p>
+
+      <h3 id="churn-prevention">チャーン防止の3つのアプローチ</h3>
+
+      <ol>
+        <li><b>価値提供領域の拡張</b>：マッチング成功後も「交際維持」「関係深化」「コミュニケーション改善」など、継続的な価値を提供する。<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>を応用し、交際中のコミュニケーション支援にまでサービス範囲を拡大する。</li>
+        <li><b>コミュニティ形成</b>：同じサービスを利用する仲間同士のコミュニティを形成し、情報交換・成功体験の共有・モチベーション維持を促進。サービスの利用目的が「ツール」から「居場所」へ進化する。</li>
+        <li><b>段階的エンゲージメント設計</b>：利用開始から時間が経つほど蓄積されるデータ（パーソナリティ分析の精度向上、行動パターンの学習、成功/失敗パターンの蓄積）が離脱コストとなる。<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>の精度が使えば使うほど向上する仕組みを設計する。</li>
+      </ol>
+
+      <h3 id="ltv-calculation">LTV算出モデル</h3>
+
+      <p>AI恋愛サービスのLTVは以下の計算式で推定できる：</p>
+
+      <p><b>LTV = ARPU × 平均利用月数 × (1 + アップセル率) − サービス提供コスト</b></p>
+
+      <table>
+        <thead>
+          <tr><th>プラン</th><th>ARPU</th><th>平均利用月数</th><th>アップセル率</th><th>推定LTV</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>スタンダード</td><td>4,980円</td><td>5.2ヶ月</td><td>15%</td><td>約29,800円</td></tr>
+          <tr><td>プレミアム</td><td>9,800円</td><td>4.5ヶ月</td><td>10%</td><td>約48,500円</td></tr>
+          <tr><td>VIP</td><td>29,800円</td><td>3.8ヶ月</td><td>5%</td><td>約118,900円</td></tr>
+          <tr><td><b>加重平均</b></td><td><b>7,200円</b></td><td><b>4.8ヶ月</b></td><td><b>12%</b></td><td><b>約38,700円</b></td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="upsell-strategy">アップセル/クロスセル戦略</h2>
+
+      <p>無料ユーザーから有料プランへの転換、および下位プランから上位プランへのアップグレードを促進する心理設計が、収益最大化の鍵を握る。</p>
+
+      <h3 id="conversion-psychology">無料→有料転換の心理設計</h3>
+
+      <p>フリーミアムから有料プランへの転換率を高めるために、以下の心理的トリガーを戦略的に配置する：</p>
+
+      <ol>
+        <li><b>損失回避バイアスの活用</b>：無料診断で得られたパーソナリティ分析結果の「概要版」を提示し、「詳細版には〇〇の重要な傾向が含まれています」と表示。既に投資した時間（対話セッション）の成果を「完全に」得るためには課金が必要という構造を作る。</li>
+        <li><b>社会的証明の提示</b>：「同じパーソナリティタイプのユーザーの78%がプレミアムプランでマッチング率を3.2倍に改善」など、具体的な数値と類似ユーザーの成功事例を提示する。</li>
+        <li><b>期間限定オファー</b>：無料診断完了後72時間以内の申し込みで初月50%OFFなど、緊急性を持たせた転換促進施策。</li>
+        <li><b>段階的価値実感</b>：無料版でも「小さな成功体験」（いいね数の改善、マッチング率の微増）を実感させ、「有料版ならもっとできる」という期待を醸成する。</li>
+      </ol>
+
+      <h3 id="plan-upgrade">プランアップグレード戦略</h3>
+
+      <p>下位プランユーザーに対する上位プランへのアップセル施策：</p>
+
+      <ul>
+        <li><b>利用上限到達時の自然な提案</b>：月間メッセージ提案回数の上限到達時に「今月はあと15件の提案が利用できます（プレミアムプランなら無制限）」と表示</li>
+        <li><b>成果ギャップの可視化</b>：「あなたの現在のマッチング率は4.2%です。プレミアムユーザーの平均は11.8%です」と上位プランの価値を定量的に示す</li>
+        <li><b>機能プレビュー</b>：月に1回、上位プランの機能を期間限定で無料開放し、実体験を通じた価値理解を促進する</li>
+      </ul>
+
+      <h2 id="price-comparison">結婚相談所・人間コンサルとの価格比較</h2>
+
+      <p>AI恋愛サービスの価格競争力を、既存の恋愛支援サービスと比較して明確化する。</p>
+
+      <table>
+        <thead>
+          <tr><th>サービス形態</th><th>初期費用</th><th>月額費用</th><th>年間総コスト</th><th>対応時間</th><th>パーソナライズ度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>大手結婚相談所（IBJ等）</td><td>10〜30万円</td><td>1〜3万円</td><td>22〜66万円</td><td>月2〜4回面談</td><td>中</td></tr>
+          <tr><td>人間恋愛コンサルタント</td><td>3〜10万円</td><td>5〜20万円</td><td>63〜250万円</td><td>月4〜8時間</td><td>高</td></tr>
+          <tr><td>ココナラ等スポット添削</td><td>なし</td><td>3,000〜1万円/回</td><td>3.6〜12万円</td><td>単発</td><td>低</td></tr>
+          <tr><td><b>AI恋愛コンサル（スタンダード）</b></td><td><b>なし</b></td><td><b>4,980円</b></td><td><b>約6万円</b></td><td><b>24時間365日</b></td><td><b>高</b></td></tr>
+          <tr><td><b>AI恋愛コンサル（プレミアム）</b></td><td><b>なし</b></td><td><b>9,800円</b></td><td><b>約11.8万円</b></td><td><b>24時間365日</b></td><td><b>非常に高</b></td></tr>
+        </tbody>
+      </table>
+
+      <p><b>価値訴求のポイント</b>：結婚相談所の年間コスト（22〜66万円）に対してAIサービスは約6〜12万円と<b>1/3〜1/5のコスト</b>でありながら、24時間365日の即時対応とデータに基づくパーソナライズを実現する。人間コンサルタントの属人的なアドバイスと異なり、数万件の成功パターンデータベースに基づく科学的根拠のある提案が可能である点も訴求力が高い。<a href="ai-dating-pricing-psychology.html">AI恋愛サービスの価格心理学</a>の知見を活用し、価格に対する心理的抵抗を最小化する設計が重要となる。</p>
+
+      <h2 id="unit-economics">ユニットエコノミクス</h2>
+
+      <p>サービスの持続可能性を判断する上で最も重要な指標群がユニットエコノミクスである。</p>
+
+      <h3 id="cac-analysis">CAC（顧客獲得コスト）分析</h3>
+
+      <p>チャネル別のCAC推定値：</p>
+
+      <table>
+        <thead>
+          <tr><th>獲得チャネル</th><th>CAC</th><th>有料転換率</th><th>有料ユーザーあたりCAC</th><th>LTV/CAC比率</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SEO/コンテンツマーケ</td><td>800円</td><td>8%</td><td>10,000円</td><td>3.87</td></tr>
+          <tr><td>SNS広告（Instagram/X）</td><td>1,500円</td><td>5%</td><td>30,000円</td><td>1.29</td></tr>
+          <tr><td>インフルエンサー</td><td>2,000円</td><td>7%</td><td>28,571円</td><td>1.35</td></tr>
+          <tr><td>口コミ/紹介</td><td>500円</td><td>12%</td><td>4,167円</td><td>9.29</td></tr>
+          <tr><td>アプリストアASO</td><td>1,200円</td><td>6%</td><td>20,000円</td><td>1.94</td></tr>
+          <tr><td><b>チャネルミックス加重平均</b></td><td><b>1,100円</b></td><td><b>7%</b></td><td><b>15,714円</b></td><td><b>2.46</b></td></tr>
+        </tbody>
+      </table>
+
+      <p>SaaSの一般的な健全性基準である<b>LTV/CAC比率 ≧ 3.0</b>を達成するには、口コミ/紹介チャネルの比率拡大とSEO経由の転換率向上が重要な戦略課題となる。<a href="saas-growth-metrics.html">SaaS成長指標フレームワーク</a>に基づくKPIモニタリングが不可欠である。</p>
+
+      <h3 id="cost-structure">コスト構造分析</h3>
+
+      <p>ユーザー1人あたりの月間サービス提供コストの内訳：</p>
+
+      <ul>
+        <li><b>LLM API費用</b>：月間平均200〜500回のAPI呼び出し × 1回あたり約3〜8円 = 約600〜4,000円/月（プランによる）</li>
+        <li><b>インフラ費用</b>：クラウドコンピューティング・DB・CDN等 = 約150〜300円/月</li>
+        <li><b>カスタマーサポート</b>：AI+人間ハイブリッド = 約100〜500円/月</li>
+        <li><b>データ処理・分析</b>：パーソナリティ分析・マッチング最適化計算 = 約50〜200円/月</li>
+      </ul>
+
+      <p><b>粗利率の推定</b>：スタンダードプラン（月額4,980円）の場合、変動コストは約1,000〜1,500円/月であり、粗利率は<b>70〜80%</b>と高水準。プレミアムプラン以上では粗利率がさらに改善し、スケールメリットが効きやすい構造となる。</p>
+
+      <h2 id="revenue-simulation">収益シミュレーションと成長モデル</h2>
+
+      <p>3年間の収益シミュレーションを、保守的・標準・楽観的の3シナリオで試算する。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph LR
+    subgraph Y1["Year 1: 立ち上げ期"]
+        Y1A["無料ユーザー: 50K"]
+        Y1B["有料転換率: 5%"]
+        Y1C["有料ユーザー: 2,500"]
+        Y1D["MRR: 1,625万円"]
+    end
+    subgraph Y2["Year 2: 成長期"]
+        Y2A["無料ユーザー: 200K"]
+        Y2B["有料転換率: 7%"]
+        Y2C["有料ユーザー: 14,000"]
+        Y2D["MRR: 1.01億円"]
+    end
+    subgraph Y3["Year 3: 拡大期"]
+        Y3A["無料ユーザー: 500K"]
+        Y3B["有料転換率: 10%"]
+        Y3C["有料ユーザー: 50,000"]
+        Y3D["MRR: 4億円"]
+    end
+    Y1 --> Y2 --> Y3
+      </pre></div>
+
+      <h3 id="scenario-analysis">シナリオ別収益予測</h3>
+
+      <table>
+        <thead>
+          <tr><th>指標</th><th>保守的</th><th>標準</th><th>楽観的</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Year 3 有料ユーザー数</td><td>25,000</td><td>50,000</td><td>100,000</td></tr>
+          <tr><td>Year 3 ARPU</td><td>6,500円</td><td>8,000円</td><td>10,000円</td></tr>
+          <tr><td>Year 3 MRR</td><td>1.63億円</td><td>4億円</td><td>10億円</td></tr>
+          <tr><td>Year 3 ARR</td><td>19.5億円</td><td>48億円</td><td>120億円</td></tr>
+          <tr><td>粗利率</td><td>68%</td><td>75%</td><td>80%</td></tr>
+          <tr><td>営業利益率</td><td>10%</td><td>25%</td><td>35%</td></tr>
+          <tr><td>累積調達必要額</td><td>5億円</td><td>8億円</td><td>15億円</td></tr>
+        </tbody>
+      </table>
+
+      <p><b>成長ドライバー</b>：標準シナリオにおける年間成長率200〜300%は、以下の要因に支えられる：</p>
+
+      <ol>
+        <li><b>ネットワーク効果</b>：成功体験の口コミ拡散による自然流入の加速</li>
+        <li><b>データフライホイール</b>：ユーザー増加→データ蓄積→AI精度向上→成功率向上→さらなるユーザー増加という好循環</li>
+        <li><b>ARPU向上</b>：プロダクト改善と機能拡充によるアップセル率の向上</li>
+        <li><b>チャーン率改善</b>：交際後の「関係維持支援」機能により、従来の解約ポイントを乗り越える</li>
+      </ol>
+
+      <h2 id="global-case-study">海外AI恋愛サービスの事例比較</h2>
+
+      <p>海外市場では既にAIを活用した恋愛支援サービスが複数登場しており、その収益モデルと成長軌道は日本市場参入時の重要な参考事例となる。</p>
+
+      <table>
+        <thead>
+          <tr><th>サービス</th><th>拠点</th><th>主要機能</th><th>課金モデル</th><th>月額価格帯</th><th>特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Rizz AI</b></td><td>米国</td><td>メッセージ提案・会話コーチング</td><td>フリーミアム+サブスク</td><td>$9.99〜$29.99</td><td>メッセージ特化、若年層向け</td></tr>
+          <tr><td><b>YourMove.ai</b></td><td>米国</td><td>プロフィール添削・メッセージ生成</td><td>サブスクリプション</td><td>$19.99〜$49.99</td><td>プロフィール最適化に強み</td></tr>
+          <tr><td><b>Blush AI</b></td><td>米国</td><td>恋愛シミュレーション・練習</td><td>フリーミアム</td><td>$9.99〜$14.99</td><td>恋愛スキル練習に特化</td></tr>
+          <tr><td><b>Keys AI</b></td><td>米国</td><td>メッセージ分析・返信提案</td><td>サブスクリプション</td><td>$6.99〜$19.99</td><td>既存アプリとの統合に注力</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="global-insights">海外事例から得られる示唆</h3>
+
+      <ol>
+        <li><b>メッセージ支援が最も収益化しやすい</b>：海外サービスの多くがメッセージ生成・提案を中核機能としており、「今すぐ使える即効性」が課金の最大トリガーとなっている</li>
+        <li><b>プロフィール最適化は差別化ポイント</b>：<a href="profile-optimization-strategy.html">プロフィール最適化戦略</a>を強みとするYourMove.aiは比較的高い価格帯を維持できており、深い分析機能は価格弾力性を低下させる</li>
+        <li><b>フリーミアムが主流</b>：恋愛という「恥ずかしさ」を伴うカテゴリでは、まず無料で体験できることが心理的障壁を下げる上で極めて重要</li>
+        <li><b>日本市場との差異</b>：日本は「婚活」文化が強く、<a href="marriage-agency-disruption.html">結婚相談所業界のAI代替</a>という文脈でのポジショニングが有効。また、LINEベースのUXが普及しているため、<a href="line-bot-dating-coach.html">LINE Bot型恋愛コーチ</a>という独自のフォーマットが高い潜在力を持つ</li>
+      </ol>
+
+      <p>日本市場においては、海外事例のメッセージ支援中心モデルに加え、<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>による「深層理解」と、<a href="dating-data-flywheel.html">恋愛データフライホイール</a>による持続的な精度向上を組み合わせた「包括的恋愛コンサルティング」モデルこそが、最も高いLTVと競争優位性を実現しうる戦略であると考えられる。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#revenue-model-comparison">課金モデルの比較分析</a></li>
+          <li class="toc-h3"><a href="#freemium-model">フリーミアムモデル</a></li>
+          <li class="toc-h3"><a href="#subscription-model">サブスクリプションモデル</a></li>
+          <li class="toc-h3"><a href="#performance-model">成果報酬型モデル</a></li>
+          <li><a href="#ltv-optimization">LTV最適化とチャーン防止戦略</a></li>
+          <li class="toc-h3"><a href="#churn-prevention">チャーン防止の3つのアプローチ</a></li>
+          <li class="toc-h3"><a href="#ltv-calculation">LTV算出モデル</a></li>
+          <li><a href="#upsell-strategy">アップセル/クロスセル戦略</a></li>
+          <li class="toc-h3"><a href="#conversion-psychology">無料→有料転換の心理設計</a></li>
+          <li class="toc-h3"><a href="#plan-upgrade">プランアップグレード戦略</a></li>
+          <li><a href="#price-comparison">結婚相談所・人間コンサルとの価格比較</a></li>
+          <li><a href="#unit-economics">ユニットエコノミクス</a></li>
+          <li class="toc-h3"><a href="#cac-analysis">CAC分析</a></li>
+          <li class="toc-h3"><a href="#cost-structure">コスト構造分析</a></li>
+          <li><a href="#revenue-simulation">収益シミュレーションと成長モデル</a></li>
+          <li class="toc-h3"><a href="#scenario-analysis">シナリオ別収益予測</a></li>
+          <li><a href="#global-case-study">海外AI恋愛サービスの事例比較</a></li>
+          <li class="toc-h3"><a href="#global-insights">海外事例から得られる示唆</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="ai-dating-pricing-psychology.html">AI恋愛サービスの価格心理学</a></li>
+        <li><a href="saas-growth-metrics.html">SaaS成長指標フレームワーク</a></li>
+        <li><a href="marriage-agency-disruption.html">結婚相談所業界のAI代替</a></li>
+        <li><a href="line-bot-dating-coach.html">LINE Bot型恋愛コーチ</a></li>
+        <li><a href="dating-data-flywheel.html">恋愛データフライホイール</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

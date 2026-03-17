@@ -1,12 +1,12 @@
 {
-  "last_phase": null,
-  "expansion_frontier": [],
+  "last_phase": "phase2-cycle4",
+  "expansion_frontier": ["ai-dating-business-model","matching-algorithm-design","ai-photo-scoring-algorithm","ai-ethics-dating","conversation-repair-strategy","prompt-engineering-personality","dating-persona-design","dating-psychology-ai"],
   "settings": {
     "max_agents": 3,
     "max_depth": 2,
     "max_total_articles": 50,
     "language": "ja"
   },
-  "created_at": null,
-  "updated_at": null
+  "created_at": "2026-03-18T00:00:00+09:00",
+  "updated_at": "2026-03-18T00:00:00+09:00"
 }

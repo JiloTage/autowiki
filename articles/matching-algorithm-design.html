@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マッチングアルゴリズム設計論 - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a> &gt; マッチングアルゴリズム設計論
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">マッチングアルゴリズム設計論</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">マッチングアプリにおけるユーザー間の最適なペアリングを実現するためのアルゴリズム設計手法を、ELOレーティング・協調フィルタリング・深層学習・双方向最適化の各アプローチから体系的に比較・分析し、公平性と精度のトレードオフを考察する。</div>
+
+      <p><b>マッチングアルゴリズム設計論</b>とは、マッチングアプリにおいてユーザー同士の最適な組み合わせを決定するアルゴリズムの理論的基盤・設計原理・実装手法・評価指標を体系化した学問領域である。<a href="matching-app-market.html">マッチングアプリ市場</a>が成熟するにつれ、単純な属性フィルタリングから、行動データ・心理特性・相互選好を統合した高度なアルゴリズムへと進化が続いている。<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のようなAI恋愛支援サービスにとって、これらのアルゴリズムの内部構造を正確に理解することは、プラットフォーム上での戦略立案において不可欠である。本稿では、レーティングシステムから深層学習まで、主要な設計アプローチを横断的に論じる。</p>
+
+      <h2 id="elo-rating">ELOレーティングシステムとマッチングアプリへの応用</h2>
+
+      <p>ELOレーティングは、もともとチェスのプレイヤー強度を定量化するために考案されたシステムであるが、マッチングアプリでは「ユーザーの魅力度」をスコア化する手法として広く応用されている。Tinderが初期にこのシステムを採用したことで業界標準の一つとなった。</p>
+
+      <h3 id="elo-mechanism">基本メカニズム</h3>
+
+      <p>ELOレーティングの核心は、「期待勝率」と「実際の結果」の差分に基づいてレーティングを更新する点にある。マッチングアプリの文脈では、以下のように再解釈される。</p>
+
+      <ul>
+        <li><b>勝利</b>：相手からのLike（右スワイプ）を獲得すること</li>
+        <li><b>敗北</b>：相手からPass（左スワイプ）されること</li>
+        <li><b>期待勝率</b>：自分と相手のレーティング差から算出される、Likeを獲得する確率</li>
+      </ul>
+
+      <p>高レーティングのユーザーからLikeを獲得すると大きくレーティングが上昇し、低レーティングのユーザーからPassされてもレーティングの低下は小さい。この仕組みにより、「魅力的なユーザーに選ばれるユーザー」のスコアが自然に上昇する。</p>
+
+      <h3 id="elo-problems">ELOシステムの課題と改良</h3>
+
+      <p>純粋なELOレーティングには重大な問題が指摘されている。</p>
+
+      <ul>
+        <li><b>マシュー効果（富める者がさらに富む）</b>：高スコアのユーザーが優先表示されることで、さらにLikeを集めやすくなる正のフィードバックループが発生する</li>
+        <li><b>外見偏重バイアス</b>：スワイプ行動が写真の第一印象に大きく依存するため、内面的な相性を反映できない</li>
+        <li><b>新規ユーザー問題（コールドスタート）</b>：データ不足により初期レーティングの精度が低い</li>
+        <li><b>スコアデフレーション</b>：選好行動が偏った集団では、全体的なスコアが低下する傾向がある</li>
+      </ul>
+
+      <p>これらの課題を受け、Tinderは2019年頃にELOレーティングの廃止を公表し、複合的なスコアリングシステムへ移行した。tappleも類似のELO派生システムを運用しているが、写真品質やログイン頻度など多次元の要素を統合している。<a href="profile-optimization-strategy.html">プロフィール最適化戦略</a>は、これらのスコアリング要素を理解した上でプロフィールを構築するアプローチである。</p>
+
+      <h2 id="collaborative-filtering">協調フィルタリング</h2>
+
+      <p>協調フィルタリング（Collaborative Filtering）は、ECサイトのレコメンドエンジンで確立された手法であり、マッチングアプリにおいても「似た嗜好を持つユーザー群」を活用した推薦に応用されている。</p>
+
+      <h3 id="user-based-cf">ユーザーベース協調フィルタリング</h3>
+
+      <p>「あなたと似たスワイプ傾向を持つユーザーが高く評価した相手」を推薦する手法である。具体的には、以下のプロセスで動作する。</p>
+
+      <ol>
+        <li>全ユーザーのスワイプ履歴（Like/Pass）をユーザー×候補の行列として表現する</li>
+        <li>コサイン類似度やピアソン相関係数を用いて、ターゲットユーザーと類似した行動パターンを持つ「近傍ユーザー群」を特定する</li>
+        <li>近傍ユーザー群がLikeしたが、ターゲットユーザーがまだ閲覧していない候補を推薦する</li>
+      </ol>
+
+      <p>この手法の利点は、明示的なプロフィール情報に依存せず、暗黙的な行動データから選好パターンを抽出できる点にある。一方で、ユーザー数が増大するとk近傍探索の計算コストが指数的に増加する<b>スケーラビリティ問題</b>が存在する。</p>
+
+      <h3 id="item-based-cf">アイテムベース協調フィルタリング</h3>
+
+      <p>マッチングアプリの文脈では「アイテム」は候補ユーザーを指す。「過去にLikeした相手と類似した属性・行動パターンを持つ別の候補」を推薦する手法である。ユーザーベースに比べて計算が安定しやすく、アイテム間の類似度行列は事前計算が可能なため、リアルタイム推薦に適している。</p>
+
+      <p>Pairsのレコメンドシステムは、コミュニティ（趣味グループ）への参加状況とスワイプ履歴を組み合わせたハイブリッド型の協調フィルタリングを採用していると推測される。共通コミュニティを持つ候補を優先表示するアルゴリズムは、この手法の実装例である。</p>
+
+      <h3 id="matrix-factorization">行列分解法</h3>
+
+      <p>スパース（疎）なユーザー×候補行列を低ランク行列に分解し、潜在的な嗜好因子を抽出する手法である。SVD（特異値分解）やALS（交互最小二乗法）が代表的なアルゴリズムとなる。Netflix Prizeで注目されたこのアプローチは、マッチングアプリでは「表面的な属性には表れない、潜在的な相性因子」の発見に有効である。</p>
+
+      <h2 id="content-hybrid">コンテンツベースフィルタリングとハイブリッド手法</h2>
+
+      <p>コンテンツベースフィルタリングは、ユーザーのプロフィール情報・写真・自己紹介文などの「コンテンツ」を分析し、属性の類似性や相補性に基づいて推薦する手法である。</p>
+
+      <h3 id="content-based">コンテンツベースアプローチ</h3>
+
+      <p>マッチングアプリにおけるコンテンツベースフィルタリングは、以下の特徴量を活用する。</p>
+
+      <ul>
+        <li><b>構造化データ</b>：年齢、居住地、身長、学歴、職業、年収、趣味カテゴリ</li>
+        <li><b>テキストデータ</b>：自己紹介文のNLP解析（感情分析、トピック抽出、文体分析）</li>
+        <li><b>画像データ</b>：写真のCNN分析（顔特徴量、場面分類、品質スコアリング）</li>
+        <li><b>行動データ</b>：ログイン頻度、メッセージ返信率、平均会話長、プロフィール閲覧パターン</li>
+      </ul>
+
+      <p>withの心理テストベースマッチングは、コンテンツベースフィルタリングの発展形と位置付けられる。<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>を組み込むことで、自由記述テキストからの性格推定が可能になり、コンテンツベースの精度が大幅に向上する可能性がある。</p>
+
+      <h3 id="hybrid-approach">ハイブリッド手法</h3>
+
+      <p>現代の高性能マッチングシステムは、単一の手法に依存せず、複数のアプローチを統合するハイブリッド設計を採用している。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TB
+    Input["ユーザーデータ入力"] --> CF["協調フィルタリング"]
+    Input --> CB["コンテンツベース"]
+    Input --> KB["知識ベース"]
+    Input --> DL["深層学習モデル"]
+
+    CF --> Ensemble["アンサンブル統合層"]
+    CB --> Ensemble
+    KB --> Ensemble
+    DL --> Ensemble
+
+    Ensemble --> Rerank["リランキング層"]
+    Rerank --> Diversity["多様性フィルタ"]
+    Diversity --> Fairness["公平性制約"]
+    Fairness --> Output["推薦候補リスト"]
+
+    CF -->|"類似ユーザーの選好"| Ensemble
+    CB -->|"属性・テキスト類似度"| Ensemble
+    KB -->|"ドメインルール"| Ensemble
+    DL -->|"潜在特徴量予測"| Ensemble
+      </pre></div>
+
+      <p>ハイブリッド統合の主要パターンとしては、(1) 重み付き線形結合、(2) スイッチング（データ量に応じて手法を切り替え）、(3) カスケード（段階的フィルタリング）、(4) メタラーニング（上位モデルが各手法の出力を学習）がある。実プロダクトでは、コールドスタート時にコンテンツベース、データ蓄積後に協調フィルタリングへ重みをシフトするスイッチング型が実用的とされる。</p>
+
+      <h2 id="deep-learning">ディープラーニングベースマッチング</h2>
+
+      <p>2020年代に入り、深層学習技術のマッチングアプリへの適用が本格化している。従来の特徴量エンジニアリングに依存した手法に比べ、生データから直接有意な表現を学習できる点が最大の優位性である。</p>
+
+      <h3 id="embedding-vectors">埋め込みベクトルによるユーザー表現</h3>
+
+      <p>各ユーザーを高次元ベクトル空間上の点として表現する「埋め込み（Embedding）」は、現代のマッチングアルゴリズムの中核をなす技術である。プロフィール情報、行動ログ、会話テキスト、写真特徴量を統合した<b>マルチモーダル埋め込み</b>により、ユーザーの全体像をひとつのベクトルとして圧縮する。</p>
+
+      <ul>
+        <li><b>テキスト埋め込み</b>：BERT/GPT系モデルで自己紹介文・会話履歴をベクトル化。<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>と直結する領域</li>
+        <li><b>画像埋め込み</b>：ResNet/Vision Transformerでプロフィール写真を特徴ベクトル化。<a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a>の基盤技術</li>
+        <li><b>行動埋め込み</b>：スワイプ履歴・閲覧パターンをSequenceモデル（LSTM, Transformer）で時系列ベクトル化</li>
+        <li><b>グラフ埋め込み</b>：ユーザー間のインタラクションをグラフニューラルネットワーク（GNN）で表現</li>
+      </ul>
+
+      <h3 id="neural-cf">ニューラル協調フィルタリング（NCF）</h3>
+
+      <p>従来の行列分解を深層ニューラルネットワークで置き換えた手法が、ニューラル協調フィルタリング（Neural Collaborative Filtering）である。線形的な因子分解では捉えきれない、ユーザーとアイテム間の非線形的な相互作用をモデル化できる。</p>
+
+      <p>NCFの基本アーキテクチャは、ユーザーIDとアイテムIDの埋め込み層、複数の全結合層による相互作用モデリング、そしてマッチング確率を出力するシグモイド層から構成される。実用上は、GMF（一般化行列分解）とMLP（多層パーセプトロン）の出力を結合するNeuMFアーキテクチャが高い性能を示している。</p>
+
+      <h3 id="two-tower">Two-Towerモデル</h3>
+
+      <p>大規模マッチングシステムでは、ユーザーと候補をそれぞれ独立したニューラルネットワーク（Tower）で埋め込み、内積で類似度を計算する<b>Two-Towerモデル</b>が標準的なアーキテクチャとなっている。候補側のベクトルを事前計算してインデックス化できるため、数百万〜数千万ユーザーのリアルタイム推薦が可能となる。</p>
+
+      <h2 id="bilateral-optimization">双方向最適化問題</h2>
+
+      <p>マッチングアプリの本質的な特徴は、推薦が「双方向」であるという点にある。ECサイトでは商品はユーザーの選好を拒否しないが、マッチングアプリでは「相手もこちらを選ぶ必要がある」。この双方向性が、アルゴリズム設計を根本的に複雑化させる。</p>
+
+      <h3 id="gale-shapley">Gale-Shapleyアルゴリズム（安定マッチング）</h3>
+
+      <p>1962年にGaleとShapleyが提案した安定マッチングアルゴリズムは、「どちらの側にも、現在のパートナーを捨てて互いにマッチしたいペアが存在しない」状態（安定マッチング）を保証する。</p>
+
+      <p>このアルゴリズムの基本的な動作は次のとおりである。</p>
+
+      <ol>
+        <li>各提案者（仮に男性側）が最も選好する相手にプロポーズする</li>
+        <li>各受理者（仮に女性側）は、受け取ったプロポーズの中から最も選好する相手を仮承認し、残りを拒否する</li>
+        <li>拒否された提案者は、次に選好する相手にプロポーズする</li>
+        <li>全員がマッチするまで繰り返す</li>
+      </ol>
+
+      <p>Gale-Shapleyアルゴリズムは理論的に美しいが、実際のマッチングアプリへの直接適用には課題がある。ユーザーの選好は完全順序ではなく曖昧であり、マッチング市場は常に変動し、提案側に有利な非対称性が存在する。しかし、その数学的基盤は<a href="mechanism-design-matching.html">マッチングのメカニズムデザイン</a>として、アルゴリズムの公平性議論の出発点を提供している。</p>
+
+      <h3 id="reciprocal-recommendation">相互推薦問題</h3>
+
+      <p>実用的な双方向最適化では、推薦スコアの計算に「相手がこちらをLikeする確率」を組み込む相互推薦（Reciprocal Recommendation）が重要となる。一方的にLikeされても相手からLikeが返ってこなければマッチングは成立しない。したがって、推薦スコアは以下のように設計される。</p>
+
+      <p><b>推薦スコア = f(P(AがBをLike), P(BがAをLike))</b></p>
+
+      <p>統合関数fとしては、幾何平均、調和平均、最小値関数などが用いられる。幾何平均は双方の確率が共に高い場合を優遇し、最小値関数はボトルネック（低い方の確率）を重視する。Bumbleのアルゴリズムは、女性の選好パターンと会話継続率を重視した相互推薦スコアを採用していると考えられる。</p>
+
+      <h2 id="platform-comparison">プラットフォーム別アルゴリズム比較</h2>
+
+      <p><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a>で概観した各プラットフォームのアルゴリズム設計思想は、その事業戦略と密接に結びついている。以下に、設計思想の違いを技術的観点から深掘りする。</p>
+
+      <table>
+        <thead>
+          <tr><th>設計要素</th><th>Pairs</th><th>Tinder</th><th>with</th><th>Bumble</th><th>Omiai</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>中核手法</b></td><td>ハイブリッド（検索＋CF）</td><td>多要素スコアリング</td><td>心理テスト＋CB</td><td>アクティビティベース</td><td>真剣度加重検索</td></tr>
+          <tr><td><b>主要特徴量</b></td><td>コミュニティ参加、いいね履歴</td><td>写真反応率、アプリ利用パターン</td><td>性格診断結果、価値観</td><td>女性選好、会話継続率</td><td>プロフィール完成度、返信率</td></tr>
+          <tr><td><b>双方向性の扱い</b></td><td>暗黙的（いいね残数制限）</td><td>ELO後継の相互スコア</td><td>相性スコアの相互計算</td><td>女性起点の強制</td><td>暗黙的（審査制）</td></tr>
+          <tr><td><b>コールドスタート対策</b></td><td>コミュニティ推薦</td><td>ブースト表示期間</td><td>心理テスト即時診断</td><td>新規優先表示</td><td>プロフィール審査</td></tr>
+          <tr><td><b>AI活用度</b></td><td>中〜高</td><td>高</td><td>中（NLP特化）</td><td>中</td><td>低〜中</td></tr>
+          <tr><td><b>設計思想</b></td><td>「趣味で繋がる」</td><td>「直感で選ぶ」</td><td>「性格で合う」</td><td>「女性が主導」</td><td>「真剣に探す」</td></tr>
+        </tbody>
+      </table>
+
+      <p>注目すべきは、各プラットフォームのアルゴリズム設計がそのブランドポジショニングと完全に整合している点である。Tinderはスピードと視覚的インパクトを重視し、withは内面理解を、Bumbleは安全性と女性のエンパワーメントを、それぞれアルゴリズムレベルで体現している。この「設計思想のアルゴリズムへの翻訳」は、<a href="matching-platform-ux-design.html">マッチングプラットフォームのUX設計</a>とも深く関連する領域である。</p>
+
+      <h2 id="bias-fairness">アルゴリズムバイアスと公平性の課題</h2>
+
+      <p>マッチングアルゴリズムは、ユーザーの「出会いの機会」を直接左右するため、そのバイアスは深刻な社会的影響を持つ。アルゴリズムの公平性（Algorithmic Fairness）は、技術的課題であると同時に倫理的課題でもある。</p>
+
+      <h3 id="bias-types">主要なバイアスの類型</h3>
+
+      <ul>
+        <li><b>人気度バイアス</b>：高スコアのユーザーが優先表示されることで、「マッチング格差」が拡大する。上位10%のユーザーがLikeの60〜80%を獲得するという報告がある</li>
+        <li><b>人種・民族バイアス</b>：スワイプデータに反映される社会的偏見がアルゴリズムに学習され、特定の人種・民族のユーザーが体系的に不利になる。<a href="ai-ethics-dating.html">AI恋愛倫理</a>の最重要論点の一つ</li>
+        <li><b>ジェンダーバイアス</b>：男女間のスワイプ非対称性（男性のLike率が女性より数倍高い）がアルゴリズムに影響し、男性ユーザーのマッチング機会が構造的に制限される</li>
+        <li><b>社会経済的バイアス</b>：年収・学歴情報がスコアリングに組み込まれることで、社会的階層の再生産が起こる</li>
+        <li><b>フィルターバブル</b>：過去のスワイプ履歴に基づく推薦が、類似した候補ばかりを表示し、多様な出会いの機会を狭める</li>
+      </ul>
+
+      <h3 id="fairness-approaches">公平性担保のアプローチ</h3>
+
+      <p>アルゴリズムの公平性を担保するために、以下の技術的アプローチが提案・実装されている。</p>
+
+      <ul>
+        <li><b>露出の公平性（Exposure Fairness）</b>：全ユーザーに最低限の表示回数を保証する。Tinderが導入した「新規ユーザーブースト」はこの一形態</li>
+        <li><b>多様性制約（Diversity Constraints）</b>：推薦リストに属性の多様性を強制的に確保する。同質的な候補ばかりが並ばないよう制約を課す</li>
+        <li><b>因果推論によるデバイアス</b>：相関関係ではなく因果関係に基づいてスコアリングすることで、保護属性（人種、年齢等）の不当な影響を除去する</li>
+        <li><b>説明可能性（Explainability）</b>：「なぜこの相手がおすすめされたか」をユーザーに説明できるアルゴリズム設計。<a href="explainable-ai-matching.html">説明可能AIとマッチング</a>の実現は規制対応の観点からも重要性が増している</li>
+      </ul>
+
+      <h3 id="fairness-tradeoff">精度と公平性のトレードオフ</h3>
+
+      <p>マッチング精度（マッチング成立率、会話継続率、交際成立率）と公平性（全ユーザーへの均等な機会提供）は、しばしばトレードオフの関係にある。「最も確率の高いペアを優先する」アルゴリズムは精度は高いが公平性を損ない、「均等に機会を配分する」アルゴリズムは公平だが全体のマッチング効率が低下する。</p>
+
+      <p>この問題に対し、<a href="multi-objective-optimization-dating.html">マッチングの多目的最適化</a>の枠組みでパレート最適解を探索するアプローチが研究されている。精度と公平性の両立は、今後のマッチングアルゴリズム設計における最重要課題であり続けるだろう。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#elo-rating">ELOレーティングシステムとマッチングアプリへの応用</a></li>
+          <li class="toc-h3"><a href="#elo-mechanism">基本メカニズム</a></li>
+          <li class="toc-h3"><a href="#elo-problems">ELOシステムの課題と改良</a></li>
+          <li><a href="#collaborative-filtering">協調フィルタリング</a></li>
+          <li class="toc-h3"><a href="#user-based-cf">ユーザーベース協調フィルタリング</a></li>
+          <li class="toc-h3"><a href="#item-based-cf">アイテムベース協調フィルタリング</a></li>
+          <li class="toc-h3"><a href="#matrix-factorization">行列分解法</a></li>
+          <li><a href="#content-hybrid">コンテンツベースフィルタリングとハイブリッド手法</a></li>
+          <li class="toc-h3"><a href="#content-based">コンテンツベースアプローチ</a></li>
+          <li class="toc-h3"><a href="#hybrid-approach">ハイブリッド手法</a></li>
+          <li><a href="#deep-learning">ディープラーニングベースマッチング</a></li>
+          <li class="toc-h3"><a href="#embedding-vectors">埋め込みベクトルによるユーザー表現</a></li>
+          <li class="toc-h3"><a href="#neural-cf">ニューラル協調フィルタリング（NCF）</a></li>
+          <li class="toc-h3"><a href="#two-tower">Two-Towerモデル</a></li>
+          <li><a href="#bilateral-optimization">双方向最適化問題</a></li>
+          <li class="toc-h3"><a href="#gale-shapley">Gale-Shapleyアルゴリズム（安定マッチング）</a></li>
+          <li class="toc-h3"><a href="#reciprocal-recommendation">相互推薦問題</a></li>
+          <li><a href="#platform-comparison">プラットフォーム別アルゴリズム比較</a></li>
+          <li><a href="#bias-fairness">アルゴリズムバイアスと公平性の課題</a></li>
+          <li class="toc-h3"><a href="#bias-types">主要なバイアスの類型</a></li>
+          <li class="toc-h3"><a href="#fairness-approaches">公平性担保のアプローチ</a></li>
+          <li class="toc-h3"><a href="#fairness-tradeoff">精度と公平性のトレードオフ</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+          <li><a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a></li>
+          <li><a href="mechanism-design-matching.html">マッチングのメカニズムデザイン</a></li>
+          <li><a href="ai-ethics-dating.html">AI恋愛倫理</a></li>
+          <li><a href="explainable-ai-matching.html">説明可能AIとマッチング</a></li>
+          <li><a href="multi-objective-optimization-dating.html">マッチングの多目的最適化</a></li>
+          <li><a href="matching-platform-ux-design.html">マッチングプラットフォームのUX設計</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+        <li><a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a></li>
+        <li><a href="mechanism-design-matching.html">マッチングのメカニズムデザイン</a></li>
+        <li><a href="ai-ethics-dating.html">AI恋愛倫理</a></li>
+        <li><a href="explainable-ai-matching.html">説明可能AIとマッチング</a></li>
+        <li><a href="multi-objective-optimization-dating.html">マッチングの多目的最適化</a></li>
+        <li><a href="matching-platform-ux-design.html">マッチングプラットフォームのUX設計</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul><li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li></ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

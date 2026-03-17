@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>恋愛心理学とAI - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a> &gt; 恋愛心理学とAI
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">恋愛心理学とAI</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">恋愛心理学の主要理論（愛着理論・進化心理学・認知バイアス・自己開示理論・社会的交換理論・ポジティブ心理学）をAI技術と統合し、マッチングアプリにおけるユーザー行動の科学的理解と、より良い恋愛体験設計への応用可能性を体系的に考察する。</div>
+
+      <p><b>恋愛心理学とAI</b>とは、人間の恋愛行動・パートナー選好・関係構築プロセスに関する心理学的知見を、大規模言語モデル（LLM）や機械学習アルゴリズムと融合させることで、マッチングの精度向上・コミュニケーション支援・関係性の持続的な発展を科学的に支援するアプローチである。<a href="matching-app-market.html">マッチングアプリ市場</a>が成熟化する中、単純な属性マッチングを超えた心理学ベースのAI設計が競争優位の源泉となりつつある。<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>が真に価値あるサービスとなるためには、恋愛心理学の理論的基盤をAIアーキテクチャに組み込むことが不可欠である。</p>
+
+      <h2 id="attachment-theory">愛着理論とAIによるスタイル分類</h2>
+
+      <p>John BowlbyとMary Ainsworthによって体系化された愛着理論（Attachment Theory）は、幼少期の養育者との関係パターンが成人後の恋愛スタイルに深く影響するという知見を提供する。恋愛AIにとって、ユーザーの愛着スタイルを正確に把握することは、適切なマッチングと関係構築支援の前提条件となる。</p>
+
+      <h3 id="attachment-styles">4つの愛着スタイルと恋愛行動パターン</h3>
+
+      <p>成人愛着理論では、「不安（Anxiety）」と「回避（Avoidance）」の2軸から4つのスタイルが定義される。</p>
+
+      <table>
+        <thead>
+          <tr><th>愛着スタイル</th><th>不安</th><th>回避</th><th>恋愛での特徴</th><th>マッチングアプリでの行動傾向</th><th>人口比率（推定）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>安定型（Secure）</b></td><td>低</td><td>低</td><td>信頼に基づく安定した関係構築、健全な境界線</td><td>プロフィールに誠実さが表れる、メッセージ返信が安定</td><td>約50〜55%</td></tr>
+          <tr><td><b>不安型（Anxious-Preoccupied）</b></td><td>高</td><td>低</td><td>過度な承認欲求、相手の反応への敏感さ、嫉妬傾向</td><td>既読後の返信速度を過度に気にする、連続メッセージ傾向</td><td>約20〜25%</td></tr>
+          <tr><td><b>回避型（Dismissive-Avoidant）</b></td><td>低</td><td>高</td><td>親密さへの不快感、自立性の過度な重視</td><td>マッチング後のメッセージ開始が遅い、フェードアウト傾向</td><td>約15〜20%</td></tr>
+          <tr><td><b>恐れ・回避型（Fearful-Avoidant）</b></td><td>高</td><td>高</td><td>親密さへの欲求と恐れの両方、不安定な行動パターン</td><td>活発に利用する時期と完全休止を繰り返す</td><td>約5〜10%</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="ai-attachment-classification">AIによる愛着スタイル推定手法</h3>
+
+      <p><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>を活用し、ユーザーとの自然対話からメッセージの頻度・応答時間パターン・言語的特徴（感情語の使用頻度、曖昧表現の多さ、自己言及の割合）を多次元的に分析することで、愛着スタイルの推定が可能になる。具体的には以下のシグナルが分類に活用される。</p>
+
+      <ul>
+        <li><b>不安指標</b>：メッセージ送信間隔の短さ、確認質問の多さ（「大丈夫？」「怒ってない？」）、相手の反応への過剰解釈</li>
+        <li><b>回避指標</b>：返信遅延パターン、感情語の回避、話題の表面的な切り替え、距離を置く表現（「忙しくて」「ちょっと考えさせて」）</li>
+        <li><b>安定指標</b>：一貫した返信ペース、適度な自己開示と相手への質問のバランス、感情表現の安定性</li>
+      </ul>
+
+      <p>ただし、愛着スタイルの自動推定には<a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a>の観点から慎重な運用が求められる。ユーザーにラベルを貼ることで差別的なマッチング排除が生じないよう、推定結果は「コミュニケーション支援のための参考情報」として位置づけ、マッチング排除の直接的な根拠にしてはならない。</p>
+
+      <h2 id="evolutionary-psychology">恋愛の進化心理学とマッチングアルゴリズムへの応用</h2>
+
+      <p>進化心理学は、人間のパートナー選好が自然淘汰と性淘汰の産物であるという視点を提供する。David BussらのMate Selection理論に基づくと、男女のパートナー選好には進化的に形成された体系的な差異が存在する。この知見をマッチングアルゴリズムに組み込むことで、表層的なプロフィールマッチングを超えた深い相性予測が可能になる。</p>
+
+      <h3 id="mate-preference">パートナー選好の性差と共通性</h3>
+
+      <p>進化心理学的研究は、パートナー選好における性差と普遍的共通性の両方を明らかにしている。</p>
+
+      <table>
+        <thead>
+          <tr><th>選好次元</th><th>男性の傾向</th><th>女性の傾向</th><th>共通の重視要素</th><th>AIアルゴリズムへの示唆</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>外見</td><td>若さ・身体的魅力への高い重みづけ</td><td>外見よりも社会的地位・資源獲得能力を重視</td><td>清潔感、健康的な外見</td><td>写真スコアリングの重みを性別で調整</td></tr>
+          <tr><td>資源</td><td>相対的に低い重みづけ</td><td>経済的安定性・野心への高い重みづけ</td><td>誠実さ、信頼性</td><td>プロフィール情報の表示優先度を動的調整</td></tr>
+          <tr><td>性格特性</td><td>優しさ・協調性</td><td>優しさ・知性・ユーモア</td><td>優しさ（kindness）は最も普遍的な選好</td><td>会話分析から性格特性を抽出しマッチング精度向上</td></tr>
+          <tr><td>長期 vs 短期</td><td>短期的関係では外見重視が顕著化</td><td>長期的関係への選好が強い傾向</td><td>長期的関係では価値観の一致が最重要</td><td>ユーザーの目的に応じたアルゴリズム切替</td></tr>
+        </tbody>
+      </table>
+
+      <p>ただし、これらの性差は統計的傾向であり個人差が大きい点に注意が必要である。AIアルゴリズムは進化心理学的な傾向を「デフォルト仮説」として用いつつ、個別のユーザー行動データで継続的に補正する<a href="matching-algorithm-design.html">適応型マッチングアルゴリズム</a>が望ましい。</p>
+
+      <h3 id="strategic-pluralism">戦略的多元主義とコンテクスト適応</h3>
+
+      <p>Steven Gangestadらが提唱する戦略的多元主義（Strategic Pluralism）の理論は、人間のパートナー選好が固定的ではなく、環境条件・自身の「恋愛市場価値」・ライフステージによって動的に変化することを示す。AIマッチングシステムは、この動的性質を考慮し、ユーザーの利用パターンの変化（例：カジュアルな利用から真剣な婚活への移行）をリアルタイムに検出してレコメンデーション戦略を適応させる必要がある。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["ユーザー行動データ"] --> B["進化心理学ベース<br/>パートナー選好モデル"]
+    A --> C["愛着スタイル<br/>分類エンジン"]
+    A --> D["ライフステージ<br/>検出モジュール"]
+
+    B --> E["適応型マッチング<br/>スコアリング"]
+    C --> E
+    D --> E
+
+    E --> F["短期選好モード<br/>（外見・刺激性重視）"]
+    E --> G["長期選好モード<br/>（価値観・安定性重視）"]
+    E --> H["探索モード<br/>（多様性重視）"]
+
+    F --> I["パーソナライズド<br/>レコメンデーション"]
+    G --> I
+    H --> I
+
+    I --> J["ユーザー<br/>フィードバック"]
+    J --> A
+
+    style E fill:#e8f4fd,stroke:#2196F3
+    style I fill:#e8f5e9,stroke:#4CAF50
+      </pre></div>
+
+      <h2 id="cognitive-bias">認知バイアスとオンラインデーティング</h2>
+
+      <p>オンラインデーティング環境は、対面での出会いとは根本的に異なる認知的文脈を生み出す。プロフィール情報という限定的な手がかりに基づいて判断を行うため、様々な認知バイアスが意思決定を歪めるリスクが高い。AIシステムがこれらのバイアスを理解し、適切にナッジ（行動設計）することで、ユーザーのより良い意思決定を支援できる。</p>
+
+      <h3 id="halo-effect">ハロー効果と第一印象バイアス</h3>
+
+      <p>ハロー効果（Halo Effect）とは、ある一つの目立つ特性（典型的には外見的魅力）が、他の無関係な特性（知性、優しさ、誠実さ等）の評価にまで正の影響を及ぼすバイアスである。マッチングアプリでは写真の印象がプロフィール全体の評価を支配するため、このバイアスが極めて強く作用する。</p>
+
+      <ul>
+        <li><b>データ</b>：プロフィール写真が「魅力的」と評価されたユーザーは、同一の自己紹介文でも「知的」「面白い」「信頼できる」と評価される確率が2〜3倍高い</li>
+        <li><b>AI対策</b>：写真以外の情報（趣味、価値観、会話の質）を段階的に提示し、ハロー効果の影響を緩和するUI設計。<a href="conversational-ai-coaching.html">会話AIコーチング</a>による「写真の向こうの人格」への注意喚起</li>
+      </ul>
+
+      <h3 id="confirmation-bias">確証バイアスと選択的情報処理</h3>
+
+      <p>確証バイアス（Confirmation Bias）は、自分の既存の信念や期待に合致する情報を選択的に収集・解釈し、矛盾する情報を無視する傾向である。オンラインデーティングでは以下のように作用する。</p>
+
+      <ul>
+        <li>「理想のタイプ」に合致するプロフィールばかりを選び、実際の相性が高いかもしれない異なるタイプを見落とす</li>
+        <li>最初のメッセージで「合わない」と感じた相手の良い面を見逃す</li>
+        <li>過去の恋愛パターンを反復し、同じ失敗を繰り返す</li>
+      </ul>
+
+      <p>AIによる対策として、<a href="llm-personality-analysis.html">LLMパーソナリティ解析</a>で推定したユーザーの「理想像」と「実際に相性が良いタイプ」のギャップを分析し、「普段は選ばないけれど相性スコアが高い相手」を適度な割合でレコメンデーションに混ぜるExploration戦略が有効である。</p>
+
+      <h3 id="paradox-of-choice">選択のパラドックスとマッチング疲れ</h3>
+
+      <p>Barry Schwartzが提唱した選択のパラドックス（Paradox of Choice）は、選択肢が増えすぎると満足度が低下し、意思決定が困難になるという現象である。<a href="matching-app-market.html">マッチングアプリ市場</a>で問題化している「マッチング疲れ」は、まさにこのパラドックスの発現である。</p>
+
+      <table>
+        <thead>
+          <tr><th>選択肢の量</th><th>ユーザー心理</th><th>行動パターン</th><th>AI介入戦略</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>少なすぎる（日に1〜2人）</td><td>不満・不安（「もっと良い人がいるのでは」）</td><td>他アプリへの流出</td><td>質の高いマッチを厳選して提示</td></tr>
+          <tr><td>適度（日に5〜10人）</td><td>選択の楽しさと管理可能性の両立</td><td>じっくり比較検討、メッセージ率高</td><td>この範囲を維持する動的調整</td></tr>
+          <tr><td>多すぎる（日に30人以上）</td><td>圧倒・麻痺・「もっと良い人がいるはず」症候群</td><td>スワイプの機械化、選択の先延ばし</td><td>表示数の意図的制限、「今日のベスト」機能</td></tr>
+        </tbody>
+      </table>
+
+      <p>AIは個々のユーザーの最適な選択肢量（Optimal Choice Set Size）を行動データから学習し、レコメンデーション数を動的に調整することで「マッチング疲れ」を予防できる。Maximizer（最大化志向）とSatisficer（満足志向）の個人差も考慮すべき重要な変数である。</p>
+
+      <h2 id="self-disclosure">自己開示理論とAI支援の段階的開示戦略</h2>
+
+      <p>Sidney Jourardに始まり、Irwin AltmanとDalmas Taylorの社会的浸透理論（Social Penetration Theory）で精緻化された自己開示理論は、関係の深まりが相互の自己開示の「深さ」と「幅」の段階的拡大によって進行することを示す。この理論はマッチングアプリにおけるコミュニケーション設計の中核的な基盤となる。</p>
+
+      <h3 id="disclosure-stages">オンラインデーティングにおける開示の5段階</h3>
+
+      <table>
+        <thead>
+          <tr><th>段階</th><th>開示の深さ</th><th>典型的な内容</th><th>タイミング</th><th>AI支援の役割</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1. 表層的交換</td><td>浅い</td><td>趣味、好きな食べ物、最近のイベント</td><td>マッチング直後〜3日目</td><td>アイスブレイク質問の提案、共通話題の発見</td></tr>
+          <tr><td>2. 探索的交換</td><td>やや浅い</td><td>仕事の話、週末の過ごし方、友人関係</td><td>3日目〜1週間</td><td>会話トピック推薦、バランスのとれた質問提案</td></tr>
+          <tr><td>3. 感情的交換</td><td>中程度</td><td>将来の夢、過去の経験、価値観</td><td>1〜3週間</td><td>開示の相互性バランス分析、タイミング提案</td></tr>
+          <tr><td>4. 安定的交換</td><td>深い</td><td>弱さ・不安の共有、家族の話、過去の恋愛</td><td>1〜3ヶ月</td><td>センシティブな話題へのナビゲーション支援</td></tr>
+          <tr><td>5. 深い親密性</td><td>非常に深い</td><td>核心的な価値観、トラウマ、人生の意味</td><td>3ヶ月以降</td><td>関係の質の評価、コミュニケーション改善提案</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="disclosure-ai-strategy">AIによる開示戦略の最適化</h3>
+
+      <p><a href="conversational-ai-coaching.html">会話AIコーチング技術</a>と自己開示理論を組み合わせることで、ユーザーの現在の関係段階を自動判定し、「今、どの深さの話題を切り出すべきか」をリアルタイムに提案できる。過度に早い深い開示（Too Much Too Soon）は相手を遠ざけ、逆に表層的な会話が続きすぎると関係が停滞する。AIはこの「開示の黄金比」を個々のペアの相互作用パターンから学習する。</p>
+
+      <p>具体的な実装として、メッセージの感情的深度スコア（Emotional Depth Score）をリアルタイムに算出し、両者の開示バランスが著しく偏っている場合に、開示が少ない側に対して適切な質問や話題をサジェストする仕組みが考えられる。<a href="conversation-repair-strategy.html">会話修復戦略</a>との連携により、開示の不均衡が会話停滞の原因になっている場合の早期検知も可能になる。</p>
+
+      <h2 id="social-exchange">社会的交換理論と「恋愛市場価値」のモデリング</h2>
+
+      <p>George HomansとPeter Blauに始まる社会的交換理論（Social Exchange Theory）は、人間関係を「報酬」と「コスト」の交換として捉えるフレームワークである。恋愛関係においても、人は（意識的・無意識的に）関係から得られる報酬がコストを上回る限り関係を維持し、代替選択肢（Comparison Level for Alternatives）がより魅力的になった時に離脱するとされる。</p>
+
+      <h3 id="market-value-modeling">恋愛市場価値の多次元モデリング</h3>
+
+      <p>マッチングアプリにおける「市場価値」は、単一のスコアではなく、多次元的に評価される。AIは以下の次元を統合的にモデリングする。</p>
+
+      <ul>
+        <li><b>外見的魅力次元</b>：プロフィール写真の「いいね」獲得率から推定。ただし主観的であり文化的・個人的な変動が大きい</li>
+        <li><b>社会経済的次元</b>：職業、学歴、年収等のシグナル。特に婚活セグメントで重みが大きい</li>
+        <li><b>コミュニケーション価値次元</b>：メッセージの返信率、会話の継続率、ユーモアや知性の表現力</li>
+        <li><b>ライフスタイル適合次元</b>：趣味、生活パターン、居住地域の近接性</li>
+        <li><b>人格的魅力次元</b>：誠実さ、優しさ、情緒的安定性。長期的関係では最も重要な次元</li>
+      </ul>
+
+      <p>重要な倫理的考慮として、「市場価値」のスコアリングはユーザーに直接見せるべきものではない。この概念はあくまでアルゴリズム内部でマッチング精度を高めるための内部モデルであり、<a href="ai-ethics-dating.html">AI倫理設計</a>の観点から、ユーザーを数値化することの心理的悪影響を十分に認識した上で、透明性と人間の尊厳の両立を図る設計が必要である。</p>
+
+      <h3 id="equity-theory">衡平理論とマッチングの安定性</h3>
+
+      <p>Elaine WalsterとG. William Walsterの衡平理論（Equity Theory）は、関係の満足度と安定性は両者の「投入」と「成果」の比率が均衡している時に最大化されるとする。AIマッチングアルゴリズムは、相互の「市場価値」が近い者同士をマッチングさせることで、関係の安定性を高めることができる。しかし同時に、「格差」のあるマッチングがイノベーション（予想外の好相性）を生む可能性も排除してはならない。</p>
+
+      <h2 id="positive-psychology">ポジティブ心理学に基づく恋愛ウェルビーイング設計</h2>
+
+      <p>Martin SeligmanのPERMAモデルに代表されるポジティブ心理学は、従来の「問題の修正」ではなく「強みの活用と繁栄」に焦点を当てるアプローチである。マッチングアプリがユーザーの恋愛ウェルビーイング（恋愛を通じた心理的充足感）を高める設計へと転換することは、ユーザーの長期的な満足度とサービスへのロイヤルティ向上につながる。</p>
+
+      <h3 id="perma-dating">PERMAモデルの恋愛サービスへの適用</h3>
+
+      <table>
+        <thead>
+          <tr><th>PERMA要素</th><th>定義</th><th>恋愛サービスでの実装例</th><th>AI支援の具体策</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>P</b>ositive Emotion（ポジティブ感情）</td><td>喜び、感謝、希望</td><td>マッチング時の喜びの最大化、拒否体験のソフト化</td><td><a href="rejection-resilience-training.html">リジェクション耐性トレーニング</a>、ポジティブフィードバック設計</td></tr>
+          <tr><td><b>E</b>ngagement（没頭）</td><td>フロー状態、深い関与</td><td>会話への没頭体験の設計</td><td>会話フロー分析による最適タイミングでの話題提案</td></tr>
+          <tr><td><b>R</b>elationships（関係性）</td><td>深い人間関係</td><td>表面的なマッチングから深い関係構築への移行支援</td><td>段階的自己開示ナビゲーション、関係深化の進捗可視化</td></tr>
+          <tr><td><b>M</b>eaning（意味）</td><td>自分より大きな目的への貢献</td><td>恋愛を自己成長の機会として位置づけ</td><td>恋愛プロセスからの学びの振り返り支援</td></tr>
+          <tr><td><b>A</b>chievement（達成）</td><td>目標への進歩と達成感</td><td>恋愛スキルの成長実感の提供</td><td>コミュニケーションスキル向上のフィードバック、成長ダッシュボード</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="wellbeing-metrics">恋愛ウェルビーイング指標の設計</h3>
+
+      <p>従来のマッチングアプリが「マッチング数」「メッセージ数」「デート成立数」といったバニティメトリクスに依存しているのに対し、恋愛ウェルビーイング指標はユーザーの心理的充足度を測定する。</p>
+
+      <ul>
+        <li><b>関係満足度スコア</b>：定期的なマイクロサーベイによる主観的満足度の追跡</li>
+        <li><b>自己成長実感指標</b>：恋愛プロセスを通じた自己理解の深まりの自己評価</li>
+        <li><b>レジリエンス指標</b>：フェードアウトや不成立後の回復速度と感情的安定性</li>
+        <li><b>オーセンティシティスコア</b>：プロフィールと実際の自分の一致度（「盛り」の少なさ）</li>
+      </ul>
+
+      <p>これらの指標を<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のダッシュボードに統合することで、ユーザーは「恋愛の数値ゲーム」から「自己成長としての恋愛」へとマインドセットを転換できる。</p>
+
+      <h2 id="integration-framework">心理学理論統合フレームワーク</h2>
+
+      <p>本記事で取り上げた6つの心理学理論は、それぞれ独立に作用するものではなく、相互に影響し合いながらユーザーの恋愛行動を形成している。AIシステムがこれらを統合的に扱うためのフレームワークを以下に示す。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph LR
+    subgraph 個人特性レイヤー
+        AT["愛着理論<br/>（愛着スタイル分類）"]
+        EP["進化心理学<br/>（パートナー選好モデル）"]
+    end
+
+    subgraph 認知・意思決定レイヤー
+        CB["認知バイアス<br/>（ハロー効果・確証バイアス・選択のパラドックス）"]
+        SE["社会的交換理論<br/>（市場価値モデリング）"]
+    end
+
+    subgraph 関係構築レイヤー
+        SD["自己開示理論<br/>（段階的開示戦略）"]
+        PP["ポジティブ心理学<br/>（ウェルビーイング設計）"]
+    end
+
+    AT -->|"愛着不安がバイアスを増幅"| CB
+    EP -->|"選好が市場価値の重み付けを決定"| SE
+    CB -->|"バイアス緩和が適切な開示を促進"| SD
+    SE -->|"交換の均衡が関係満足度に影響"| PP
+    SD -->|"開示の深化がウェルビーイングを向上"| PP
+    AT -->|"愛着スタイルが開示パターンを規定"| SD
+
+    style AT fill:#fff3e0,stroke:#FF9800
+    style EP fill:#fff3e0,stroke:#FF9800
+    style CB fill:#e3f2fd,stroke:#2196F3
+    style SE fill:#e3f2fd,stroke:#2196F3
+    style SD fill:#e8f5e9,stroke:#4CAF50
+    style PP fill:#e8f5e9,stroke:#4CAF50
+      </pre></div>
+
+      <h3 id="practical-integration">実装における統合の優先順位</h3>
+
+      <p>これら6理論を一度にすべて実装することは現実的ではない。以下の優先順位で段階的に統合することを推奨する。</p>
+
+      <ol>
+        <li><b>第1フェーズ（MVP）</b>：認知バイアス対策（選択のパラドックス緩和、ハロー効果の軽減UI）＋基本的な自己開示ステージ判定</li>
+        <li><b>第2フェーズ</b>：愛着スタイル推定エンジンの導入＋社会的交換理論に基づくマッチングスコア精緻化</li>
+        <li><b>第3フェーズ</b>：進化心理学的選好モデルの適応型アルゴリズム＋ポジティブ心理学ベースのウェルビーイングダッシュボード</li>
+      </ol>
+
+      <p>各フェーズにおいて<a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a>のガイドラインを遵守し、心理学的知見をユーザーの操作や搾取ではなくエンパワーメントのために活用することが最も重要な設計原則である。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#attachment-theory">愛着理論とAIによるスタイル分類</a></li>
+          <li class="toc-h3"><a href="#attachment-styles">4つの愛着スタイルと恋愛行動パターン</a></li>
+          <li class="toc-h3"><a href="#ai-attachment-classification">AIによる愛着スタイル推定手法</a></li>
+          <li><a href="#evolutionary-psychology">恋愛の進化心理学とマッチングアルゴリズムへの応用</a></li>
+          <li class="toc-h3"><a href="#mate-preference">パートナー選好の性差と共通性</a></li>
+          <li class="toc-h3"><a href="#strategic-pluralism">戦略的多元主義とコンテクスト適応</a></li>
+          <li><a href="#cognitive-bias">認知バイアスとオンラインデーティング</a></li>
+          <li class="toc-h3"><a href="#halo-effect">ハロー効果と第一印象バイアス</a></li>
+          <li class="toc-h3"><a href="#confirmation-bias">確証バイアスと選択的情報処理</a></li>
+          <li class="toc-h3"><a href="#paradox-of-choice">選択のパラドックスとマッチング疲れ</a></li>
+          <li><a href="#self-disclosure">自己開示理論とAI支援の段階的開示戦略</a></li>
+          <li class="toc-h3"><a href="#disclosure-stages">オンラインデーティングにおける開示の5段階</a></li>
+          <li class="toc-h3"><a href="#disclosure-ai-strategy">AIによる開示戦略の最適化</a></li>
+          <li><a href="#social-exchange">社会的交換理論と「恋愛市場価値」のモデリング</a></li>
+          <li class="toc-h3"><a href="#market-value-modeling">恋愛市場価値の多次元モデリング</a></li>
+          <li class="toc-h3"><a href="#equity-theory">衡平理論とマッチングの安定性</a></li>
+          <li><a href="#positive-psychology">ポジティブ心理学に基づく恋愛ウェルビーイング設計</a></li>
+          <li class="toc-h3"><a href="#perma-dating">PERMAモデルの恋愛サービスへの適用</a></li>
+          <li class="toc-h3"><a href="#wellbeing-metrics">恋愛ウェルビーイング指標の設計</a></li>
+          <li><a href="#integration-framework">心理学理論統合フレームワーク</a></li>
+          <li class="toc-h3"><a href="#practical-integration">実装における統合の優先順位</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+          <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+          <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計論</a></li>
+          <li><a href="conversation-repair-strategy.html">会話修復戦略</a></li>
+          <li><a href="rejection-resilience-training.html">リジェクション耐性トレーニング</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+        <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計論</a></li>
+        <li><a href="conversation-repair-strategy.html">会話修復戦略</a></li>
+        <li><a href="rejection-resilience-training.html">リジェクション耐性トレーニング</a></li>
+        <li><a href="behavioral-economics-dating.html">行動経済学とデーティング意思決定</a></li>
+        <li><a href="attachment-style-ai-therapy.html">愛着スタイル改善AIセラピー</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

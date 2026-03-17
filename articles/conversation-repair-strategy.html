@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会話修復戦略 - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="conversational-ai-coaching.html">会話AIコーチング技術</a> &gt; 会話修復戦略
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">会話修復戦略</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">マッチングアプリにおける既読スルー・フェードアウト・会話停滞を心理学的に分析し、LLMによるリアルタイム予兆検知・再エンゲージメント戦略・撤退判断の最適化までを包括的に体系化した会話修復フレームワークを解説する。</div>
+
+      <p><b>会話修復戦略</b>とは、マッチングアプリにおけるテキストコミュニケーションの断絶・停滞・劣化を検知し、関係性の回復または適切な撤退判断を支援するための体系的なアプローチである。<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>の中核サブシステムとして、<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>で得られたユーザー特性と相手の行動パターンを統合的に分析し、会話の「健康状態」をリアルタイムで診断する。単なる「返信テンプレートの提供」ではなく、会話破綻の根本原因を特定し、相手の心理状態に応じた段階的な修復アクションを提案する点に特徴がある。<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>が目指す「ユーザーの恋愛成功率の最大化」において、会話の維持・修復能力はマッチング後の最重要スキルとされる。</p>
+
+      <h2 id="read-ignore-psychology">既読スルーの心理学的分析</h2>
+
+      <p>既読スルー（既読無視）は、マッチングアプリユーザーが最も頻繁に経験するコミュニケーション障害であり、その発生メカニズムの理解が効果的な修復戦略の前提となる。既読スルーは単一の原因に帰結するものではなく、複合的な心理的・状況的要因が絡み合って発生する。</p>
+
+      <h3 id="ignore-typology">既読スルーの類型分類</h3>
+
+      <p>既読スルーの背景にある心理パターンを以下の5類型に分類し、それぞれに対する最適な対処法を体系化している。</p>
+
+      <table>
+        <thead>
+          <tr><th>類型</th><th>心理的背景</th><th>特徴的パターン</th><th>修復可能性</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>多忙型</b></td><td>物理的に返信する時間がない</td><td>不規則な既読タイミング、週末に返信が集中</td><td>高（85%）</td></tr>
+          <tr><td><b>返信困難型</b></td><td>何を返せばいいかわからない</td><td>質問のない長文メッセージ後に発生しやすい</td><td>高（75%）</td></tr>
+          <tr><td><b>関心低下型</b></td><td>徐々に興味を失っている</td><td>返信間隔の段階的延長、メッセージ長の縮小</td><td>中（45%）</td></tr>
+          <tr><td><b>比較選択型</b></td><td>他のマッチング相手を優先</td><td>突発的な無返信、特定曜日の返信パターン</td><td>中（40%）</td></tr>
+          <tr><td><b>拒絶型</b></td><td>関係の終了を意図</td><td>既読後の完全沈黙、プロフィール更新あり</td><td>低（10%）</td></tr>
+        </tbody>
+      </table>
+
+      <p>LLMによる分析では、受信メッセージの<a href="nlp-sentiment-dating.html">感情分析</a>結果と過去の行動パターンを照合し、既読スルーの類型を80%以上の精度で推定する。この類型判定が修復戦略の選択基準となる。</p>
+
+      <h3 id="cognitive-bias">既読スルー時のユーザー心理バイアス</h3>
+
+      <p>既読スルーを受けたユーザー側にも、非合理的な判断を誘発する認知バイアスが存在する。本システムはこれらのバイアスを検知し、冷静な判断を支援する。</p>
+
+      <ul>
+        <li><b>ネガティビティバイアス</b>：既読スルーを「嫌われた」と過度にネガティブに解釈する傾向。実際には多忙型・返信困難型が全体の60%を占める。</li>
+        <li><b>確証バイアス</b>：「相手に興味がない」という仮説を支持する情報のみを選択的に収集し、ポジティブなシグナルを見落とす。</li>
+        <li><b>アンカリング効果</b>：初期の返信速度を基準として固定し、返信速度の低下を過大評価する。相手の生活リズムの変化を考慮しない。</li>
+        <li><b>損失回避</b>：「この人を逃したくない」という心理が過度な追いメッセージを誘発し、かえって関係を損なう。</li>
+      </ul>
+
+      <h2 id="fadeout-detection">フェードアウト予兆検知システム</h2>
+
+      <p>会話修復において最も重要なのは「早期発見」である。フェードアウトが完全に進行してからの修復は極めて困難であり、予兆段階での介入が成功率を大幅に向上させる。本システムでは、<a href="conversational-ai-coaching.html">会話AIコーチング</a>のリアルタイム分析パイプラインと統合された多次元の予兆検知モデルを実装している。</p>
+
+      <h3 id="signal-detection">検知シグナルの多次元分析</h3>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    subgraph Input["入力シグナル群"]
+        S1["返信速度変化"]
+        S2["メッセージ長変化"]
+        S3["絵文字・スタンプ頻度"]
+        S4["質問頻度"]
+        S5["話題イニシアチブ率"]
+        S6["既読タイミング"]
+    end
+
+    subgraph Analysis["分析エンジン"]
+        A1["時系列異常検知"]
+        A2["ベースライン比較"]
+        A3["加重スコアリング"]
+    end
+
+    subgraph Output["出力"]
+        O1{"フェードアウト確率"}
+        O2["修復推奨アクション"]
+        O3["最適介入タイミング"]
+    end
+
+    S1 --> A1
+    S2 --> A1
+    S3 --> A2
+    S4 --> A2
+    S5 --> A3
+    S6 --> A3
+    A1 --> O1
+    A2 --> O1
+    A3 --> O1
+    O1 -->|確率 30-60%| O2
+    O1 -->|確率 60%以上| O3
+    O1 -->|確率 30%未満| N["通常モニタリング継続"]
+      </pre></div>
+
+      <p>各シグナルには重み付けが設定されており、単一の指標の変化ではなく、複数指標の複合的な変化パターンからフェードアウト確率を算出する。</p>
+
+      <table>
+        <thead>
+          <tr><th>検知シグナル</th><th>重み</th><th>閾値</th><th>検知精度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>返信速度の低下</b></td><td>0.25</td><td>過去7日平均の2倍以上</td><td>82%</td></tr>
+          <tr><td><b>メッセージ長の短縮</b></td><td>0.20</td><td>過去7日平均の50%以下</td><td>78%</td></tr>
+          <tr><td><b>絵文字使用の減少</b></td><td>0.15</td><td>使用率が50%以上減少</td><td>71%</td></tr>
+          <tr><td><b>質問頻度の低下</b></td><td>0.20</td><td>3メッセージ連続で質問なし</td><td>85%</td></tr>
+          <tr><td><b>話題提供の消失</b></td><td>0.10</td><td>新規話題提供が5メッセージ以上途絶</td><td>73%</td></tr>
+          <tr><td><b>既読から返信までの間隔拡大</b></td><td>0.10</td><td>既読後返信なし12時間以上</td><td>76%</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="fadeout-stages">フェードアウトの進行ステージ</h3>
+
+      <p>フェードアウトは一般的に以下の4段階で進行する。各ステージに対応した介入戦略を事前に準備しておくことで、修復の成功率を最大化する。</p>
+
+      <ul>
+        <li><b>Stage 1 - 微兆期（確率30〜45%）</b>：返信速度がやや低下、メッセージ長に若干の縮小。ユーザーが気づかないレベルの変化だが、システムはベースラインとの差異を検知。この段階での自然な話題転換が最も効果的。</li>
+        <li><b>Stage 2 - 減衰期（確率45〜65%）</b>：複数の指標が同時に悪化。質問がなくなり、返信が短文化。絵文字の使用が顕著に減少する。再エンゲージメント戦略の発動が推奨される段階。</li>
+        <li><b>Stage 3 - 断絶期（確率65〜85%）</b>：既読スルーが発生、または返信が24時間以上遅延。会話のイニシアチブが完全にユーザー側に偏る。修復メッセージの送信判断が必要。</li>
+        <li><b>Stage 4 - 終息期（確率85%以上）</b>：48時間以上の既読無返信、またはアプリ上での非アクティブ化。撤退判断と次のマッチングへの移行が合理的な段階。</li>
+      </ul>
+
+      <h2 id="re-engagement">再エンゲージメント戦略</h2>
+
+      <p>フェードアウトの予兆が検知された場合、ステージと相手の心理類型に応じた再エンゲージメント戦略を展開する。重要なのは「追いかける」のではなく、「新しい価値を提供する」というマインドセットである。</p>
+
+      <h3 id="topic-pivot">話題切替戦略</h3>
+
+      <p>会話が停滞する最大の原因の一つが「話題の枯渇」である。<a href="profile-optimization-strategy.html">プロフィール最適化戦略</a>で分析した相手の興味関心データを活用し、まだ触れていない共通話題を戦略的に投入する。</p>
+
+      <ul>
+        <li><b>時事性トリガー</b>：相手の趣味に関連するニュース・イベント・季節の話題を起点にする。「そういえば○○のニュース見ました？」は自然な再開のきっかけとなる。</li>
+        <li><b>体験共有型</b>：自分の最近の体験を短く共有し、相手の反応を引き出す。「今日○○に行ってきたんですが、△△さんも好きですか？」のように相手への問いかけを含める。</li>
+        <li><b>写真・メディア起点</b>：テキストだけでなく、関連する写真や面白い画像を送ることで視覚的な刺激を加える。長文テキストよりも返信ハードルが低い。</li>
+      </ul>
+
+      <h3 id="empathetic-approach">共感的アプローチ</h3>
+
+      <p>相手の状況を慮るメッセージは、プレッシャーを与えずに関心を示す効果がある。ただし、「忙しいですか？」のような直接的な確認は避け、自然な配慮として表現する。</p>
+
+      <ul>
+        <li><b>緩和型</b>：「返信はいつでも大丈夫ですよ」と伝えることで、相手の返信プレッシャーを軽減。ただしこのフレーズ自体が圧力にならないよう、他の話題と組み合わせて使用する。</li>
+        <li><b>理解表明型</b>：「年度末でお忙しそうですね」のように、相手の状況を推測した上での理解を示す。相手のプロフィールやこれまでの会話から得られた情報を活用する。</li>
+        <li><b>自己開示型</b>：「実は自分も最近バタバタしてて…」のように、自分の状況を開示することで対等な関係性を維持する。</li>
+      </ul>
+
+      <h3 id="humor-strategy">ユーモア活用戦略</h3>
+
+      <p>適切なユーモアは、重い空気をリセットし、会話の再開ハードルを大幅に下げる効果がある。ただし、ユーモアの効果は相手の性格に大きく依存するため、<a href="llm-personality-analysis.html">パーソナリティ解析</a>の結果に基づいて使用可否を判断する。</p>
+
+      <table>
+        <thead>
+          <tr><th>ユーモアタイプ</th><th>適用条件</th><th>成功率</th><th>リスク</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>自虐型</b></td><td>相手がカジュアルな文体の場合</td><td>58%</td><td>低</td></tr>
+          <tr><td><b>状況コメディ型</b></td><td>共通体験がある場合</td><td>52%</td><td>低</td></tr>
+          <tr><td><b>ミーム・ネタ共有型</b></td><td>相手がSNSアクティブな場合</td><td>48%</td><td>中</td></tr>
+          <tr><td><b>皮肉型</b></td><td>十分な信頼関係がある場合のみ</td><td>35%</td><td>高</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="llm-flow-analysis">LLMによる会話フロー分析と修復タイミング予測</h2>
+
+      <p>会話修復の成否は「何を送るか」と同程度に「いつ送るか」に依存する。LLMによる会話フロー分析は、過去の会話パターンと相手の行動リズムを統合的に解析し、修復メッセージの最適な送信タイミングをミリ秒単位で予測する。</p>
+
+      <h3 id="timing-prediction">修復タイミング予測モデル</h3>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph LR
+    subgraph Features["特徴量"]
+        F1["相手の活動時間帯"]
+        F2["過去の返信パターン"]
+        F3["曜日別エンゲージメント"]
+        F4["最終メッセージの感情スコア"]
+        F5["フェードアウトステージ"]
+    end
+
+    subgraph Model["予測モデル"]
+        M1["時系列LSTM"]
+        M2["注意機構"]
+        M3["コンテキスト統合"]
+    end
+
+    subgraph Output["予測出力"]
+        O1["最適送信時間帯"]
+        O2["予測返信確率"]
+        O3["推奨メッセージタイプ"]
+    end
+
+    F1 --> M1
+    F2 --> M1
+    F3 --> M2
+    F4 --> M2
+    F5 --> M3
+    M1 --> M3
+    M2 --> M3
+    M3 --> O1
+    M3 --> O2
+    M3 --> O3
+      </pre></div>
+
+      <p>予測モデルは相手の過去のアクティブ時間帯を学習し、最もアプリを開いている確率が高い時間帯に修復メッセージの送信を推奨する。データ分析によると、相手のアクティブ時間帯に送信された修復メッセージは、非アクティブ時間帯と比較して返信率が約1.8倍高い。</p>
+
+      <h3 id="conversation-health-score">会話ヘルススコア</h3>
+
+      <p>システムは会話の「健康状態」を0〜100のスコアで常時モニタリングする。スコアは以下の指標から複合的に算出される。</p>
+
+      <ul>
+        <li><b>相互性スコア（30%）</b>：双方のメッセージ量・質問頻度・話題提供のバランス。一方通行度が高いほどスコアが低下する。</li>
+        <li><b>テンポスコア（25%）</b>：返信速度の安定性と双方の応答リズムの同期度。ミラーリングが自然に行われている状態が最高スコア。</li>
+        <li><b>深化スコア（25%）</b>：会話の話題が徐々に深い自己開示に移行しているかを評価。表面的な会話が続く場合はスコアが停滞する。</li>
+        <li><b>感情スコア（20%）</b>：<a href="nlp-sentiment-dating.html">NLP感情分析</a>によるポジティブ感情の割合と推移。ネガティブ方向への変化を早期に検知する。</li>
+      </ul>
+
+      <p>会話ヘルススコアが70を下回った時点で「注意」アラート、50を下回った時点で「警告」アラートが発出され、ユーザーに修復アクションの検討を促す。</p>
+
+      <h2 id="follow-up-optimization">「追いメッセージ」のリスクと最適化</h2>
+
+      <p>既読スルーや無返信の後に送る「追いメッセージ」は、修復の有力な手段である一方、逆効果を招くリスクも大きい。本システムでは、追いメッセージの送信判断・内容・タイミングを総合的に最適化する。</p>
+
+      <h3 id="follow-up-risk">追いメッセージのリスク分析</h3>
+
+      <ul>
+        <li><b>圧迫感リスク</b>：短期間に複数メッセージを送信すると、「しつこい」「重い」という印象を与え、ブロックされるリスクが急上昇する。データによれば、24時間以内の2通目は返信率を15%低下させ、3通目は45%低下させる。</li>
+        <li><b>ステータス低下リスク</b>：頻繁な追いメッセージは「必死さ」を伝え、相手の中でのユーザーの魅力的ポジションを棄損する。<a href="dating-psychology-attachment.html">恋愛心理学の愛着理論</a>において、不安型の行動パターンと認識されやすい。</li>
+        <li><b>自己効力感の低下</b>：返信がないにもかかわらず送り続ける行為は、ユーザー自身の自己効力感を損ない、マッチングアプリ全体への動機低下につながる。</li>
+      </ul>
+
+      <h3 id="follow-up-rules">追いメッセージの最適化ルール</h3>
+
+      <table>
+        <thead>
+          <tr><th>ルール</th><th>内容</th><th>根拠</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>48時間ルール</b></td><td>最低48時間の間隔を空ける</td><td>多忙型・返信困難型への配慮。週末を挟む場合は72時間</td></tr>
+          <tr><td><b>2回上限ルール</b></td><td>追いメッセージは最大2回まで</td><td>3回以上の追いメッセージの返信率は5%未満</td></tr>
+          <tr><td><b>話題変更ルール</b></td><td>前回と異なる話題で送信</td><td>同じ話題の繰り返しは返信困難型の既読スルーを悪化させる</td></tr>
+          <tr><td><b>軽量化ルール</b></td><td>短文・気軽なトーンで送信</td><td>長文は返信のハードルを上げ、逆効果</td></tr>
+          <tr><td><b>質問含有ルール</b></td><td>答えやすい質問を1つ含める</td><td>YESまたは選択式の質問が最も返信を引き出しやすい</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="learning-feedback">会話破綻からの学習フィードバックループ</h2>
+
+      <p>全ての会話破綻は、将来の会話を改善するための貴重な学習データとなる。本システムでは、破綻パターンを体系的に分析し、ユーザーのコミュニケーションスキル向上と、システム全体の修復戦略精度の改善に活用する。</p>
+
+      <h3 id="post-mortem">会話破綻のポストモーテム分析</h3>
+
+      <p>会話がフェードアウトまたは明示的に終了した場合、システムは以下の観点から自動分析を実施する。</p>
+
+      <ul>
+        <li><b>転換点の特定</b>：会話ヘルススコアが最初に低下し始めたメッセージを特定し、その前後のコンテキストを分析。「どのメッセージが分岐点だったか」を明確にする。</li>
+        <li><b>パターンマッチング</b>：過去の成功会話・失敗会話とのパターン類似度を算出。同様の状況で成功したケースの戦略を抽出する。</li>
+        <li><b>反事実分析</b>：「もし異なるメッセージを送っていたら」というシミュレーションをLLMで実行し、代替戦略の効果を推定する。</li>
+        <li><b>ユーザー傾向の更新</b>：繰り返し発生する破綻パターン（例：早すぎるLINE交換打診、話題の深掘り不足）をユーザーの「改善ポイント」として記録する。</li>
+      </ul>
+
+      <h3 id="skill-improvement">コミュニケーションスキル向上サイクル</h3>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["会話データ蓄積"] --> B["破綻パターン分析"]
+    B --> C["改善ポイント特定"]
+    C --> D["パーソナライズド学習コンテンツ"]
+    D --> E["次回会話での実践"]
+    E --> F["結果測定・効果検証"]
+    F --> G{"改善あり？"}
+    G -->|Yes| H["成功パターン強化"]
+    G -->|No| I["戦略修正"]
+    H --> A
+    I --> C
+      </pre></div>
+
+      <p>フィードバックループの結果は、<a href="conversational-ai-coaching.html">会話AIコーチング</a>の返信候補生成モデルにも反映される。ユーザー固有の成功パターンと失敗パターンが蓄積されるほど、提案の精度と適合度が向上する。このデータ駆動型の継続的改善サイクルにより、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>は使えば使うほど賢くなるサービスとなる。</p>
+
+      <h2 id="withdrawal-optimization">撤退判断の最適化</h2>
+
+      <p>会話修復と同等に重要なのが「適切なタイミングでの撤退判断」である。修復不可能な会話に時間とエネルギーを投じ続けることは、ユーザーの心理的リソースを消耗し、他の有望なマッチングの機会を逸する<a href="sunk-cost-dating-decisions.html">サンクコスト</a>の罠である。</p>
+
+      <h3 id="sunk-cost-avoidance">サンクコスト回避の意思決定フレームワーク</h3>
+
+      <p>人間は「既に投じた時間と労力」を理由に合理的でない判断を下しがちである。本システムでは、以下の客観的指標に基づいて撤退推奨を行う。</p>
+
+      <ul>
+        <li><b>投資対効果スコア</b>：ユーザーが送信したメッセージ数に対する相手からの反応率を算出。反応率が20%を下回った状態が3日以上続く場合、撤退を推奨。</li>
+        <li><b>機会コスト算出</b>：この会話に費やしている時間で、他の新規マッチングにどれだけアプローチできるかを算出。<a href="matching-app-market.html">マッチングアプリ市場</a>の平均マッチング率データを用いて具体的な数値を提示する。</li>
+        <li><b>心理的負荷評価</b>：既読スルーへの不安・ストレスがユーザーの日常生活に影響を与えていると判断された場合（頻繁なアプリ確認行動の検知等）、心理的健康の観点から撤退を推奨。</li>
+      </ul>
+
+      <h3 id="graceful-exit">グレースフルエグジット戦略</h3>
+
+      <p>撤退を決断した場合でも、その方法によって将来の可能性を残すことができる。本システムでは以下の3段階のエグジット戦略を提案する。</p>
+
+      <ul>
+        <li><b>オープンエンド型</b>：「また気が向いたらメッセージください」のように、再連絡の余地を残して自然にフェードアウト。最も汎用性が高く、将来の偶発的な再接続の可能性を保持する。</li>
+        <li><b>ポジティブクロージング型</b>：「お話できて楽しかったです！お互い頑張りましょう」のように、好印象を残して終了。相手に罪悪感を与えず、自分の品格も維持する。</li>
+        <li><b>沈黙撤退型</b>：追加メッセージを送らず静かに離れる。相手が既にフェードアウトしている場合に最適。無理にクロージングメッセージを送ることのリスクを回避する。</li>
+      </ul>
+
+      <h3 id="next-matching">次のマッチングへの移行支援</h3>
+
+      <p>撤退後の心理的リカバリーと次のアクションへの接続も重要である。システムは破綻した会話から得られた学びを次のマッチングに活かすための<a href="rejection-resilience-training.html">リジェクション耐性トレーニング</a>プログラムを提供し、ユーザーのモチベーション維持を支援する。具体的には、成功した会話パターンの振り返り、改善ポイントの明確化、新しいマッチング候補への<a href="profile-optimization-strategy.html">プロフィール最適化</a>の再提案を行う。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#read-ignore-psychology">既読スルーの心理学的分析</a></li>
+          <li class="toc-h3"><a href="#ignore-typology">既読スルーの類型分類</a></li>
+          <li class="toc-h3"><a href="#cognitive-bias">既読スルー時のユーザー心理バイアス</a></li>
+          <li><a href="#fadeout-detection">フェードアウト予兆検知システム</a></li>
+          <li class="toc-h3"><a href="#signal-detection">検知シグナルの多次元分析</a></li>
+          <li class="toc-h3"><a href="#fadeout-stages">フェードアウトの進行ステージ</a></li>
+          <li><a href="#re-engagement">再エンゲージメント戦略</a></li>
+          <li class="toc-h3"><a href="#topic-pivot">話題切替戦略</a></li>
+          <li class="toc-h3"><a href="#empathetic-approach">共感的アプローチ</a></li>
+          <li class="toc-h3"><a href="#humor-strategy">ユーモア活用戦略</a></li>
+          <li><a href="#llm-flow-analysis">LLMによる会話フロー分析と修復タイミング予測</a></li>
+          <li class="toc-h3"><a href="#timing-prediction">修復タイミング予測モデル</a></li>
+          <li class="toc-h3"><a href="#conversation-health-score">会話ヘルススコア</a></li>
+          <li><a href="#follow-up-optimization">「追いメッセージ」のリスクと最適化</a></li>
+          <li class="toc-h3"><a href="#follow-up-risk">追いメッセージのリスク分析</a></li>
+          <li class="toc-h3"><a href="#follow-up-rules">追いメッセージの最適化ルール</a></li>
+          <li><a href="#learning-feedback">会話破綻からの学習フィードバックループ</a></li>
+          <li class="toc-h3"><a href="#post-mortem">会話破綻のポストモーテム分析</a></li>
+          <li class="toc-h3"><a href="#skill-improvement">コミュニケーションスキル向上サイクル</a></li>
+          <li><a href="#withdrawal-optimization">撤退判断の最適化</a></li>
+          <li class="toc-h3"><a href="#sunk-cost-avoidance">サンクコスト回避の意思決定フレームワーク</a></li>
+          <li class="toc-h3"><a href="#graceful-exit">グレースフルエグジット戦略</a></li>
+          <li class="toc-h3"><a href="#next-matching">次のマッチングへの移行支援</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+          <li><a href="nlp-sentiment-dating.html">恋愛特化NLP感情分析</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        <li><a href="nlp-sentiment-dating.html">恋愛特化NLP感情分析</a></li>
+        <li><a href="dating-psychology-attachment.html">恋愛心理学：愛着理論</a></li>
+        <li><a href="sunk-cost-dating-decisions.html">サンクコストと恋愛意思決定</a></li>
+        <li><a href="rejection-resilience-training.html">リジェクション耐性トレーニング</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

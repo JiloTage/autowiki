@@ -1,5 +1,136 @@
 {
-  "articles": {},
-  "root_id": null,
-  "total_count": 0
+  "articles": {
+    "personal-renai-consul-ai": {
+      "id": "personal-renai-consul-ai", "title": "パーソナル恋愛コンサルAI",
+      "filename": "articles/personal-renai-consul-ai.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": null, "depth": 0,
+      "links_to": ["llm-personality-analysis","matching-app-market","ai-dating-business-model","profile-optimization-strategy","conversational-ai-coaching"],
+      "linked_from": ["profile-optimization-strategy","llm-personality-analysis","matching-app-market","conversational-ai-coaching","ai-dating-business-model","matching-algorithm-design","ai-photo-scoring-algorithm","ai-ethics-dating","conversation-repair-strategy","prompt-engineering-personality","dating-persona-design","dating-psychology-ai"],
+      "summary": "LLMを活用してユーザーの性格・恋愛傾向を深層解析し、マッチングアプリでの戦略的攻略を提案するAIサービスの企画概要、ターゲット市場、ビジネスモデルを包括的に分析する。",
+      "expansion_status": "expanded", "interestingness_score": 1.0
+    },
+    "profile-optimization-strategy": {
+      "id": "profile-optimization-strategy", "title": "プロフィール最適化戦略",
+      "filename": "articles/profile-optimization-strategy.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "personal-renai-consul-ai", "depth": 1,
+      "links_to": ["personal-renai-consul-ai","llm-personality-analysis","ai-photo-scoring-algorithm","ab-testing-methodology","dating-persona-design","matching-app-market"],
+      "linked_from": ["personal-renai-consul-ai","matching-app-market","conversational-ai-coaching","ai-dating-business-model","matching-algorithm-design","ai-photo-scoring-algorithm","conversation-repair-strategy","dating-persona-design"],
+      "summary": "マッチングアプリにおけるプロフィール写真・自己紹介文・全体構成をデータドリブンに最適化し、マッチング率を最大化するための科学的アプローチと実践手法を体系的に解説する。",
+      "expansion_status": "expanded", "interestingness_score": 0.9
+    },
+    "llm-personality-analysis": {
+      "id": "llm-personality-analysis", "title": "LLMパーソナリティ解析技術",
+      "filename": "articles/llm-personality-analysis.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "personal-renai-consul-ai", "depth": 1,
+      "links_to": ["personal-renai-consul-ai","conversational-ai-coaching","prompt-engineering-personality","vector-embedding-personality","ai-ethics-dating","ai-fairness-matching"],
+      "linked_from": ["personal-renai-consul-ai","profile-optimization-strategy","matching-app-market","conversational-ai-coaching","ai-dating-business-model","matching-algorithm-design","ai-photo-scoring-algorithm","ai-ethics-dating","conversation-repair-strategy","prompt-engineering-personality","dating-persona-design","dating-psychology-ai"],
+      "summary": "大規模言語モデル（LLM）を用いてユーザーの性格特性・愛着スタイル・コミュニケーション傾向を自然言語対話から自動推定する技術体系を包括的に解説する。",
+      "expansion_status": "expanded", "interestingness_score": 0.92
+    },
+    "matching-app-market": {
+      "id": "matching-app-market", "title": "マッチングアプリ市場動向と競争環境",
+      "filename": "articles/matching-app-market.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "personal-renai-consul-ai", "depth": 1,
+      "links_to": ["personal-renai-consul-ai","ai-dating-business-model","profile-optimization-strategy","conversational-ai-coaching","llm-personality-analysis","dating-psychology-ai","matching-app-niche-segments","online-dating-regulation","matching-algorithm-design"],
+      "linked_from": ["personal-renai-consul-ai","profile-optimization-strategy","conversational-ai-coaching","ai-dating-business-model","matching-algorithm-design","conversation-repair-strategy","dating-persona-design","dating-psychology-ai"],
+      "summary": "日本のマッチングアプリ市場の規模推移・主要プレイヤー・アルゴリズム特性・セグメンテーション・業界トレンド・規制環境を包括的に分析する。",
+      "expansion_status": "expanded", "interestingness_score": 0.9
+    },
+    "conversational-ai-coaching": {
+      "id": "conversational-ai-coaching", "title": "会話AIコーチング技術",
+      "filename": "articles/conversational-ai-coaching.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "personal-renai-consul-ai", "depth": 1,
+      "links_to": ["personal-renai-consul-ai","llm-personality-analysis","profile-optimization-strategy","matching-app-market","vector-embedding-personality","conversation-repair-strategy","nlp-sentiment-dating","emoji-communication-analysis","ai-ethics-dating"],
+      "linked_from": ["personal-renai-consul-ai","llm-personality-analysis","matching-app-market","ai-dating-business-model","ai-ethics-dating","conversation-repair-strategy","prompt-engineering-personality","dating-persona-design","dating-psychology-ai"],
+      "summary": "LLMベースのリアルタイム会話支援アーキテクチャによるファーストメッセージ生成・会話フロー設計・感情分析・文体学習・会話修復の技術体系を解説する。",
+      "expansion_status": "expanded", "interestingness_score": 0.93
+    },
+    "ai-dating-business-model": {
+      "id": "ai-dating-business-model", "title": "AI恋愛サービスの収益モデル",
+      "filename": "articles/ai-dating-business-model.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "personal-renai-consul-ai", "depth": 1,
+      "links_to": ["personal-renai-consul-ai","matching-app-market","llm-personality-analysis","profile-optimization-strategy","conversational-ai-coaching","ai-dating-pricing-psychology","saas-growth-metrics","marriage-agency-disruption","line-bot-dating-coach","dating-data-flywheel"],
+      "linked_from": ["personal-renai-consul-ai","matching-app-market","prompt-engineering-personality"],
+      "summary": "フリーミアム・サブスクリプション・成果報酬型の各収益モデルを比較分析し、ユニットエコノミクスに基づく持続可能な成長戦略を解説する。",
+      "expansion_status": "pending", "interestingness_score": 0.88
+    },
+    "matching-algorithm-design": {
+      "id": "matching-algorithm-design", "title": "マッチングアルゴリズム設計論",
+      "filename": "articles/matching-algorithm-design.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "matching-app-market", "depth": 2,
+      "links_to": ["matching-app-market","personal-renai-consul-ai","llm-personality-analysis","profile-optimization-strategy","ai-photo-scoring-algorithm","mechanism-design-matching","ai-ethics-dating","explainable-ai-matching","multi-objective-optimization-dating","matching-platform-ux-design"],
+      "linked_from": ["matching-app-market","ai-photo-scoring-algorithm","ai-ethics-dating","dating-psychology-ai"],
+      "summary": "ELOレーティング・協調フィルタリング・深層学習・双方向最適化の各アプローチからマッチングアルゴリズム設計を体系的に比較・分析する。",
+      "expansion_status": "pending", "interestingness_score": 0.93
+    },
+    "ai-photo-scoring-algorithm": {
+      "id": "ai-photo-scoring-algorithm", "title": "AI写真スコアリングアルゴリズム",
+      "filename": "articles/ai-photo-scoring-algorithm.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "profile-optimization-strategy", "depth": 2,
+      "links_to": ["profile-optimization-strategy","personal-renai-consul-ai","llm-personality-analysis","matching-algorithm-design","ai-fairness-matching","explainable-ai-matching","ab-testing-methodology","photo-set-diversity-metric","fashion-ai-dating-context","computational-photography-dating"],
+      "linked_from": ["profile-optimization-strategy","matching-algorithm-design","dating-persona-design"],
+      "summary": "CNNを基盤とした写真品質判定・顔検出・表情分析・魅力度予測を統合しプロフィール写真をマルチ軸で自動評価・最適化するアルゴリズム体系を解説する。",
+      "expansion_status": "pending", "interestingness_score": 0.95
+    },
+    "ai-ethics-dating": {
+      "id": "ai-ethics-dating", "title": "AI恋愛サービスの倫理設計",
+      "filename": "articles/ai-ethics-dating.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "llm-personality-analysis", "depth": 2,
+      "links_to": ["llm-personality-analysis","personal-renai-consul-ai","matching-algorithm-design","conversational-ai-coaching","ai-fairness-matching","rejection-resilience-ai","dating-data-governance","ethical-impact-assessment-ai"],
+      "linked_from": ["llm-personality-analysis","conversational-ai-coaching","matching-algorithm-design","prompt-engineering-personality","dating-psychology-ai"],
+      "summary": "パーソナリティ解析の透明性・代筆AIの倫理的境界線・アルゴリズムバイアスと公平性・プライバシー保護設計・規制対応フレームワークを包括的に体系化する。",
+      "expansion_status": "pending", "interestingness_score": 0.90
+    },
+    "conversation-repair-strategy": {
+      "id": "conversation-repair-strategy", "title": "会話修復戦略",
+      "filename": "articles/conversation-repair-strategy.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "conversational-ai-coaching", "depth": 2,
+      "links_to": ["conversational-ai-coaching","personal-renai-consul-ai","llm-personality-analysis","profile-optimization-strategy","matching-app-market","nlp-sentiment-dating","dating-psychology-attachment","sunk-cost-dating-decisions","rejection-resilience-training"],
+      "linked_from": ["conversational-ai-coaching","prompt-engineering-personality","dating-persona-design","dating-psychology-ai"],
+      "summary": "既読スルー・フェードアウト・会話停滞を心理学的に分析し、LLMによる予兆検知・再エンゲージメント戦略・撤退判断の最適化を体系化する。",
+      "expansion_status": "pending", "interestingness_score": 0.88
+    },
+    "prompt-engineering-personality": {
+      "id": "prompt-engineering-personality", "title": "プロンプトエンジニアリングによるパーソナリティ推定",
+      "filename": "articles/prompt-engineering-personality.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "llm-personality-analysis", "depth": 2,
+      "links_to": ["llm-personality-analysis","personal-renai-consul-ai","conversational-ai-coaching","ai-ethics-dating","conversation-repair-strategy","ai-dating-business-model"],
+      "linked_from": ["llm-personality-analysis"],
+      "summary": "ゼロショット・フューショット・Chain-of-ThoughtによるBig Five性格特性・愛着スタイル推定のプロンプト設計パターンとマルチターン対話プログレッシブ推定を体系化する。",
+      "expansion_status": "pending", "interestingness_score": 0.88
+    },
+    "dating-persona-design": {
+      "id": "dating-persona-design", "title": "デーティングペルソナ設計",
+      "filename": "articles/dating-persona-design.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "profile-optimization-strategy", "depth": 2,
+      "links_to": ["profile-optimization-strategy","personal-renai-consul-ai","llm-personality-analysis","matching-app-market","conversational-ai-coaching","ai-photo-scoring-algorithm","conversation-repair-strategy"],
+      "linked_from": ["profile-optimization-strategy"],
+      "summary": "価値観マッピング・ターゲットセグメント別テンプレート・LLM動的生成・一致度評価・継続最適化・アンチペルソナ設計までを体系化するペルソナ設計フレームワーク。",
+      "expansion_status": "pending", "interestingness_score": 0.88
+    },
+    "dating-psychology-ai": {
+      "id": "dating-psychology-ai", "title": "恋愛心理学とAI",
+      "filename": "articles/dating-psychology-ai.html",
+      "created_at": "2026-03-18T00:00:00+09:00", "updated_at": "2026-03-18T00:00:00+09:00",
+      "parent_id": "matching-app-market", "depth": 2,
+      "links_to": ["matching-app-market","personal-renai-consul-ai","llm-personality-analysis","conversational-ai-coaching","ai-ethics-dating","matching-algorithm-design","conversation-repair-strategy"],
+      "linked_from": ["matching-app-market"],
+      "summary": "愛着理論・進化心理学・認知バイアス・自己開示理論・社会的交換理論・ポジティブ心理学をAI技術と統合し、マッチングアプリにおけるユーザー行動の科学的理解を体系化する。",
+      "expansion_status": "pending", "interestingness_score": 0.88
+    }
+  },
+  "root_id": "personal-renai-consul-ai",
+  "total_count": 13
 }

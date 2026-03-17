@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI写真スコアリングアルゴリズム - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="profile-optimization-strategy.html">プロフィール最適化戦略</a> &gt; AI写真スコアリングアルゴリズム
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">AI写真スコアリングアルゴリズム</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">CNN（畳み込みニューラルネットワーク）を基盤とした写真品質判定・顔検出・表情分析・魅力度予測を統合し、マッチングアプリにおけるプロフィール写真をマルチ軸で自動評価・最適化するアルゴリズム体系を解説する。</div>
+
+      <p><b>AI写真スコアリングアルゴリズム</b>とは、畳み込みニューラルネットワーク（CNN）と顔認識・表情分析技術を組み合わせ、マッチングアプリのプロフィール写真を「清潔感」「活動性」「知性」「信頼感」「社交性」などの多軸で自動評価し、ターゲット層ごとに最適な写真選定・順序構成を提案するアルゴリズム体系である。<a href="profile-optimization-strategy.html">プロフィール最適化戦略</a>の中核技術として、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のサービス基盤を支える。従来の主観的な写真選びをデータドリブンな科学的プロセスへと転換し、<a href="matching-algorithm-design.html">マッチングアルゴリズム設計</a>との連携によってマッチング率の大幅な向上を実現する技術である。</p>
+
+      <h2 id="cnn-architecture">CNNベース写真品質判定アーキテクチャ</h2>
+
+      <p>写真スコアリングの基盤は、画像認識の標準技術であるCNNを写真品質判定に特化させたアーキテクチャである。一般的な画像分類タスクとは異なり、マッチングアプリの文脈では「技術的品質」と「印象品質」の二層で評価する必要がある。</p>
+
+      <h3 id="dual-stream">デュアルストリーム・アーキテクチャ</h3>
+
+      <p>本システムでは、1枚の写真を2つの独立した処理経路（ストリーム）で並列解析するデュアルストリーム・アーキテクチャを採用している。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["入力画像<br>（原寸 + リサイズ版）"] --> B["前処理パイプライン<br>正規化・色補正・EXIF解析"]
+    B --> C["技術品質ストリーム"]
+    B --> D["印象品質ストリーム"]
+    C --> C1["ResNet-50 Backbone<br>画質特徴量抽出"]
+    C1 --> C2["解像度・シャープネス<br>ノイズレベル推定"]
+    C1 --> C3["照明均一性・<br>色彩バランス評価"]
+    C1 --> C4["構図スコア<br>三分割法・黄金比判定"]
+    D --> D1["顔検出・ランドマーク抽出<br>（MTCNN / RetinaFace）"]
+    D1 --> D2["表情分析エンジン<br>（AffectNet ファインチューニング）"]
+    D1 --> D3["顔特徴量<br>ArcFace Embedding"]
+    D1 --> D4["背景セグメンテーション<br>（DeepLabV3+）"]
+    C2 --> E["統合スコアリングモジュール"]
+    C3 --> E
+    C4 --> E
+    D2 --> E
+    D3 --> E
+    D4 --> E
+    E --> F["マルチ軸印象スコア<br>（5軸 × 0〜100点）"]
+    F --> G["ターゲット層別<br>重み付け最適化"]
+      </pre></div>
+
+      <p><b>技術品質ストリーム</b>は、ImageNetで事前学習済みのResNet-50をバックボーンとし、写真の物理的品質を客観指標で評価する。解像度・シャープネス・ノイズレベル・照明品質・構図適合度を独立した回帰ヘッドで推定する。学習データには、プロカメラマンによる品質評定済みのマッチングアプリ写真約50万枚を使用している。</p>
+
+      <p><b>印象品質ストリーム</b>は、顔検出（MTCNN / RetinaFace）で人物領域を特定した後、表情分析・顔特徴量エンベディング・背景セグメンテーションを並列処理する。特に表情分析にはAffectNetデータセットでファインチューニングしたモデルを用い、7つの基本表情（喜び・驚き・悲しみ・怒り・嫌悪・恐れ・中立）に加え、「自然な微笑み」「リラックスした表情」といったマッチングアプリ固有のカテゴリを追加学習している。</p>
+
+      <h3 id="technical-quality">技術品質の定量評価基準</h3>
+
+      <table>
+        <thead>
+          <tr><th>評価項目</th><th>手法</th><th>スコア基準</th><th>重み</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>解像度</b></td><td>有効画素数 + DPI推定</td><td>2MP以上で80点、4MP以上で100点</td><td>15%</td></tr>
+          <tr><td><b>シャープネス</b></td><td>Laplacian分散 + 周波数解析</td><td>顔領域のブラー度が閾値以下で高スコア</td><td>20%</td></tr>
+          <tr><td><b>照明</b></td><td>ヒストグラム分析 + 顔面照度マップ</td><td>顔の左右照度差10%以内で90点以上</td><td>25%</td></tr>
+          <tr><td><b>色彩バランス</b></td><td>ホワイトバランス推定 + 彩度分析</td><td>肌色再現性が自然範囲内で高スコア</td><td>15%</td></tr>
+          <tr><td><b>構図</b></td><td>顔位置の三分割法/黄金比適合度</td><td>交点近傍に顔中心がある場合に高スコア</td><td>15%</td></tr>
+          <tr><td><b>ノイズ</b></td><td>ISO推定 + ノイズパワースペクトル</td><td>高ISOノイズ、JPEG圧縮アーティファクト検出</td><td>10%</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="face-expression">顔検出・表情分析・魅力度予測モデル</h2>
+
+      <p>マッチングアプリにおいて最も影響力の大きい要素は「顔」であり、顔検出精度と表情分析の粒度がスコアリング全体の品質を決定する。</p>
+
+      <h3 id="face-detection">高精度顔検出パイプライン</h3>
+
+      <p>顔検出には多段階カスケード構造を採用している。まずRetinaFaceで高速な顔領域候補を検出し、次に68点のランドマーク検出で顔の精密な形状を把握する。遮蔽物（サングラス・マスク・帽子）の検出と影響度推定も同時に行い、顔認識の信頼度スコアを算出する。</p>
+
+      <ul>
+        <li><b>正面度スコア</b>：顔のヨー角・ピッチ角・ロール角から正面からの偏差を算出。±15度以内で高評価。</li>
+        <li><b>遮蔽度スコア</b>：顔領域の可視率を推定。80%以上の可視率が必須要件。</li>
+        <li><b>複数人検出</b>：グループ写真の場合、主要被写体を顔サイズ・中心位置・フォーカス状態から自動判定。</li>
+      </ul>
+
+      <h3 id="expression-analysis">表情分析と微笑み品質指標</h3>
+
+      <p>表情分析エンジンは、単なる表情カテゴリ分類を超え、「微笑みの質」を定量化する独自指標を導入している。</p>
+
+      <table>
+        <thead>
+          <tr><th>微笑み品質指標</th><th>定義</th><th>測定手法</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>デュシェンヌ・スコア</b></td><td>本物の笑顔（目元の筋肉が動く）の度合い</td><td>眼輪筋（AU6）と大頬骨筋（AU12）の同時活性度</td></tr>
+          <tr><td><b>自然さ指数</b></td><td>作り笑いでない度合い</td><td>左右対称性 + 表情筋の時間的整合性</td></tr>
+          <tr><td><b>温かさスコア</b></td><td>親しみやすさの印象</td><td>目元リラックス度 + 口角挙上度の複合判定</td></tr>
+          <tr><td><b>活力スコア</b></td><td>エネルギッシュな印象</td><td>表情の明瞭さ + 姿勢の開放度</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="attractiveness-prediction">魅力度予測モデルとバイアス制御</h3>
+
+      <p>魅力度予測は最もセンシティブな機能であり、<a href="ai-fairness-matching.html">AI公平性とマッチング倫理</a>の観点から慎重な設計が求められる。本モデルでは「絶対的な魅力度」ではなく「特定のターゲット層から見た相対的な好感度」を予測するアプローチを採用している。</p>
+
+      <p>具体的には、<a href="llm-personality-analysis.html">LLMパーソナリティ解析</a>で推定されたターゲット層の嗜好ベクトルと、写真から抽出した印象ベクトルの内積（コサイン類似度）をスコア化する。これにより、画一的な美醜判定ではなく「この写真がターゲット層にどれだけ刺さるか」という実用的な予測を実現している。</p>
+
+      <h2 id="multi-axis-scoring">マルチ軸評価システム</h2>
+
+      <p>本アルゴリズムの最大の特徴は、写真を単一の「良い/悪い」で判定するのではなく、5つの独立した印象軸で多面的に評価する点にある。これらの軸は、マッチングアプリにおけるユーザー行動データの因子分析から導出されたものである。</p>
+
+      <h3 id="five-axes">5軸印象評価フレームワーク</h3>
+
+      <table>
+        <thead>
+          <tr><th>印象軸</th><th>定義</th><th>主要特徴量</th><th>影響因子</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>清潔感</b></td><td>身だしなみ・衛生的印象</td><td>肌質テクスチャ、服装整頓度、髪型整理度</td><td>服装色彩、背景清潔度、照明品質</td></tr>
+          <tr><td><b>活動性</b></td><td>エネルギッシュ・アクティブな印象</td><td>姿勢の動的さ、背景の活動性、表情の明るさ</td><td>アウトドア背景、スポーツ関連要素</td></tr>
+          <tr><td><b>知性</b></td><td>聡明・思慮深い印象</td><td>眼差しの鋭さ、書籍/知的環境の有無、服装の品格</td><td>背景の知的要素、姿勢の落ち着き</td></tr>
+          <tr><td><b>信頼感</b></td><td>誠実・安心できる印象</td><td>デュシェンヌ・スコア、アイコンタクト度、開放的姿勢</td><td>自然な表情、背景の安定感</td></tr>
+          <tr><td><b>社交性</b></td><td>コミュニケーション力・親しみやすさ</td><td>笑顔の強度、他者との自然な距離感、リラックス度</td><td>グループ写真での振る舞い、温かみのある色調</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="feature-extraction">各軸の特徴量抽出手法</h3>
+
+      <p>各印象軸のスコアは、CNN特徴量・顔ランドマーク特徴量・セマンティックセグメンテーション特徴量の3カテゴリから構成される融合特徴ベクトルを入力として、軸ごとの回帰モデルが算出する。学習データには、クラウドソーシングで収集した多様な評定者（年齢・性別・地域バランス調整済み）による5段階評定を使用している。</p>
+
+      <p>評定者間の一致度（Krippendorff's alpha）が0.7以上となるように、外れ値除去とアクティブラーニングによるデータ品質管理を実施している。各評定者のバイアス傾向も推定・補正しており、性別・年齢・文化圏による評価バイアスの影響を最小化している。</p>
+
+      <h2 id="target-personalization">ターゲット層別重み付けとパーソナライズ</h2>
+
+      <p><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a>で定義されたターゲットセグメントに基づき、5軸スコアに対する重み付けを動的に調整する。「万人受け」のスコアリングではなく、「あなたが出会いたい相手に最も刺さる写真」を特定するパーソナライズエンジンである。</p>
+
+      <h3 id="segment-weights">セグメント別重み付けマトリクス</h3>
+
+      <table>
+        <thead>
+          <tr><th>ターゲット層</th><th>清潔感</th><th>活動性</th><th>知性</th><th>信頼感</th><th>社交性</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>キャリア志向層</b></td><td>0.20</td><td>0.10</td><td>0.35</td><td>0.25</td><td>0.10</td></tr>
+          <tr><td><b>癒し重視層</b></td><td>0.15</td><td>0.05</td><td>0.10</td><td>0.40</td><td>0.30</td></tr>
+          <tr><td><b>アクティブ層</b></td><td>0.10</td><td>0.35</td><td>0.05</td><td>0.15</td><td>0.35</td></tr>
+          <tr><td><b>真剣婚活層</b></td><td>0.25</td><td>0.05</td><td>0.15</td><td>0.40</td><td>0.15</td></tr>
+          <tr><td><b>クリエイティブ層</b></td><td>0.10</td><td>0.20</td><td>0.25</td><td>0.15</td><td>0.30</td></tr>
+        </tbody>
+      </table>
+
+      <p>上記の重み付けは初期値であり、<a href="matching-algorithm-design.html">マッチングアルゴリズム</a>が蓄積した実際のスワイプデータ・マッチング成立データからオンライン学習により継続的に更新される。重み更新にはMulti-Armed Banditアルゴリズム（Thompson Sampling）を採用し、探索と活用のバランスを自動調整している。</p>
+
+      <h3 id="personalization-engine">パーソナライズエンジンの学習ループ</h3>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph LR
+    A["ユーザー写真セット<br>アップロード"] --> B["5軸スコアリング"]
+    B --> C["ターゲット層推定<br>（LLMパーソナリティ解析）"]
+    C --> D["重み付けスコア算出"]
+    D --> E["写真セット＆順序提案"]
+    E --> F["A/Bテスト実行"]
+    F --> G["スワイプ・マッチング<br>データ収集"]
+    G --> H["重み更新<br>（Thompson Sampling）"]
+    H --> D
+      </pre></div>
+
+      <h2 id="photo-ordering">写真順序最適化</h2>
+
+      <p>マッチングアプリでは写真の「内容」だけでなく「順序」がマッチング率に大きく影響する。メイン写真（1枚目）の選定と、サブ写真（2〜6枚目）の構成順序を最適化するアルゴリズムを解説する。</p>
+
+      <h3 id="main-photo-selection">メイン写真の選定アルゴリズム</h3>
+
+      <p>メイン写真は0.3〜1.5秒の「第一印象の窓」を決定する最重要要素であり、以下の条件を総合的に満たす写真が自動選定される：</p>
+
+      <ol>
+        <li><b>顔認識信頼度</b>：95%以上（正面向き、遮蔽なし、適切なサイズ）</li>
+        <li><b>技術品質スコア</b>：80点以上（照明・シャープネス・色彩の総合評価）</li>
+        <li><b>ターゲット層別印象スコア</b>：上位20%以内（5軸重み付けスコア）</li>
+        <li><b>独自性スコア</b>：当該プラットフォームの他ユーザーとの差別化度</li>
+        <li><b>デュシェンヌ・スコア</b>：0.7以上（自然な笑顔であること）</li>
+      </ol>
+
+      <p>複数の候補がある場合は、<a href="ab-testing-methodology.html">A/Bテスト手法</a>による実データ検証を推奨し、2〜3パターンの候補を自動生成する。</p>
+
+      <h3 id="sub-photo-composition">サブ写真の構成最適化</h3>
+
+      <p>サブ写真の構成は「多様性」と「一貫性」のバランスが鍵となる。アルゴリズムは以下の「ストーリーアーク」フレームワークに基づいて最適順序を決定する：</p>
+
+      <table>
+        <thead>
+          <tr><th>順序</th><th>役割</th><th>推奨カテゴリ</th><th>選定基準</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>1枚目</b></td><td>第一印象の確立</td><td>顔がはっきり分かるバストアップ</td><td>最高の印象スコア</td></tr>
+          <tr><td><b>2枚目</b></td><td>全体像の提示</td><td>全身またはミドルショット</td><td>体型・スタイルが自然に伝わる</td></tr>
+          <tr><td><b>3枚目</b></td><td>ライフスタイルの共有</td><td>趣味・アクティビティ中の写真</td><td>活動性・社交性軸が高い</td></tr>
+          <tr><td><b>4枚目</b></td><td>社交性の証明</td><td>友人や動物との自然な一枚</td><td>社交性・信頼感軸が高い</td></tr>
+          <tr><td><b>5〜6枚目</b></td><td>深みの演出</td><td>旅行先・特技・日常の魅力的瞬間</td><td>独自性スコアが高い</td></tr>
+        </tbody>
+      </table>
+
+      <p>写真セット全体の評価には「<a href="photo-set-diversity-metric.html">セット多様性メトリクス</a>」を導入し、背景・服装・表情・構図の4要素における分散が適正範囲内にあることを保証している。多様性が低すぎると「変化に乏しい」印象を、高すぎると「一貫性がない」印象を与えるため、最適なバランス点を学習データから導出している。</p>
+
+      <h2 id="background-clothing-lighting">背景・服装・ライティングの自動分析</h2>
+
+      <p>顔以外の写真要素——背景・服装・ライティング——もマッチング率に有意な影響を与える。セマンティックセグメンテーションとオブジェクト検出を組み合わせた自動分析パイプラインにより、これらの要素を包括的に評価する。</p>
+
+      <h3 id="background-analysis">背景のセマンティック分析</h3>
+
+      <p>DeepLabV3+によるセマンティックセグメンテーションで背景を自動分類し、カテゴリごとの印象スコアへの寄与を算出する。</p>
+
+      <ul>
+        <li><b>高評価背景</b>：カフェ・レストラン（+12%）、自然環境・公園（+15%）、旅行先の名所（+18%）、整った室内（+8%）</li>
+        <li><b>中立背景</b>：オフィス（±0%）、無地壁（-2%）、一般的な都市風景（+3%）</li>
+        <li><b>低評価背景</b>：散らかった室内（-20%）、鏡越し自撮り（-15%）、トイレ・洗面所（-25%）、不明瞭な暗所（-18%）</li>
+      </ul>
+
+      <h3 id="clothing-analysis">服装の自動評価</h3>
+
+      <p>服装分析モジュールは、<a href="fashion-ai-dating-context.html">ファッションAIとデーティング文脈</a>の知見を統合し、以下の3軸で服装を評価する：</p>
+
+      <ul>
+        <li><b>清潔感指数</b>：シワ・汚れの検出、サイズフィット推定、色の鮮明度</li>
+        <li><b>TPO適合度</b>：背景・シチュエーションとの服装の整合性</li>
+        <li><b>ターゲット親和性</b>：ターゲット層の服装嗜好との一致度（<a href="llm-personality-analysis.html">LLMパーソナリティ解析</a>から推定）</li>
+      </ul>
+
+      <h3 id="lighting-optimization">ライティング品質と改善提案</h3>
+
+      <p>照明分析では、顔面の照度マップを生成し、「フラットライティング」「レンブラントライティング」「バタフライライティング」等のパターンを自動判定する。自然光（ゴールデンアワー）での撮影が統計的に最高スコアを記録しており、人工照明では色温度4000〜5000Kの範囲が最適とされる。照明品質が低い写真に対しては、<a href="computational-photography-dating.html">コンピュテーショナルフォトグラフィ</a>による後処理改善の提案も行う。</p>
+
+      <h2 id="ethics-bias">データ倫理とバイアス対策</h2>
+
+      <p>写真スコアリングは「外見の数値化」という本質的にセンシティブな行為であり、<a href="ai-fairness-matching.html">AI公平性とマッチング倫理</a>の最前線に位置する技術的・倫理的課題を内包している。</p>
+
+      <h3 id="lookism-mitigation">外見主義（ルッキズム）への対応</h3>
+
+      <p>本アルゴリズムは「客観的な美醜判定」を明示的に回避し、以下の設計原則を採用している：</p>
+
+      <ol>
+        <li><b>相対的スコアリング</b>：「美しいかどうか」ではなく「ターゲット層にどれだけ刺さるか」を予測。絶対的な外見評価を行わない。</li>
+        <li><b>改善可能要素への集中</b>：顔の造形ではなく、照明・構図・表情・服装など本人が改善できる要素に焦点を当てる。</li>
+        <li><b>多様性の積極的評価</b>：「標準的な美」から外れる特徴を「独自性」として正の評価に変換する仕組み。</li>
+        <li><b>ストレングスベース・フィードバック</b>：弱点の指摘ではなく、強みの最大化を提案の基本方針とする。</li>
+      </ol>
+
+      <h3 id="bias-detection">バイアス検出と是正メカニズム</h3>
+
+      <p>学習データと推論結果に潜在するバイアスを多層的に監視・是正する仕組みを組み込んでいる。</p>
+
+      <table>
+        <thead>
+          <tr><th>バイアスカテゴリ</th><th>検出手法</th><th>是正アプローチ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>人種・民族バイアス</b></td><td>肌色分布別スコア分散分析</td><td>層化サンプリング + 公平性制約付き学習</td></tr>
+          <tr><td><b>性別バイアス</b></td><td>同一構図・条件での性別間スコア比較</td><td>性別条件付き正規化</td></tr>
+          <tr><td><b>年齢バイアス</b></td><td>年齢層別スコア分布の偏り検定</td><td>年齢層別キャリブレーション</td></tr>
+          <tr><td><b>体型バイアス</b></td><td>体型カテゴリ別のスコア影響度分析</td><td>体型関連特徴量の制限的使用</td></tr>
+          <tr><td><b>文化的バイアス</b></td><td>評定者の文化圏別クラスタリング</td><td>多文化評定データの均衡化</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="transparency">透明性とユーザーへの説明責任</h3>
+
+      <p>ユーザーに対してスコアの根拠を可視化する<a href="explainable-ai-matching.html">説明可能AI</a>機能を実装している。各写真のスコアについて「なぜこのスコアになったか」「どうすれば改善できるか」を、Grad-CAM（勾配加重クラス活性化マッピング）による注目領域の可視化と、自然言語による改善提案の組み合わせで提示する。ブラックボックスではなく、ユーザーが納得して行動できる透明なシステムを志向している。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#cnn-architecture">CNNベース写真品質判定アーキテクチャ</a></li>
+          <li class="toc-h3"><a href="#dual-stream">デュアルストリーム・アーキテクチャ</a></li>
+          <li class="toc-h3"><a href="#technical-quality">技術品質の定量評価基準</a></li>
+          <li><a href="#face-expression">顔検出・表情分析・魅力度予測モデル</a></li>
+          <li class="toc-h3"><a href="#face-detection">高精度顔検出パイプライン</a></li>
+          <li class="toc-h3"><a href="#expression-analysis">表情分析と微笑み品質指標</a></li>
+          <li class="toc-h3"><a href="#attractiveness-prediction">魅力度予測モデルとバイアス制御</a></li>
+          <li><a href="#multi-axis-scoring">マルチ軸評価システム</a></li>
+          <li class="toc-h3"><a href="#five-axes">5軸印象評価フレームワーク</a></li>
+          <li class="toc-h3"><a href="#feature-extraction">各軸の特徴量抽出手法</a></li>
+          <li><a href="#target-personalization">ターゲット層別重み付けとパーソナライズ</a></li>
+          <li class="toc-h3"><a href="#segment-weights">セグメント別重み付けマトリクス</a></li>
+          <li class="toc-h3"><a href="#personalization-engine">パーソナライズエンジンの学習ループ</a></li>
+          <li><a href="#photo-ordering">写真順序最適化</a></li>
+          <li class="toc-h3"><a href="#main-photo-selection">メイン写真の選定アルゴリズム</a></li>
+          <li class="toc-h3"><a href="#sub-photo-composition">サブ写真の構成最適化</a></li>
+          <li><a href="#background-clothing-lighting">背景・服装・ライティングの自動分析</a></li>
+          <li class="toc-h3"><a href="#background-analysis">背景のセマンティック分析</a></li>
+          <li class="toc-h3"><a href="#clothing-analysis">服装の自動評価</a></li>
+          <li class="toc-h3"><a href="#lighting-optimization">ライティング品質と改善提案</a></li>
+          <li><a href="#ethics-bias">データ倫理とバイアス対策</a></li>
+          <li class="toc-h3"><a href="#lookism-mitigation">外見主義（ルッキズム）への対応</a></li>
+          <li class="toc-h3"><a href="#bias-detection">バイアス検出と是正メカニズム</a></li>
+          <li class="toc-h3"><a href="#transparency">透明性とユーザーへの説明責任</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計論</a></li>
+          <li><a href="ai-fairness-matching.html">AI公平性とマッチング倫理</a></li>
+          <li><a href="explainable-ai-matching.html">説明可能AI</a></li>
+          <li><a href="ab-testing-methodology.html">A/Bテスト手法</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計論</a></li>
+        <li><a href="ai-fairness-matching.html">AI公平性とマッチング倫理</a></li>
+        <li><a href="explainable-ai-matching.html">説明可能AI</a></li>
+        <li><a href="ab-testing-methodology.html">A/Bテスト手法</a></li>
+        <li><a href="photo-set-diversity-metric.html">セット多様性メトリクス</a></li>
+        <li><a href="fashion-ai-dating-context.html">ファッションAIとデーティング文脈</a></li>
+        <li><a href="computational-photography-dating.html">コンピュテーショナルフォトグラフィ</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="profile-optimization-strategy.html">プロフィール最適化戦略</a></li>
+        <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計論</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>
