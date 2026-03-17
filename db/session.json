@@ -1,6 +1,6 @@
 {
-  "last_phase": "phase2-cycle4",
-  "expansion_frontier": ["ai-dating-business-model","matching-algorithm-design","ai-photo-scoring-algorithm","ai-ethics-dating","conversation-repair-strategy","prompt-engineering-personality","dating-persona-design","dating-psychology-ai"],
+  "last_phase": "phase2-cycle5",
+  "expansion_frontier": [],
   "settings": {
     "max_agents": 3,
     "max_depth": 2,
