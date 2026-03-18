@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS成長指標フレームワーク - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a> &gt; SaaS成長指標フレームワーク
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">SaaS成長指標フレームワーク</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">SaaSビジネスの成長を定量的に評価するためのMRR/ARR/NRR等の収益指標、チャーン分析（ロゴ・レベニュー・ネガティブチャーン）、CAC/LTV比率の最適化手法、コホート分析によるリテンション評価、およびRule of 40等の業界ベンチマークを体系化し、AI恋愛サービスをはじめとするバーティカルSaaSに特化したKPI設計を解説する。</div>
+
+      <p><b>SaaS成長指標フレームワーク</b>とは、Software as a Service（SaaS）型ビジネスの健全性と成長性を多角的に評価するための定量指標体系のことである。<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>で示されたユニットエコノミクスをより精緻にモニタリングし、投資家・経営者・プロダクトチームが共通の指標言語で意思決定を行うための基盤となる。<a href="matching-app-market.html">マッチングアプリ市場</a>が成熟化する中、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のようなAI駆動サービスが持続的な競争優位を構築するには、単なる売上成長だけでなく、効率性・健全性・持続可能性を統合的に評価する指標フレームワークが不可欠である。</p>
+
+      <h2 id="revenue-metrics">収益指標の定義と計算手法</h2>
+
+      <p>SaaSビジネスの根幹をなす収益指標群を正確に定義し、その計算手法と相互関係を整理する。これらの指標は投資家とのコミュニケーション、取締役会報告、プロダクト意思決定のすべてにおいて共通言語として機能する。</p>
+
+      <h3 id="mrr-definition">MRR（Monthly Recurring Revenue）</h3>
+
+      <p>MRRは月次経常収益であり、SaaSビジネスにおける最も基本的な収益指標である。すべてのアクティブなサブスクリプション契約から得られる月額収益の合計として計算する。</p>
+
+      <p><b>MRR = Σ（各顧客の月額課金額）</b></p>
+
+      <p>MRRの構成要素を分解すると、成長の源泉と課題が明確になる：</p>
+
+      <ul>
+        <li><b>New MRR</b>：当月新規獲得顧客からの収益。<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>における無料→有料転換が主たるソースとなる</li>
+        <li><b>Expansion MRR</b>：既存顧客のアップグレード・アドオン購入による増収。プラン間アップセル（スタンダード→プレミアム等）が該当する</li>
+        <li><b>Contraction MRR</b>：既存顧客のダウングレードによる減収</li>
+        <li><b>Churned MRR</b>：解約顧客による失われた収益</li>
+      </ul>
+
+      <p><b>Net New MRR = New MRR + Expansion MRR − Contraction MRR − Churned MRR</b></p>
+
+      <h3 id="arr-definition">ARR（Annual Recurring Revenue）</h3>
+
+      <p>ARRは年次経常収益であり、MRR × 12で算出される。年間契約を主とするエンタープライズSaaSではARRが主指標となるが、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のようなB2CサブスクリプションではMRRをベースとし、トレンド把握のためにARRを併用する運用が適切である。</p>
+
+      <p><b>ARR = MRR × 12</b></p>
+
+      <p>ただし、年額一括契約が存在する場合は、年額契約収益の月割をMRRに加算した上でARRを算出する。季節変動が大きいサービス（恋愛サービスは12月〜3月に需要が急増する傾向がある）では、直近12ヶ月の実績MRR合計をARRとして使用する場合もある。</p>
+
+      <h3 id="nrr-definition">NRR（Net Revenue Retention）</h3>
+
+      <p>NRRは既存顧客ベースからの収益維持率であり、SaaSビジネスの「質」を測る最重要指標のひとつである。NRRが100%を超えていれば、新規顧客を一切獲得しなくても収益が成長することを意味する。</p>
+
+      <p><b>NRR = （期首MRR + Expansion MRR − Contraction MRR − Churned MRR）÷ 期首MRR × 100%</b></p>
+
+      <table>
+        <thead>
+          <tr><th>NRR水準</th><th>評価</th><th>SaaS業界の目安</th><th>恋愛サービスの現実的目標</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>130%超</td><td>優秀（トップティア）</td><td>Snowflake, Twilio等</td><td>長期的理想目標</td></tr>
+          <tr><td>110〜130%</td><td>良好</td><td>SaaS上位25%</td><td>中期目標（交際後支援含む）</td></tr>
+          <tr><td>100〜110%</td><td>健全</td><td>SaaS中央値</td><td>サービス開始後1年以内の目標</td></tr>
+          <tr><td>100%未満</td><td>要改善</td><td>収益縮小リスク</td><td>恋愛サービスは構造的に陥りやすい</td></tr>
+        </tbody>
+      </table>
+
+      <p>恋愛サービス特有の課題として、「成功すると解約する」構造的チャーンが存在するため、NRR100%超の達成には<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>で述べた「価値提供領域の拡張」（交際維持支援、関係深化コーチング等）が必須となる。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["期首MRR<br/>1,000万円"] --> B["Expansion MRR<br/>+150万円"]
+    A --> C["Contraction MRR<br/>−30万円"]
+    A --> D["Churned MRR<br/>−80万円"]
+    B --> E["期末MRR（既存顧客）<br/>1,040万円"]
+    C --> E
+    D --> E
+    E --> F["NRR = 104%"]
+    G["New MRR<br/>+200万円"] --> H["期末MRR（全体）<br/>1,240万円"]
+    E --> H
+    H --> I["MRR成長率 = +24%"]
+
+    style A fill:#e8f4fd,stroke:#2196F3
+    style F fill:#c8e6c9,stroke:#4CAF50
+    style I fill:#fff3e0,stroke:#FF9800
+      </pre></div>
+
+      <h2 id="churn-analysis">チャーン分析</h2>
+
+      <p>チャーン（解約・離脱）はSaaSビジネスの成長を蝕む最大の敵である。しかし、チャーンを単一の指標として捉えると重要なニュアンスを見落とす。ここでは3種類のチャーン指標を区別し、それぞれの計算手法と改善アプローチを整理する。</p>
+
+      <h3 id="logo-churn">ロゴチャーン（顧客数ベース解約率）</h3>
+
+      <p>ロゴチャーンは、一定期間内に解約した顧客数の割合である。「ロゴ」とは企業ロゴに由来するB2B SaaS用語だが、B2Cサービスでは「ユーザー数ベース解約率」と読み替える。</p>
+
+      <p><b>月次ロゴチャーン率 = 当月解約顧客数 ÷ 月初顧客数 × 100%</b></p>
+
+      <p>AI恋愛サービスの場合、ロゴチャーンの主要ドライバーは以下のとおりである：</p>
+
+      <ul>
+        <li><b>成功解約（Success Churn）</b>：交際開始・結婚等の成果達成による自然離脱。全解約の40〜50%を占めると推定</li>
+        <li><b>不満解約（Dissatisfaction Churn）</b>：期待した成果が得られないことによる離脱。20〜30%</li>
+        <li><b>価格解約（Price Churn）</b>：費用対効果の不足を理由とした離脱。<a href="ai-dating-pricing-psychology.html">AI恋愛サービスの価格心理学</a>の知見で改善可能。10〜15%</li>
+        <li><b>競合流出（Competitive Churn）</b>：競合サービスへの乗り換え。10〜15%</li>
+      </ul>
+
+      <h3 id="revenue-churn">レベニューチャーン（収益ベース解約率）</h3>
+
+      <p>レベニューチャーンは、解約・ダウングレードによって失われた収益の割合であり、ロゴチャーンよりも事業インパクトを正確に反映する。高額プラン顧客の解約はロゴチャーンでは1件でも、レベニューチャーンでは大きな影響を及ぼす。</p>
+
+      <p><b>月次グロス・レベニューチャーン率 = （Churned MRR + Contraction MRR）÷ 月初MRR × 100%</b></p>
+
+      <table>
+        <thead>
+          <tr><th>チャーン種別</th><th>計算式</th><th>SaaS健全水準</th><th>恋愛サービス目標</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>月次ロゴチャーン</td><td>解約数÷月初顧客数</td><td>&lt;5%/月</td><td>&lt;8%/月（成功解約含む）</td></tr>
+          <tr><td>月次グロス・レベニューチャーン</td><td>(Churned+Contraction MRR)÷月初MRR</td><td>&lt;2%/月</td><td>&lt;4%/月</td></tr>
+          <tr><td>年次ロゴチャーン</td><td>1−(1−月次ロゴ)^12</td><td>&lt;10%/年</td><td>&lt;60%/年（構造的制約）</td></tr>
+          <tr><td>年次グロス・レベニューチャーン</td><td>1−(1−月次グロスRev)^12</td><td>&lt;15%/年</td><td>&lt;40%/年</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="negative-churn">ネガティブチャーン</h3>
+
+      <p>ネガティブチャーンとは、既存顧客からの拡張収益（Expansion MRR）が解約・縮小による損失（Churned MRR + Contraction MRR）を上回る状態を指す。ネガティブチャーンを達成したSaaSは、新規獲得がゼロでも収益が自然成長する極めて強力なビジネスモデルとなる。</p>
+
+      <p><b>ネット・レベニューチャーン率 = （Churned MRR + Contraction MRR − Expansion MRR）÷ 月初MRR × 100%</b></p>
+
+      <p>この値がマイナスになる状態がネガティブチャーンである。恋愛サービスでネガティブチャーンを実現するための戦略：</p>
+
+      <ol>
+        <li><b>プランアップセルの加速</b>：利用データに基づく最適タイミングでのアップグレード提案（例：マッチング率の可視化によるプレミアム訴求）</li>
+        <li><b>アドオン課金の拡充</b>：デート場所レコメンド、コーディネート提案、ギフト選定支援等の付加価値機能</li>
+        <li><b>ライフステージ拡張</b>：交際→婚活→結婚準備→夫婦関係改善へのサービス範囲拡大</li>
+        <li><b>データフライホイール活用</b>：<a href="dating-data-flywheel.html">恋愛データフライホイール</a>により蓄積された行動データの高度分析レポートを有料オプション化</li>
+      </ol>
+
+      <h2 id="cac-ltv-optimization">CAC/LTV/LTV:CAC比率の最適化</h2>
+
+      <p>顧客獲得コスト（CAC）と顧客生涯価値（LTV）の関係性はSaaSビジネスの持続可能性を決定する最重要因子である。<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>で示した基本的なCAC/LTV分析を深化させ、最適化のための実務的フレームワークを構築する。</p>
+
+      <h3 id="cac-calculation">CACの精緻な計算</h3>
+
+      <p>CACの計算は単純な「マーケティング費÷新規顧客数」では不十分である。完全負荷型CAC（Fully Loaded CAC）として、以下のすべてのコストを含めるべきである：</p>
+
+      <ul>
+        <li><b>マーケティング費用</b>：広告費、コンテンツ制作費、SEO施策費、インフルエンサー費用</li>
+        <li><b>セールス費用</b>：B2Cでは限定的だが、カスタマーサクセスのオンボーディングコストを含む</li>
+        <li><b>ツール費用</b>：MA（マーケティングオートメーション）、分析ツール、CRMの月額費用</li>
+        <li><b>人件費</b>：マーケティングチーム・グロースチームの人件費按分</li>
+      </ul>
+
+      <p><b>完全負荷型CAC = （マーケティング費 + セールス費 + ツール費 + 関連人件費）÷ 新規有料顧客数</b></p>
+
+      <h3 id="ltv-cac-ratio">LTV:CAC比率の最適化</h3>
+
+      <p>LTV:CAC比率はSaaSの投資効率を示す指標であり、業界では<b>3:1以上</b>が健全とされる。ただし、この比率が高すぎる（例：10:1以上）場合は、成長投資が不足している可能性を示唆する。</p>
+
+      <table>
+        <thead>
+          <tr><th>LTV:CAC比率</th><th>評価</th><th>推奨アクション</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>&lt;1:1</td><td>危険：顧客獲得で損失</td><td>即座にCACの削減またはLTVの向上施策を実行</td></tr>
+          <tr><td>1:1〜2:1</td><td>要改善：利益が薄い</td><td>チャネルミックスの最適化、転換率改善</td></tr>
+          <tr><td>3:1〜5:1</td><td>健全：適切な投資効率</td><td>現状維持しつつスケール投資を検討</td></tr>
+          <tr><td>5:1〜8:1</td><td>良好：投資余力あり</td><td>成長加速のためのマーケティング投資拡大</td></tr>
+          <tr><td>&gt;10:1</td><td>過少投資の可能性</td><td>積極的な成長投資で市場シェア拡大</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="cac-payback">CACペイバック期間</h3>
+
+      <p>CACペイバック期間は、顧客獲得に投じたコストを回収するまでの月数であり、キャッシュフロー管理の観点から極めて重要な指標である。</p>
+
+      <p><b>CACペイバック期間（月） = CAC ÷ （ARPU × 粗利率）</b></p>
+
+      <p>恋愛サービスの場合、平均利用期間が4〜6ヶ月と短いため、CACペイバック期間を<b>3ヶ月以内</b>に抑えることが必須条件となる。口コミ/紹介チャネル（CAC 4,167円、ペイバック約1.2ヶ月）の比率拡大が最も効果的な戦略である。</p>
+
+      <h2 id="cohort-analysis">コホート分析とリテンションカーブ</h2>
+
+      <p>コホート分析は、同一時期に獲得した顧客群（コホート）の行動を時系列で追跡する手法であり、SaaSビジネスにおけるリテンション（継続率）の真の姿を明らかにする。平均値では見えない「改善が効いているのか」「特定月のコホートだけ悪いのか」といった構造的洞察を得るために不可欠な分析手法である。</p>
+
+      <h3 id="retention-curve">リテンションカーブの分析</h3>
+
+      <p>リテンションカーブは、各コホートの継続率を月次で描画した曲線である。健全なSaaSでは、一定期間の急降下の後にカーブが水平化（フラットニング）する特性を示す。カーブが水平化しない場合は、コアバリューの不足を示唆する深刻な問題である。</p>
+
+      <table>
+        <thead>
+          <tr><th>経過月数</th><th>一般的SaaS</th><th>恋愛サービス（現状推定）</th><th>恋愛サービス（目標）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Month 1</td><td>85〜90%</td><td>80〜85%</td><td>88〜92%</td></tr>
+          <tr><td>Month 3</td><td>70〜80%</td><td>55〜65%</td><td>70〜75%</td></tr>
+          <tr><td>Month 6</td><td>60〜70%</td><td>30〜40%</td><td>50〜55%</td></tr>
+          <tr><td>Month 12</td><td>50〜60%</td><td>15〜20%</td><td>35〜40%</td></tr>
+          <tr><td>Month 24</td><td>40〜50%</td><td>5〜10%</td><td>20〜25%</td></tr>
+        </tbody>
+      </table>
+
+      <p>恋愛サービスのリテンションカーブが一般的SaaSより急降下する要因は「成功解約」であり、これは必ずしもネガティブではない。重要なのは、成功解約を除外した「不満解約リテンション」を別途追跡し、プロダクト品質の真の指標とすることである。</p>
+
+      <h3 id="cohort-segmentation">コホートセグメンテーション</h3>
+
+      <p>効果的なコホート分析のためには、時間軸だけでなく以下の多次元でセグメンテーションを行う：</p>
+
+      <ul>
+        <li><b>獲得チャネル別コホート</b>：SEO経由 vs. 広告経由 vs. 紹介経由でリテンション特性が大きく異なる</li>
+        <li><b>課金プラン別コホート</b>：プレミアムプランの方がリテンションが高い傾向（投資額に比例するコミットメント効果）</li>
+        <li><b>初期エンゲージメント別コホート</b>：登録後7日以内に3回以上セッションを持った顧客は2倍以上のリテンション率</li>
+        <li><b>年齢・目的別コホート</b>：婚活目的ユーザーは恋活目的より平均利用期間が長い傾向</li>
+      </ul>
+
+      <h3 id="smiling-curve">スマイリングカーブの実現</h3>
+
+      <p>最上級のSaaSプロダクトは、リテンションカーブが初期降下の後に反転上昇する「スマイリングカーブ」を描く。これは離脱したユーザーが再び戻ってくる（リアクティベーション）ことで生じる。恋愛サービスにおいては、一度交際して別れたユーザーや、新たな出会いを求めるユーザーの復帰を促す「Welcome Back」プログラムの設計がスマイリングカーブ実現の鍵となる。</p>
+
+      <h2 id="saas-benchmarks">SaaSベンチマークとの比較</h2>
+
+      <p>個別指標の改善だけでなく、複数指標を統合した「健全性スコア」に基づくベンチマーキングが、SaaSビジネスの総合的な成長品質を評価するために重要である。</p>
+
+      <h3 id="rule-of-40">Rule of 40（40%ルール）</h3>
+
+      <p>Rule of 40は、SaaSビジネスの成長率と利益率の合計が40%を超えるべきという経験則であり、成長と収益性のバランスを測る最も広く使われるベンチマークである。</p>
+
+      <p><b>Rule of 40 スコア = 売上成長率（YoY%） + 営業利益率（%）</b></p>
+
+      <table>
+        <thead>
+          <tr><th>スコア</th><th>評価</th><th>恋愛サービス想定シナリオ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>60%超</td><td>例外的に優秀</td><td>Year 1〜2：成長率200%超で容易に達成可能</td></tr>
+          <tr><td>40〜60%</td><td>優良</td><td>Year 2〜3：成長率鈍化後も達成すべき水準</td></tr>
+          <tr><td>20〜40%</td><td>標準的</td><td>Year 3以降の安定成長期の目標</td></tr>
+          <tr><td>20%未満</td><td>要改善</td><td>構造的な問題を示唆</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="magic-number">SaaS Magic Number</h3>
+
+      <p>Magic Numberは、セールス＆マーケティング投資の効率性を測定する指標であり、1ドルの投資が何ドルの新規ARRを生むかを示す。</p>
+
+      <p><b>Magic Number = （当四半期ARR − 前四半期ARR）÷ 前四半期S&M費用</b></p>
+
+      <ul>
+        <li><b>&gt;1.0</b>：効率的、積極投資を推奨</li>
+        <li><b>0.5〜1.0</b>：標準的、投資継続しつつ効率改善</li>
+        <li><b>&lt;0.5</b>：非効率、投資配分の見直しが必要</li>
+      </ul>
+
+      <h3 id="quick-ratio">SaaS Quick Ratio</h3>
+
+      <p>Quick Ratioは、MRRの「入り」と「出」の比率であり、成長の質を評価する指標である。</p>
+
+      <p><b>Quick Ratio = （New MRR + Expansion MRR）÷ （Churned MRR + Contraction MRR）</b></p>
+
+      <ul>
+        <li><b>&gt;4.0</b>：非常に健全な成長</li>
+        <li><b>2.0〜4.0</b>：良好な成長</li>
+        <li><b>1.0〜2.0</b>：成長しているがチャーンが大きい</li>
+        <li><b>&lt;1.0</b>：MRRが縮小中</li>
+      </ul>
+
+      <h3 id="dating-specific-kpis">恋愛サービス特有のKPI設計</h3>
+
+      <p><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のようなバーティカルSaaSでは、汎用SaaS指標に加えて業界特有のKPIを設計する必要がある。一般的なSaaSの「利用継続＝成功」という前提が成立しないため、成功と解約の関係を再定義する独自の指標体系が求められる。</p>
+
+      <table>
+        <thead>
+          <tr><th>KPIカテゴリ</th><th>指標名</th><th>定義</th><th>目標値</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>成果指標</td><td>マッチング成功率</td><td>月間マッチング成立数÷アクティブユーザー数</td><td>&gt;15%/月</td></tr>
+          <tr><td>成果指標</td><td>デート実現率</td><td>マッチング成立からデート実現までの転換率</td><td>&gt;40%</td></tr>
+          <tr><td>成果指標</td><td>交際開始率</td><td>デート実現から交際開始の転換率</td><td>&gt;20%</td></tr>
+          <tr><td>エンゲージメント</td><td>週次アクティブ率</td><td>WAU÷総有料ユーザー数</td><td>&gt;70%</td></tr>
+          <tr><td>エンゲージメント</td><td>AI提案採用率</td><td>AI提案メッセージの採用÷提案総数</td><td>&gt;50%</td></tr>
+          <tr><td>品質指標</td><td>成功解約率</td><td>成功理由解約÷全解約</td><td>&gt;50%（高いほど良い）</td></tr>
+          <tr><td>品質指標</td><td>NPS</td><td>推奨者−批判者の割合</td><td>&gt;40</td></tr>
+          <tr><td>収益効率</td><td>AI応答あたり収益</td><td>MRR÷月間AI応答総数</td><td>&gt;15円/応答</td></tr>
+          <tr><td>データ資産</td><td>データフライホイール速度</td><td><a href="dating-data-flywheel.html">恋愛データフライホイール</a>の1回転所要日数</td><td>&lt;14日</td></tr>
+        </tbody>
+      </table>
+
+      <p>これらのKPIを統合的にモニタリングするダッシュボードを構築し、週次でのレビューサイクルを回すことが、SaaSビジネスとしての継続的な成長を実現するための実務的基盤となる。<a href="matching-app-market.html">マッチングアプリ市場</a>の競争環境においては、これらの指標に基づく迅速な意思決定が競合との差別化を決定づける。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#revenue-metrics">収益指標の定義と計算手法</a></li>
+          <li class="toc-h3"><a href="#mrr-definition">MRR（Monthly Recurring Revenue）</a></li>
+          <li class="toc-h3"><a href="#arr-definition">ARR（Annual Recurring Revenue）</a></li>
+          <li class="toc-h3"><a href="#nrr-definition">NRR（Net Revenue Retention）</a></li>
+          <li><a href="#churn-analysis">チャーン分析</a></li>
+          <li class="toc-h3"><a href="#logo-churn">ロゴチャーン（顧客数ベース解約率）</a></li>
+          <li class="toc-h3"><a href="#revenue-churn">レベニューチャーン（収益ベース解約率）</a></li>
+          <li class="toc-h3"><a href="#negative-churn">ネガティブチャーン</a></li>
+          <li><a href="#cac-ltv-optimization">CAC/LTV/LTV:CAC比率の最適化</a></li>
+          <li class="toc-h3"><a href="#cac-calculation">CACの精緻な計算</a></li>
+          <li class="toc-h3"><a href="#ltv-cac-ratio">LTV:CAC比率の最適化</a></li>
+          <li class="toc-h3"><a href="#cac-payback">CACペイバック期間</a></li>
+          <li><a href="#cohort-analysis">コホート分析とリテンションカーブ</a></li>
+          <li class="toc-h3"><a href="#retention-curve">リテンションカーブの分析</a></li>
+          <li class="toc-h3"><a href="#cohort-segmentation">コホートセグメンテーション</a></li>
+          <li class="toc-h3"><a href="#smiling-curve">スマイリングカーブの実現</a></li>
+          <li><a href="#saas-benchmarks">SaaSベンチマークとの比較</a></li>
+          <li class="toc-h3"><a href="#rule-of-40">Rule of 40（40%ルール）</a></li>
+          <li class="toc-h3"><a href="#magic-number">SaaS Magic Number</a></li>
+          <li class="toc-h3"><a href="#quick-ratio">SaaS Quick Ratio</a></li>
+          <li class="toc-h3"><a href="#dating-specific-kpis">恋愛サービス特有のKPI設計</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="ai-dating-pricing-psychology.html">AI恋愛サービスの価格心理学</a></li>
+          <li><a href="dating-data-flywheel.html">恋愛データフライホイール</a></li>
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="ai-dating-pricing-psychology.html">AI恋愛サービスの価格心理学</a></li>
+        <li><a href="dating-data-flywheel.html">恋愛データフライホイール</a></li>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

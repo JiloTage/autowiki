@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIマッチングの公平性設計 - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a> &gt; AIマッチングの公平性設計
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">AIマッチングの公平性設計</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">AIマッチングシステムにおけるアルゴリズムバイアスの類型・公平性指標・監査フレームワーク・緩和手法を体系的に整理し、公平性とマッチング精度のトレードオフを踏まえた実践的な設計指針を解説する。</div>
+
+      <p><b>AIマッチングの公平性設計</b>（Fairness-aware Design for AI Matching）とは、AIを用いたマッチングアルゴリズムが特定の属性（年齢・外見・学歴・人種・性別など）に基づく不当な差別や偏りを生じさせないよう、システムの設計・開発・運用の全段階にわたって公平性を組み込むための技術的・制度的フレームワークである。<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>によるユーザープロファイリングや<a href="matching-algorithm-design.html">マッチングアルゴリズム設計</a>が高度化する一方、学習データや目的関数に内在するバイアスがマッチング結果の不公平性として顕在化するリスクが増大しており、<a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a>の中核的課題として注目を集めている。</p>
+
+      <h2 id="bias-taxonomy">アルゴリズムバイアスの類型</h2>
+
+      <p>AIマッチングシステムにおけるバイアスは、その発生段階と影響メカニズムに応じて複数の類型に分類される。バイアスは単独で存在するのではなく、相互に増幅し合う構造的問題であることを理解することが、公平性設計の出発点となる。</p>
+
+      <h3 id="data-bias">データバイアス</h3>
+
+      <p>学習データに内在するバイアスは、アルゴリズムバイアスの最も根本的な原因である：</p>
+
+      <ul>
+        <li><b>選択バイアス（Selection Bias）</b>：サービスの利用者層が社会全体を代表していない場合に生じる。高学歴・都市部在住・特定年齢層に偏った学習データは、それ以外の層に対するマッチング精度の低下を引き起こす。</li>
+        <li><b>歴史的バイアス（Historical Bias）</b>：過去のユーザー行動データに既存の社会的偏見が反映されている場合、アルゴリズムがその偏見を再生産・強化する。例えば、過去の「いいね」データに年齢差別や外見偏重が含まれていれば、推薦システムがその傾向を学習する。</li>
+        <li><b>測定バイアス（Measurement Bias）</b>：<a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a>が特定の肌色や顔立ちに対して系統的に異なるスコアを付与する場合など、特徴量の測定自体が不均等な精度を持つことに起因する。</li>
+        <li><b>ラベルバイアス（Label Bias）</b>：「マッチング成功」の定義自体に偏りが存在する場合に生じる。メッセージ返信率を成功指標とすると、外見的魅力が高いユーザーが過剰に有利となる目的関数が構成される。</li>
+      </ul>
+
+      <h3 id="algorithmic-bias">アルゴリズム固有バイアス</h3>
+
+      <p>データが完全であったとしても、アルゴリズムの設計自体がバイアスを生む場合がある：</p>
+
+      <ul>
+        <li><b>最適化バイアス</b>：全体の平均的なマッチング成功率を最大化する目的関数は、多数派グループに最適化される傾向がある。少数派グループ（LGBTQ+、障害を持つユーザー、高齢ユーザーなど）のマッチング品質が犠牲になりやすい。</li>
+        <li><b>フィードバックループバイアス</b>：推薦されたマッチングに対するユーザー行動がさらに学習データとなることで、初期の偏りが自己強化される。人気ユーザーがさらに推薦され、不人気ユーザーがさらに埋没する「富める者はますます富む」構造が形成される。</li>
+        <li><b>代理変数バイアス（Proxy Bias）</b>：保護属性（人種・年齢など）を直接使用しなくても、居住地域・職業・学歴・名前などの代理変数を通じて間接的に差別が生じる。</li>
+        <li><b>交差的バイアス（Intersectional Bias）</b>：単一の保護属性では検出されないが、複数属性の組み合わせ（例：高齢×女性×地方在住）で顕著な不公平が生じるケース。通常のバイアス検出では見落とされやすい。</li>
+      </ul>
+
+      <h3 id="protected-attributes">マッチング文脈における保護属性</h3>
+
+      <p>恋愛マッチングにおける保護属性の扱いは、雇用や融資とは本質的に異なる複雑さを持つ。個人の選好（preference）と差別（discrimination）の境界は曖昧であり、以下のような特殊な考慮が必要となる：</p>
+
+      <table>
+        <thead>
+          <tr><th>属性</th><th>バイアスの具体例</th><th>「選好」と「差別」の境界</th><th>設計上の対応方針</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>年齢</b></td><td>30代後半以降の女性のマッチング率が急激に低下する</td><td>年齢の希望範囲は正当な選好だが、アルゴリズムが不当に年齢を重み付けする場合は差別</td><td>年齢フィルターの影響度を制限、露出機会の均等化</td></tr>
+          <tr><td><b>外見</b></td><td>特定の容姿が過剰に優遇される「ルッキズムの再生産」</td><td>外見的魅力への関心は自然だが、AIスコアリングが特定基準を押し付ける場合は差別</td><td>写真スコアの影響上限設定、多様な魅力基準の導入</td></tr>
+          <tr><td><b>学歴</b></td><td>特定大学出身者が不均衡に推薦される「学歴フィルター」</td><td>教育レベルの希望は容認されるが、代理変数として社会階層差別に繋がるリスク</td><td>学歴の重み付け上限、価値観ベースのマッチング推進</td></tr>
+          <tr><td><b>人種・民族</b></td><td>特定の人種グループが体系的に低いマッチング率を経験する</td><td>文化的近接性の選好は存在するが、アルゴリズムがステレオタイプを強化する場合は差別</td><td>人種関連代理変数の監視、クロスグループ推薦の促進</td></tr>
+          <tr><td><b>経済力</b></td><td>収入レベルに基づく「経済的ゲーティング」</td><td>生活水準の希望は合理的だが、経済力で人間の価値が序列化される場合は差別</td><td>経済指標の間接的推定の禁止、多面的プロファイリング</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="fairness-metrics">公平性指標の体系</h2>
+
+      <p>アルゴリズムの公平性を定量的に評価するために、機械学習の公平性研究で提案された主要な指標をマッチング文脈に適応させる。重要な点として、これらの指標は一般に相互に矛盾することが数学的に証明されており（不可能性定理）、全てを同時に満たすことはできない。</p>
+
+      <h3 id="group-fairness">グループ公平性指標</h3>
+
+      <ul>
+        <li><b>Demographic Parity（統計的パリティ）</b>：保護属性に関わらず、マッチング推薦を受ける確率が等しいことを要求する。P(推薦|A=a) = P(推薦|A=b) for all a, b。最も直感的だが、実際の適合性の差異を無視するため、マッチング品質の低下を招く可能性がある。</li>
+        <li><b>Equalized Odds（等確率化）</b>：真のマッチング適合性が同じであれば、保護属性に関わらず推薦確率が等しいことを要求する。P(推薦|Y=y, A=a) = P(推薦|Y=y, A=b) for all y, a, b。Demographic Parityより洗練されているが、「真のマッチング適合性」の定義自体にバイアスが含まれうるという課題がある。</li>
+        <li><b>Equal Opportunity（機会均等）</b>：Equalized Oddsの簡略版で、真にマッチング可能なペアに限定して推薦確率の均等性を検証する。P(推薦|Y=1, A=a) = P(推薦|Y=1, A=b)。偽陽性率の不均衡は許容するため、実用的な妥協点として広く採用される。</li>
+        <li><b>Calibration（較正）</b>：推薦スコアが各グループで同じ意味を持つことを要求する。スコア0.8のマッチングが実際に成功する確率が、全てのグループで等しいこと。</li>
+      </ul>
+
+      <h3 id="individual-fairness">Individual Fairness（個人公平性）</h3>
+
+      <p>グループ公平性が集団レベルの指標であるのに対し、Individual Fairnessは「類似した個人は類似した扱いを受けるべきである」という直感に基づく。形式的には、個人間の「タスク関連類似度」d(x, y)に対して、マッチング推薦の分布の類似度D(M(x), M(y))が以下を満たすことを要求する：</p>
+
+      <p>D(M(x), M(y)) ≤ L・d(x, y)（Lipschitz条件）</p>
+
+      <p>マッチング文脈でのIndividual Fairnessの実装には以下の課題がある：</p>
+
+      <ul>
+        <li><b>類似度関数の設計</b>：「マッチングにおいて類似した2人」とは何かを定義する必要があるが、この定義自体がバイアスを含みうる。パーソナリティ特性・価値観・コミュニケーションスタイルなど、保護属性と相関の低い特徴量に基づく類似度設計が求められる。</li>
+        <li><b>計算コスト</b>：全ユーザーペア間の類似度計算はO(n^2)のコストを要するため、大規模サービスでは近似手法が必要となる。</li>
+        <li><b>選好の非対称性</b>：マッチングは双方の選好が関与するため、個人公平性を一方的に適用すると他方の不公平が生じる二面市場特有の課題がある。</li>
+      </ul>
+
+      <h3 id="fairness-impossibility">公平性指標の不可能性定理</h3>
+
+      <p>Chouldechova（2017）およびKleinberg et al.（2016）により、以下の3つの公平性指標を同時に満たすことは、基準率（base rate）がグループ間で異なる場合に不可能であることが証明されている：</p>
+
+      <ol>
+        <li>Calibration（較正）</li>
+        <li>False Positive Rate Parity（偽陽性率の均等化）</li>
+        <li>False Negative Rate Parity（偽陰性率の均等化）</li>
+      </ol>
+
+      <p>この定理は、マッチングシステム設計者が「どの公平性を優先するか」という価値判断を明示的に行う必要があることを意味する。技術的な問題であると同時に、社会的・倫理的な問題でもある。</p>
+
+      <h2 id="audit-framework">バイアス検出・監査フレームワーク</h2>
+
+      <p>公平性を継続的に保証するためには、開発段階のみならず運用中も含めた体系的な監査フレームワークが不可欠である。以下に、マッチングAI特化型の監査パイプラインを示す。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+flowchart TB
+    A["データ監査<br/>（前処理段階）"] --> B["モデル監査<br/>（学習段階）"]
+    B --> C["出力監査<br/>（推論段階）"]
+    C --> D["影響監査<br/>（運用段階）"]
+    D --> E["是正措置<br/>（改善段階）"]
+    E --> A
+
+    A --> A1["保護属性の分布分析"]
+    A --> A2["代理変数の相関検出"]
+    A --> A3["歴史的バイアスの定量化"]
+
+    B --> B1["モデル内部表現の公平性検証"]
+    B --> B2["特徴量重要度の保護属性相関"]
+    B --> B3["交差的サブグループ分析"]
+
+    C --> C1["グループ間推薦率の比較"]
+    C --> C2["スコア分布の較正検証"]
+    C --> C3["推薦ペアの多様性指標"]
+
+    D --> D1["実際のマッチング成功率の<br/>グループ間比較"]
+    D --> D2["ユーザー満足度の<br/>公平性監査"]
+    D --> D3["長期的なフィードバック<br/>ループ検出"]
+
+    E --> E1["再重み付け・再サンプリング"]
+    E --> E2["制約付き最適化の更新"]
+    E --> E3["目的関数の修正"]
+      </pre></div>
+
+      <h3 id="pre-deployment-audit">デプロイ前監査</h3>
+
+      <p>サービス公開前に実施すべき体系的な公平性検証：</p>
+
+      <ol>
+        <li><b>データシート（Datasheet）作成</b>：学習データの収集方法・対象・期間・ラベル付けプロセス・既知のバイアスを文書化する。Gebru et al.（2021）のフレームワークに準拠し、データの出自を透明化する。</li>
+        <li><b>モデルカード（Model Card）作成</b>：モデルの意図された用途・制限事項・公平性評価結果・推奨される使用条件を文書化する。Mitchell et al.（2019）のフレームワークに基づく。</li>
+        <li><b>レッドチーミング</b>：意図的にバイアスを発見しようとする敵対的テストチーム（多様な背景を持つメンバーで構成）による体系的な公平性テスト。</li>
+        <li><b>交差的監査</b>：単一属性だけでなく、年齢×性別×地域×学歴などの交差グループについて公平性指標を網羅的に検証する。Crenshaw（1989）のインターセクショナリティ理論を実装に反映させる。</li>
+      </ol>
+
+      <h3 id="continuous-monitoring">継続的モニタリング</h3>
+
+      <p>運用中のシステムに対するリアルタイム監視体制：</p>
+
+      <ul>
+        <li><b>公平性ダッシュボード</b>：主要なグループ公平性指標を日次・週次で自動算出し、閾値逸脱時にアラートを発報する。保護属性の定義はプライバシー保護の下で統計的に推定する。</li>
+        <li><b>ドリフト検出</b>：公平性指標の時系列的変化を監視し、特定グループへの影響が悪化するトレンドを早期に検出する。季節性やイベント（バレンタインデー等）による一時的変動と構造的バイアスの悪化を区別する統計的手法を導入する。</li>
+        <li><b>ユーザーフィードバック統合</b>：「公平に扱われていない」と感じるユーザーからの報告を収集・分析するチャネルを整備する。定量的指標では捉えきれない主観的公平性（perceived fairness）を把握する。</li>
+        <li><b>外部監査制度</b>：四半期ごとに独立した第三者機関による公平性監査を実施し、結果の概要を公開する。<a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a>における透明性原則を具体化する。</li>
+      </ul>
+
+      <h2 id="mitigation-techniques">バイアス緩和手法</h2>
+
+      <p>検出されたバイアスを技術的に緩和するための手法は、介入タイミングに応じて前処理（pre-processing）・処理中（in-processing）・後処理（post-processing）の3カテゴリに大別される。</p>
+
+      <h3 id="pre-processing">前処理手法</h3>
+
+      <p>学習データに対する介入により、モデル学習前にバイアスを低減する：</p>
+
+      <ul>
+        <li><b>再重み付け（Reweighting）</b>：学習データ中の各サンプルに対して、保護属性とラベルの同時分布が均等になるよう重みを付与する。過小代表グループのサンプルに高い重みを、過大代表グループに低い重みを設定することで、事実上のバランシングを行う。実装が容易で既存パイプラインへの影響が最小限である利点がある。</li>
+        <li><b>再サンプリング（Resampling）</b>：アンダーサンプリング（多数派グループの削減）またはオーバーサンプリング（少数派グループの複製・合成）によりデータバランスを調整する。SMOTEなどの合成手法を活用し、単純な複製によるオーバーフィッティングを回避する。</li>
+        <li><b>逆ラベリング（Massaging / Relabeling）</b>：決定境界付近のサンプルについて、ラベルを反転させることでグループ間の統計的パリティを改善する。改変されたデータが「実態」から乖離するリスクがあるため、変更率の上限を設ける。</li>
+        <li><b>公平表現学習（Fair Representation Learning）</b>：保護属性の情報を除去しつつ、タスクに必要な情報を保持する中間表現を学習する。変分オートエンコーダ（VAE）やアドバーサリアルネットワークを活用し、保護属性が予測不能な潜在空間への写像を行う。</li>
+      </ul>
+
+      <h3 id="in-processing">処理中手法</h3>
+
+      <p>モデルの学習プロセス自体に公平性制約を組み込む：</p>
+
+      <ul>
+        <li><b>制約付き最適化</b>：マッチング精度を最大化する目的関数に、公平性指標を制約条件として追加する。ラグランジュ乗数法により、精度と公平性のパレート最適解を探索する。</li>
+        <li><b>対抗学習（Adversarial Debiasing）</b>：メインタスクの予測器と、保護属性の予測器（敵対者）を同時に学習させる。メインモデルは敵対者が保護属性を予測できないような表現を学習することで、保護属性に依存しない推薦を実現する。</li>
+        <li><b>因果推論ベース手法</b>：保護属性からマッチング結果への因果パスを特定し、不当な因果パス（direct discrimination）のみを遮断する。正当な因果パス（例：共通の趣味→マッチング成功）は保持するため、より精緻な公平性制御が可能。</li>
+        <li><b>公平正則化（Fairness Regularization）</b>：損失関数に公平性ペナルティ項を追加する。λパラメータにより精度と公平性のトレードオフを連続的に制御できる。L_total = L_task + λ・L_fairness。</li>
+      </ul>
+
+      <h3 id="post-processing">後処理手法</h3>
+
+      <p>学習済みモデルの出力に対して公平性調整を適用する：</p>
+
+      <ul>
+        <li><b>閾値調整</b>：グループごとに推薦スコアの閾値を異なる値に設定し、グループ間の推薦率を均等化する。モデル自体を再学習する必要がないため、迅速な対応が可能。ただし、閾値の異なるグループ間でスコアの意味が変わるという課題がある。</li>
+        <li><b>ランキング多様化</b>：推薦リストの上位に特定属性のユーザーが集中しないよう、多様性制約を課した再ランキングを行う。MMR（Maximal Marginal Relevance）やDPP（Determinantal Point Process）を応用する。</li>
+        <li><b>露出公平性（Exposure Fairness）</b>：各ユーザーが他者のプロフィールに表示される回数（露出）が、保護属性に関わらず一定範囲内に収まるよう制御する。Singh & Joachims（2018）の枠組みを適用する。</li>
+      </ul>
+
+      <h2 id="tradeoff">公平性とマッチング精度のトレードオフ</h2>
+
+      <p>公平性制約の導入はマッチング精度の低下を伴うことが多く、このトレードオフの管理がシステム設計の最大の実践的課題となる。</p>
+
+      <h3 id="tradeoff-analysis">トレードオフの定量的分析</h3>
+
+      <p>実証研究から得られたトレードオフの一般的傾向：</p>
+
+      <table>
+        <thead>
+          <tr><th>公平性制約</th><th>精度低下（典型値）</th><th>主な影響</th><th>推奨シナリオ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Demographic Parity</td><td>5〜15%</td><td>全体のマッチング成功率低下、多数派の不満</td><td>初期段階での露出均等化</td></tr>
+          <tr><td>Equalized Odds</td><td>3〜10%</td><td>偽陽性増加による非適合マッチングの増加</td><td>成功率の格差是正</td></tr>
+          <tr><td>Individual Fairness</td><td>2〜8%</td><td>個別最適化の制限</td><td>類似ユーザーの均等処遇</td></tr>
+          <tr><td>因果的公平性</td><td>1〜5%</td><td>不当な因果パスの遮断</td><td>精度と公平性の両立</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="practical-strategies">実践的な設計戦略</h3>
+
+      <p>トレードオフを管理するための設計原則と実践的アプローチ：</p>
+
+      <ol>
+        <li><b>段階的導入（Gradual Enforcement）</b>：公平性制約を一度に完全適用するのではなく、λパラメータを段階的に引き上げることで、ユーザー体験への急激な影響を回避する。A/Bテストにより各段階での影響を定量評価する。</li>
+        <li><b>文脈依存型公平性</b>：マッチングのフェーズ（初期推薦・メッセージ交換・デート提案）ごとに異なる公平性基準を適用する。初期推薦ではDemographic Parityを重視し、メッセージ段階以降ではIndividual Fairnessに移行する設計が有効。</li>
+        <li><b>ユーザー参加型公平性</b>：ユーザー自身が公平性に関する設定を調整できるインターフェースを提供する。「多様な出会いを重視」「マッチング精度を重視」などの選択肢により、ユーザーのエージェンシーを尊重する。</li>
+        <li><b>多目的最適化</b>：精度・公平性・多様性・ユーザー満足度を同時に最適化するパレートフロンティアを算出し、サービスの価値観に合致する解を選択する。</li>
+        <li><b>補償的設計</b>：公平性制約による精度低下を、他の技術的改善（より豊かなパーソナリティプロファイリング、コンテキスト情報の活用、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>のアドバイス品質向上）で補償する全体的なアプローチ。</li>
+      </ol>
+
+      <h3 id="governance">ガバナンスと意思決定構造</h3>
+
+      <p>公平性と精度のトレードオフに関する判断は、純粋に技術的な問題ではなく、倫理的・社会的な価値判断を伴う。以下のガバナンス構造を通じて、透明性と説明責任を確保する：</p>
+
+      <ul>
+        <li><b>AI倫理委員会</b>：技術者・心理学者・法律専門家・当事者代表で構成される委員会が、公平性基準の選定と許容されるトレードオフの範囲を決定する。</li>
+        <li><b>公平性インパクト評価</b>：新機能やモデル更新の前に、公平性への影響を事前評価するプロセスを義務化する。欧州AI規則（EU AI Act）の要件にも対応する。</li>
+        <li><b>透明性レポート</b>：公平性指標の推移、実施した緩和措置、残存する課題を定期的に公開し、社会的な信頼を構築する。</li>
+        <li><b>苦情処理メカニズム</b>：ユーザーが不公平な扱いを受けたと感じた場合の申立て・調査・是正のプロセスを明確に定め、独立した審査機関による判断を保証する。</li>
+      </ul>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#bias-taxonomy">アルゴリズムバイアスの類型</a></li>
+          <li class="toc-h3"><a href="#data-bias">データバイアス</a></li>
+          <li class="toc-h3"><a href="#algorithmic-bias">アルゴリズム固有バイアス</a></li>
+          <li class="toc-h3"><a href="#protected-attributes">マッチング文脈における保護属性</a></li>
+          <li><a href="#fairness-metrics">公平性指標の体系</a></li>
+          <li class="toc-h3"><a href="#group-fairness">グループ公平性指標</a></li>
+          <li class="toc-h3"><a href="#individual-fairness">Individual Fairness（個人公平性）</a></li>
+          <li class="toc-h3"><a href="#fairness-impossibility">公平性指標の不可能性定理</a></li>
+          <li><a href="#audit-framework">バイアス検出・監査フレームワーク</a></li>
+          <li class="toc-h3"><a href="#pre-deployment-audit">デプロイ前監査</a></li>
+          <li class="toc-h3"><a href="#continuous-monitoring">継続的モニタリング</a></li>
+          <li><a href="#mitigation-techniques">バイアス緩和手法</a></li>
+          <li class="toc-h3"><a href="#pre-processing">前処理手法</a></li>
+          <li class="toc-h3"><a href="#in-processing">処理中手法</a></li>
+          <li class="toc-h3"><a href="#post-processing">後処理手法</a></li>
+          <li><a href="#tradeoff">公平性とマッチング精度のトレードオフ</a></li>
+          <li class="toc-h3"><a href="#tradeoff-analysis">トレードオフの定量的分析</a></li>
+          <li class="toc-h3"><a href="#practical-strategies">実践的な設計戦略</a></li>
+          <li class="toc-h3"><a href="#governance">ガバナンスと意思決定構造</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計</a></li>
+          <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+          <li><a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="matching-algorithm-design.html">マッチングアルゴリズム設計</a></li>
+        <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+        <li><a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="ai-photo-scoring-algorithm.html">AI写真スコアリングアルゴリズム</a></li>
+        <li><a href="ai-ethics-dating.html">AI恋愛サービスの倫理設計</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

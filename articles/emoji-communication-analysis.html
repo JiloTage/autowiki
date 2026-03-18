@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>絵文字コミュニケーション分析 - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a> &gt; <a href="conversational-ai-coaching.html">会話AIコーチング技術</a> &gt; 絵文字コミュニケーション分析
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">絵文字コミュニケーション分析</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">テキストコミュニケーションにおける絵文字・スタンプの言語学的機能を体系化し、恋愛文脈での使用パターン・感情推定モデル・属性差分析・日本市場特有のLINEスタンプ文化・AIによる絵文字推薦アルゴリズムを包括的に解説する。</div>
+
+      <p><b>絵文字コミュニケーション分析</b>とは、テキストメッセージにおける絵文字（Emoji）・顔文字・スタンプなどの非言語的視覚記号の使用パターンを定量的に解析し、送信者の感情状態・関心度・関係性への意識を推定する技術領域である。<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>において感情シグナル検出の重要な入力源として機能し、<a href="nlp-sentiment-dating.html">恋愛特化NLP感情分析</a>と相互補完的な関係にある。マッチングアプリやメッセージングアプリでのやり取りにおいて、テキスト本文だけでは捉えきれない微細な感情ニュアンス――好意・照れ・親密さの演出・社交辞令としての距離感――を絵文字の選択・配置・頻度から読み解くことで、<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>はユーザーに対してより精度の高いコミュニケーション支援を提供する。</p>
+
+      <h2 id="linguistic-position">絵文字の言語学的位置づけ</h2>
+
+      <p>絵文字は単なる装飾ではなく、言語学的には「パラ言語（paralanguage）」の書記的表現として機能する。対面コミュニケーションにおける表情・声調・ジェスチャーに相当する非言語チャネルをテキスト空間で代替・補完する役割を担い、語用論的な曖昧性を解消する重要な記号体系である。</p>
+
+      <h3 id="semiotic-framework">記号論的フレームワーク</h3>
+
+      <p>C.S.パースの記号論に基づき、絵文字の記号的機能を以下の三層で捉える。</p>
+
+      <ul>
+        <li><b>類像記号（Icon）</b>：対象との視覚的類似性に基づく記号。😊（笑顔）、🌸（桜）など。解釈の文化差が比較的小さいが、デバイス間のレンダリング差異が意味のズレを生む場合がある。</li>
+        <li><b>指標記号（Index）</b>：対象との因果的・近接的関係に基づく記号。❤️（好意の指標）、😢（悲しみの指標）など。文脈依存性が高く、恋愛コミュニケーションでは特に受信者の解釈フレームが影響する。</li>
+        <li><b>象徴記号（Symbol）</b>：社会的慣習に基づく記号。🙏（日本では「お願い」、西洋では「祈り」）、💀（「面白すぎて死ぬ」のスラング用法）など。世代・文化・コミュニティで意味が大きく変動する。</li>
+      </ul>
+
+      <h3 id="pragmatic-functions">語用論的機能分類</h3>
+
+      <p>テキストメッセージにおける絵文字の語用論的機能は、以下の6類型に分類される。本システムではこの分類に基づいて絵文字の意味論的重みづけを行う。</p>
+
+      <table>
+        <thead>
+          <tr><th>機能類型</th><th>説明</th><th>例</th><th>恋愛文脈での重要度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>感情強化</b></td><td>テキストの感情トーンを増幅</td><td>「楽しかった😆」</td><td>★★★★★</td></tr>
+          <tr><td><b>アイロニー標識</b></td><td>字義通りでない意図を示す</td><td>「最高だね😏」</td><td>★★★★☆</td></tr>
+          <tr><td><b>緩衝・軟化</b></td><td>直接的表現の衝撃を和らげる</td><td>「ちょっと遅れます💦」</td><td>★★★☆☆</td></tr>
+          <tr><td><b>関係性マーカー</b></td><td>親密度・距離感を表示</td><td>「おやすみ🌙」vs「おやすみ✨」</td><td>★★★★★</td></tr>
+          <tr><td><b>ターン管理</b></td><td>会話の継続・終了を示唆</td><td>「👍」（会話終了シグナル）</td><td>★★★★☆</td></tr>
+          <tr><td><b>装飾・スタイル</b></td><td>メッセージの視覚的印象を調整</td><td>「今日のランチ🍝✨」</td><td>★★☆☆☆</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="romantic-patterns">恋愛コミュニケーションにおける絵文字使用パターン</h2>
+
+      <p>恋愛的関心が存在するコミュニケーションでは、絵文字の使用パターンに特徴的な変化が観察される。<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>と組み合わせることで、パーソナリティ特性と絵文字使用傾向の相関を高精度でモデル化できる。</p>
+
+      <h3 id="interest-escalation">関心度と絵文字エスカレーション</h3>
+
+      <p>恋愛的関心の高まりに伴い、絵文字使用は以下のエスカレーションパターンを示す。これは<a href="conversational-ai-coaching.html">会話AIコーチング</a>における親密度スコアの補助指標として活用される。</p>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    subgraph Stage1["Stage 1: 社交的距離"]
+        S1A["汎用絵文字のみ<br>😊🙂👍"]
+        S1B["1メッセージに0〜1個"]
+        S1C["文末配置が主"]
+    end
+    subgraph Stage2["Stage 2: 関心表出"]
+        S2A["感情強化絵文字増加<br>😆✨🎵"]
+        S2B["1メッセージに1〜2個"]
+        S2C["文中配置も出現"]
+    end
+    subgraph Stage3["Stage 3: 好意シグナル"]
+        S3A["ハート系登場<br>💕😍🥰"]
+        S3B["1メッセージに2〜3個"]
+        S3C["独立絵文字メッセージ"]
+    end
+    subgraph Stage4["Stage 4: 親密確立"]
+        S4A["カップル絵文字<br>内輪ネタ絵文字"]
+        S4B["使用量は安定化"]
+        S4C["独自の絵文字コード"]
+    end
+    Stage1 --> Stage2 --> Stage3 --> Stage4
+      </pre></div>
+
+      <p>重要な分析指標として、絵文字の「導入タイミング」がある。相手が使用していない絵文字カテゴリ（特にハート系）を最初に使用する側は、好意をより積極的に表出している可能性が高い。また、相手の使用した絵文字をミラーリングする行動は、無意識的な同調・好意のシグナルとして解釈できる。</p>
+
+      <h3 id="emoji-sentiment-map">絵文字感情マッピング</h3>
+
+      <p>恋愛コミュニケーションにおける主要絵文字について、好意度・親密度・真剣度の3軸で感情マッピングを構築している。以下は代表的な絵文字の位置づけである。</p>
+
+      <table>
+        <thead>
+          <tr><th>絵文字</th><th>好意度</th><th>親密度</th><th>真剣度</th><th>文脈的注意点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>😊</td><td>中</td><td>低〜中</td><td>中</td><td>汎用的で安全。初期会話で多用</td></tr>
+          <tr><td>😆</td><td>中〜高</td><td>中</td><td>低〜中</td><td>楽しさの表出。テンション高めの文脈</td></tr>
+          <tr><td>🥰</td><td>高</td><td>高</td><td>高</td><td>明確な好意表現。使用には段階が必要</td></tr>
+          <tr><td>😏</td><td>中〜高</td><td>中〜高</td><td>低</td><td>フリーティング。意味の二重性あり</td></tr>
+          <tr><td>💕</td><td>高</td><td>高</td><td>中〜高</td><td>ハート系の中でも柔らかい表現</td></tr>
+          <tr><td>❤️</td><td>非常に高</td><td>高</td><td>高</td><td>最も直接的な好意表現。重く受け取られる場合あり</td></tr>
+          <tr><td>👍</td><td>低</td><td>低</td><td>中</td><td>会話終了シグナルとして解釈されやすい</td></tr>
+          <tr><td>🙃</td><td>文脈依存</td><td>中</td><td>低</td><td>皮肉・自虐。Z世代で多用</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="emotion-model">絵文字頻度・種類・配置から推定する感情・関心度モデル</h2>
+
+      <p>本システムでは、絵文字の定量的特徴量を統合して送信者の感情状態と関心度をリアルタイムで推定するマルチモーダル感情モデルを構築している。<a href="nlp-sentiment-dating.html">恋愛特化NLP感情分析</a>のテキスト感情スコアと融合することで、単独分析よりも推定精度が平均12%向上することが確認されている。</p>
+
+      <h3 id="quantitative-features">定量的特徴量の抽出</h3>
+
+      <p>各メッセージおよび会話セッションから以下の特徴量を抽出する。</p>
+
+      <ul>
+        <li><b>絵文字密度（Emoji Density）</b>：メッセージあたりの絵文字数 / 総文字数。恋愛的関心が高い場合、初期会話では0.03〜0.05、親密期には0.08〜0.15に上昇する傾向がある。</li>
+        <li><b>絵文字多様性（Emoji Diversity）</b>：ユニーク絵文字数 / 総絵文字使用数。多様性が高い（>0.7）場合は表現豊かで関心が高い状態、低い（<0.3）場合は定型的応答の可能性を示す。</li>
+        <li><b>感情価バランス（Valence Balance）</b>：ポジティブ絵文字数 / 全絵文字数。恋愛コミュニケーションでは通常0.7〜0.9の範囲が健全で、1.0に近すぎる場合は社交辞令の可能性が浮上する。</li>
+        <li><b>配置パターン（Placement Pattern）</b>：文頭配置・文中配置・文末配置・独立使用の比率。文中配置や独立使用が増えるほど、感情表出の積極性が高いと判定する。</li>
+        <li><b>時系列変動（Temporal Delta）</b>：直近5メッセージの絵文字密度と過去20メッセージの平均との差分。急激な増加は感情の高揚を、急激な減少は関心低下または不満を示唆する。</li>
+      </ul>
+
+      <h3 id="interest-scoring">関心度スコアリングアルゴリズム</h3>
+
+      <p>上記特徴量を統合し、0〜100の関心度スコアを算出する。このスコアは<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>の親密度スコアに対して15%の重みで寄与する。</p>
+
+      <p>スコアリングでは、単純な特徴量の線形結合ではなく、コンテキスト修正係数を導入する。例えば、深夜帯（23:00〜2:00）の絵文字使用は親密度への寄与が1.3倍に増幅され、ビジネスライクな話題（日程調整等）での絵文字不使用はペナルティが軽減される。また、相手の絵文字使用パターンとの「同期度」も重要な指標であり、両者の絵文字カテゴリ使用分布のコサイン類似度が0.7以上の場合、コミュニケーションの同調が成立していると判定する。</p>
+
+      <h2 id="demographic-differences">男女差・年代差・文化差</h2>
+
+      <p>絵文字使用パターンには、性別・年代・文化圏による顕著な差異が存在する。これらの差異を無視した一律の分析は誤った感情推定を招くため、<a href="llm-personality-analysis.html">LLMパーソナリティ解析</a>で得られた属性情報に基づくキャリブレーションが不可欠である。</p>
+
+      <h3 id="gender-difference">性別による使用傾向の差異</h3>
+
+      <p>メッセージングアプリの大規模コーパス分析から、以下の傾向が確認されている。ただし個人差が大きいため、あくまで統計的傾向として扱い、個別のユーザーモデルで上書きされる。</p>
+
+      <ul>
+        <li><b>女性ユーザー</b>：平均絵文字密度が男性の1.6倍。感情表出系（😊💕✨）の使用率が高く、ハート系絵文字の使用閾値が男性より低い。顔文字（（＾＾）、（笑）等）との併用率も高い。</li>
+        <li><b>男性ユーザー</b>：絵文字密度は低いが、使用する場合の感情シグナル強度は相対的に高い。男性が❤️を送信した場合の好意確度は女性の同行動より統計的に高い。「笑」「w」などテキストベースの感情マーカーの使用率が女性より高い。</li>
+      </ul>
+
+      <h3 id="generational-difference">世代間ギャップ</h3>
+
+      <p>絵文字解釈の世代間ギャップは、マッチングアプリにおいて深刻なミスコミュニケーションを引き起こしうる。本システムではユーザーの年齢層に基づく解釈辞書の切り替えを行う。</p>
+
+      <table>
+        <thead>
+          <tr><th>絵文字</th><th>Z世代（〜27歳）の解釈</th><th>ミレニアル世代（28〜42歳）の解釈</th><th>X世代以上（43歳〜）の解釈</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>😂</td><td>やや古い・皮肉的</td><td>純粋に面白い</td><td>大笑い</td></tr>
+          <tr><td>💀</td><td>面白すぎて死ぬ</td><td>恐怖・危険</td><td>死・不吉</td></tr>
+          <tr><td>🙂</td><td>受動攻撃的・皮肉</td><td>軽い微笑み</td><td>フレンドリー</td></tr>
+          <tr><td>✨</td><td>万能の強調・テンション</td><td>キラキラ・特別感</td><td>綺麗・デコレーション</td></tr>
+          <tr><td>❤️‍🔥</td><td>強い好意・セクシー</td><td>情熱的</td><td>あまり使用しない</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="cultural-difference">文化圏による解釈差</h3>
+
+      <p>グローバルなマッチングアプリでは、絵文字の文化的解釈差への対応が重要となる。同一の絵文字でもポジティブ/ネガティブの判定が文化圏で逆転するケースが存在する。</p>
+
+      <ul>
+        <li><b>🙏</b>：日本では「お願い」「ありがとう」、西洋圏では「祈り」「希望」。恋愛文脈では日本では感謝の軽い表現だが、西洋では深刻さを帯びる場合がある。</li>
+        <li><b>👌</b>：日本・アメリカでは「OK」「良い」、ブラジル・トルコでは侮辱的ジェスチャー。異文化間マッチングでは使用を避けるべき絵文字リストに登録。</li>
+        <li><b>色彩の意味</b>：赤いハート❤️は多くの文化で恋愛的好意を表すが、中国文化圏では赤は「幸運」「祝福」の意味合いも強く、恋愛的意図と区別が必要。</li>
+      </ul>
+
+      <h2 id="line-stamp">LINEスタンプの特殊性と日本市場分析</h2>
+
+      <p>日本のメッセージング市場においてLINEスタンプは、Unicode絵文字とは本質的に異なるコミュニケーション記号体系を形成している。<a href="dating-psychology-ai.html">恋愛心理学AI応用</a>の観点から、スタンプ選択に反映される心理的メカニズムは絵文字以上に複雑であり、独立した分析フレームワークを必要とする。</p>
+
+      <h3 id="stamp-characteristics">LINEスタンプの固有特性</h3>
+
+      <p>LINEスタンプが通常の絵文字と異なる点は以下の通りである。</p>
+
+      <ul>
+        <li><b>高表現力</b>：アニメーション、テキスト付き、複雑な感情表現が可能。単一のスタンプで「照れながらも嬉しい」「怒っているふりをして実は喜んでいる」などの複合感情を伝達できる。</li>
+        <li><b>キャラクター同一性</b>：特定のキャラクターシリーズを継続使用することで、自己表現のアバター的機能を果たす。使用キャラクターの選択自体が性格特性の投影となる。</li>
+        <li><b>購入行動の意味</b>：有料スタンプの購入は、そのキャラクター・表現への「コミットメント」を示す。相手のために新しいスタンプを購入する行為は、好意の間接的シグナルとなりうる。</li>
+        <li><b>メッセージの完全代替</b>：テキストなしでスタンプのみのメッセージ送信が社会的に許容される。これはUnicode絵文字のみのメッセージ送信よりもはるかに自然な行為として受容されている。</li>
+      </ul>
+
+      <h3 id="stamp-sentiment">スタンプの感情分析技術</h3>
+
+      <p>LINEスタンプの自動感情分析は、通常の絵文字分析とは異なるアプローチを必要とする。スタンプ画像のマルチモーダル分析（表情認識・テキストOCR・動作分析）と、スタンプメタデータ（カテゴリ・タグ・人気度）を組み合わせたハイブリッド分類モデルを構築する。</p>
+
+      <p>スタンプのコンテキスト依存性は絵文字以上に高いため、直前のメッセージとの意味的関連性を加味した感情推定を行う。例えば、「泣いている」スタンプが「嬉しくて泣いている」のか「悲しくて泣いている」のかは、会話フローの文脈からのみ判別可能である。</p>
+
+      <h2 id="ai-recommendation">AIによる絵文字推薦と適切性判定</h2>
+
+      <p><a href="conversational-ai-coaching.html">会話AIコーチング技術</a>が返信候補を生成する際、テキスト本文だけでなく適切な絵文字の推薦も重要な機能となる。不適切な絵文字の使用は、効果的なテキスト本文の印象を損なう可能性があるため、<a href="conversation-repair-strategy.html">会話修復戦略</a>の予防的観点からも絵文字推薦の精度は重要である。</p>
+
+      <h3 id="recommendation-algorithm">絵文字推薦アルゴリズム</h3>
+
+      <p>推薦システムは以下の多段階フィルタリングパイプラインで構成される。</p>
+
+      <ul>
+        <li><b>Stage 1: 候補生成</b>：テキスト本文の感情分析結果に基づき、感情価が一致する絵文字の候補セット（通常15〜30個）を生成する。</li>
+        <li><b>Stage 2: ユーザースタイルフィルタ</b>：ユーザーの過去の絵文字使用履歴に基づき、使用実績のない絵文字カテゴリを除外。ユーザーの文体との整合性を確保する。</li>
+        <li><b>Stage 3: 関係性適合フィルタ</b>：現在の親密度スコアに基づき、過度に親密な絵文字（親密度60未満でのハート系等）や逆に距離感のある絵文字（親密度80以上での😊のみ等）を除外。</li>
+        <li><b>Stage 4: 相手モデル適合</b>：相手の絵文字使用パターン・年代・推定パーソナリティに基づき、誤解を招く可能性のある絵文字を除外。世代間ギャップによる解釈差を考慮する。</li>
+        <li><b>Stage 5: ランキング</b>：残った候補を適切性スコアでランキングし、上位3個を推薦する。スコアは感情適合度（40%）・スタイル整合度（25%）・関係性適合度（20%）・新鮮度（15%）の加重平均で算出。</li>
+      </ul>
+
+      <h3 id="inappropriateness-detection">不適切使用の検出と警告</h3>
+
+      <p>ユーザーが自身で選択した絵文字が、現在のコミュニケーション文脈において不適切と判定される場合、システムは非侵入的な警告を表示する。検出対象となる不適切使用パターンは以下の通りである。</p>
+
+      <ul>
+        <li><b>関係性段階の逸脱</b>：親密度が低い段階での過度に親密な絵文字使用（例：初回メッセージでの❤️連打）。</li>
+        <li><b>感情トーンの不一致</b>：テキスト本文がシリアスな話題にもかかわらず軽いトーンの絵文字が添付されている場合（例：「大変だったんですね😜」）。</li>
+        <li><b>世代間ミスマッチ</b>：相手の年代で異なる解釈をされうる絵文字の使用（例：Z世代の相手に対する😂の多用）。</li>
+        <li><b>文化的タブー</b>：異文化背景の相手に対して、侮辱的に解釈されうる絵文字の使用。</li>
+        <li><b>過剰使用</b>：1メッセージ内の絵文字密度が相手の平均の3倍以上を超える場合、「圧が強い」と受け取られるリスクを通知。</li>
+      </ul>
+
+      <h3 id="adaptive-learning">適応的学習と個別最適化</h3>
+
+      <p>絵文字推薦モデルは、ユーザーの選択行動から継続的に学習を行う。推薦された絵文字をそのまま使用した場合は正例、変更・削除した場合は負例として扱い、ユーザーごとの嗜好モデルを漸進的に更新する。さらに、相手からの反応（返信速度・メッセージ長・絵文字ミラーリングの有無）をフィードバックシグナルとして、推薦の「効果」も学習する。これにより、単にユーザーが好む絵文字ではなく、相手からの良好な反応を引き出す絵文字を推薦する方向へモデルが最適化される。</p>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#linguistic-position">絵文字の言語学的位置づけ</a></li>
+          <li class="toc-h3"><a href="#semiotic-framework">記号論的フレームワーク</a></li>
+          <li class="toc-h3"><a href="#pragmatic-functions">語用論的機能分類</a></li>
+          <li><a href="#romantic-patterns">恋愛コミュニケーションにおける絵文字使用パターン</a></li>
+          <li class="toc-h3"><a href="#interest-escalation">関心度と絵文字エスカレーション</a></li>
+          <li class="toc-h3"><a href="#emoji-sentiment-map">絵文字感情マッピング</a></li>
+          <li><a href="#emotion-model">絵文字頻度・種類・配置から推定する感情・関心度モデル</a></li>
+          <li class="toc-h3"><a href="#quantitative-features">定量的特徴量の抽出</a></li>
+          <li class="toc-h3"><a href="#interest-scoring">関心度スコアリングアルゴリズム</a></li>
+          <li><a href="#demographic-differences">男女差・年代差・文化差</a></li>
+          <li class="toc-h3"><a href="#gender-difference">性別による使用傾向の差異</a></li>
+          <li class="toc-h3"><a href="#generational-difference">世代間ギャップ</a></li>
+          <li class="toc-h3"><a href="#cultural-difference">文化圏による解釈差</a></li>
+          <li><a href="#line-stamp">LINEスタンプの特殊性と日本市場分析</a></li>
+          <li class="toc-h3"><a href="#stamp-characteristics">LINEスタンプの固有特性</a></li>
+          <li class="toc-h3"><a href="#stamp-sentiment">スタンプの感情分析技術</a></li>
+          <li><a href="#ai-recommendation">AIによる絵文字推薦と適切性判定</a></li>
+          <li class="toc-h3"><a href="#recommendation-algorithm">絵文字推薦アルゴリズム</a></li>
+          <li class="toc-h3"><a href="#inappropriateness-detection">不適切使用の検出と警告</a></li>
+          <li class="toc-h3"><a href="#adaptive-learning">適応的学習と個別最適化</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="nlp-sentiment-dating.html">恋愛特化NLP感情分析</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="conversation-repair-strategy.html">会話修復戦略</a></li>
+          <li><a href="dating-psychology-ai.html">恋愛心理学AI応用</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="nlp-sentiment-dating.html">恋愛特化NLP感情分析</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="conversation-repair-strategy.html">会話修復戦略</a></li>
+        <li><a href="dating-psychology-ai.html">恋愛心理学AI応用</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

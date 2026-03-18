@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE Bot型恋愛コーチ - Auto-Wiki</title>
+  <link rel="stylesheet" href="../assets/css/wiki.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true, theme: 'neutral'});</script>
+</head>
+<body>
+<div class="wiki-wrapper">
+  <header class="wiki-header">
+    <a href="../index.html" class="site-title">Auto-Wiki</a>
+    <nav>
+      <a href="../index.html">トップ</a>
+      <a href="../index.html#article-list">記事一覧</a>
+      <a href="../index.html#graph">サイトグラフ</a>
+    </nav>
+  </header>
+
+  <div class="breadcrumb">
+    <a href="../index.html">Auto-Wiki</a> &gt; <a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a> &gt; LINE Bot型恋愛コーチ
+  </div>
+
+  <div class="wiki-content">
+    <main class="wiki-main">
+      <h1 class="article-title">LINE Bot型恋愛コーチ</h1>
+      <div class="article-meta">最終更新: 2026-03-18</div>
+      <div class="article-summary">LINE Messaging APIを基盤とした恋愛AIコーチのUX設計・Flex Messageによるリッチ対話UI・友だち追加広告やLINEミニアプリを活用したユーザー獲得戦略・プッシュ通知によるエンゲージメント設計・サブスク課金のLINE内実装・日本市場特有のプラットフォーム優位性を体系的に解説する。</div>
+
+      <p><b>LINE Bot型恋愛コーチ</b>とは、<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>の実装形態の一つであり、日本国内月間アクティブユーザー9,700万人超を擁するLINEプラットフォーム上で動作する恋愛AI支援サービスのことである。<a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a>が提供する高度な恋愛分析・コーチング機能を、ユーザーが日常的に使い慣れたLINEのトーク画面に統合することで、専用アプリのインストール障壁を排除し、圧倒的なリーチと継続率を実現する。<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>をLINEのメッセージングUXに最適化し、<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>による深層理解と<a href="matching-app-market.html">マッチングアプリ市場</a>の競争環境を踏まえた差別化戦略を展開する。</p>
+
+      <h2 id="messaging-api-architecture">LINE Messaging API統合アーキテクチャ</h2>
+
+      <p>LINE Bot型恋愛コーチの技術基盤は、LINE Messaging APIのWebhook機構とLLMバックエンドの統合にある。ユーザーからのメッセージ受信をトリガーとして、コンテキスト保持・意図解析・応答生成・リッチメッセージ構築のパイプラインを実行する。</p>
+
+      <h3 id="webhook-pipeline">Webhookパイプラインとコンテキスト管理</h3>
+
+      <p>LINE Messaging APIのWebhookイベントを受信するバックエンドサーバーは、以下の処理フローを実行する：</p>
+
+      <ol>
+        <li><b>イベント受信・署名検証</b>：LINE PlatformからのHTTP POSTリクエストを受信し、チャネルシークレットによるHMAC-SHA256署名を検証。リプレイ攻撃防止のためタイムスタンプ検証も実施する。</li>
+        <li><b>ユーザーコンテキスト復元</b>：userId をキーとしてRedis/DynamoDB上の会話履歴・パーソナリティプロファイル・進行中のコーチングセッション状態を復元する。LINEはステートレスなWebhookモデルのため、サーバー側でのセッション管理が必須となる。</li>
+        <li><b>意図分類と対話ルーティング</b>：受信メッセージを「相談（自由文）」「コマンド（リッチメニュー操作）」「画像送信（プロフィール添削）」「クイックリプライ応答」に分類し、対応するハンドラにルーティングする。</li>
+        <li><b>LLM応答生成</b>：<a href="conversational-ai-coaching.html">会話AIコーチング技術</a>のプロンプトチェーンを起動し、コンテキスト付きの応答を生成。LINE特有の制約（テキストメッセージ5,000文字上限、1回のリプライで最大5バブル）に適合するよう出力を整形する。</li>
+        <li><b>Flex Message構築・送信</b>：応答内容に応じてテキスト・Flex Message・画像マップ・クイックリプライを動的に選択・構築し、Reply APIまたはPush APIで送信する。</li>
+      </ol>
+
+      <div class="mermaid-container"><pre class="mermaid">
+sequenceDiagram
+    participant U as LINEユーザー
+    participant L as LINE Platform
+    participant W as Webhook Server
+    participant R as Redis/Session Store
+    participant LLM as LLM Engine
+    participant F as Flex Message Builder
+
+    U->>L: メッセージ送信
+    L->>W: Webhook POST (署名付き)
+    W->>W: HMAC-SHA256署名検証
+    W->>R: ユーザーコンテキスト取得
+    R-->>W: 会話履歴・プロファイル
+    W->>W: 意図分類・ルーティング
+    W->>LLM: プロンプト + コンテキスト
+    LLM-->>W: コーチング応答
+    W->>F: 応答タイプ判定・構築
+    F-->>W: Flex Message JSON
+    W->>L: Reply API送信
+    L->>U: リッチメッセージ表示
+      </pre></div>
+
+      <h3 id="rate-limit-design">レートリミットとコスト制御設計</h3>
+
+      <p>LINE Messaging APIには月間のメッセージ送信数に応じた従量課金が発生するため、プッシュメッセージ（サーバー起点）とリプライメッセージ（ユーザー起点への応答、無料）の使い分けが収益性を大きく左右する。無料プランユーザーにはリプライメッセージのみで対応し、有料プランユーザーにのみプッシュメッセージ（リマインド・フォローアップ）を配信する設計が基本となる。</p>
+
+      <ul>
+        <li><b>リプライメッセージ</b>：ユーザーのアクション起点、無料、30秒以内の応答必須</li>
+        <li><b>プッシュメッセージ</b>：サーバー起点、従量課金（ライトプラン月5,000通〜）、有料ユーザー限定</li>
+        <li><b>ナローキャスト</b>：属性ベースの一斉配信、セグメント配信でコスト最適化</li>
+      </ul>
+
+      <h2 id="flex-message-ux">Flex Messageによるリッチ対話UI設計</h2>
+
+      <p>LINE Bot型恋愛コーチの最大の差別化要素は、Flex Messageを活用したリッチなUI体験である。テキストベースのチャットボットとは一線を画し、カード型レイアウト・プログレスバー・インタラクティブボタン・カルーセル表示を組み合わせた高度なUXを実現する。</p>
+
+      <h3 id="flex-component-design">コーチング専用Flexコンポーネント</h3>
+
+      <p>恋愛コーチングに最適化された主要Flexコンポーネントを以下に示す：</p>
+
+      <table>
+        <thead>
+          <tr><th>コンポーネント</th><th>用途</th><th>Flex構造</th><th>インタラクション</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>パーソナリティカード</b></td><td>診断結果の視覚的表示</td><td>Bubble + Box(横並び) + Separator</td><td>「詳細を見る」ボタン→詳細分析へ</td></tr>
+          <tr><td><b>メッセージ提案カルーセル</b></td><td>返信候補の複数提示</td><td>Carousel + Bubble×3〜5</td><td>タップで選択→送信文コピー</td></tr>
+          <tr><td><b>プロフィール採点レポート</b></td><td>写真・文章の改善提案</td><td>Bubble + Image + Progress Bar</td><td>「改善例を見る」→Before/After表示</td></tr>
+          <tr><td><b>デート準備チェックリスト</b></td><td>デート前のToDoリスト</td><td>Bubble + Checkbox風Box</td><td>各項目タップで完了マーク</td></tr>
+          <tr><td><b>週次レポート</b></td><td>活動サマリーと改善提案</td><td>Bubble + Chart風Box + Footer</td><td>「詳細分析」→詳細レポートへ</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="rich-menu-strategy">リッチメニューの階層設計</h3>
+
+      <p>リッチメニューは常時画面下部に表示される固定UIであり、LINE Bot型恋愛コーチの「ナビゲーションバー」として機能する。無料ユーザーと有料ユーザーで表示するリッチメニューを切り替えるリッチメニューエイリアス機能を活用し、アップグレード訴求も兼ねた設計とする。</p>
+
+      <ul>
+        <li><b>無料版メニュー（6分割）</b>：簡易診断 / プロフィール採点（月1回） / メッセージ相談 / 使い方ガイド / プレミアムへ / 設定</li>
+        <li><b>有料版メニュー（6分割）</b>：パーソナリティ分析 / プロフィール添削 / メッセージ提案 / デートプラン / 週次レポート / 設定</li>
+      </ul>
+
+      <h2 id="user-acquisition">LINEユーザー獲得戦略</h2>
+
+      <p>LINE Bot型恋愛コーチのユーザー獲得は、LINEエコシステム内の広告プロダクトとバイラルメカニズムを最大限に活用する。従来のアプリストアASO/ASOに依存しない獲得チャネルの構築が、<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>におけるCAC最適化の鍵となる。</p>
+
+      <h3 id="line-ads-friends">友だち追加広告（CPF広告）</h3>
+
+      <p>LINE広告の「友だち追加」目的キャンペーンは、LINE Bot型サービスにとって最もROIの高い獲得チャネルである。ユーザーが広告をタップするだけで友だち追加が完了し、即座にウェルカムメッセージで初回体験を開始できるフリクションレスなファネルを実現する。</p>
+
+      <ul>
+        <li><b>CPF（Cost Per Friend）</b>：恋愛カテゴリの想定CPFは150〜400円。最適化後のターゲットは200円以下</li>
+        <li><b>ターゲティング</b>：年齢（25〜39歳）× 性別 × 興味関心（恋愛・婚活・マッチングアプリ）× 行動データ（マッチングアプリインストール履歴）</li>
+        <li><b>クリエイティブ</b>：「あなたのマッチング率、AIが3倍にします」「プロフィール、AIに採点してもらいませんか？」など、即時性と具体的数値を訴求</li>
+        <li><b>友だち追加後の初回体験</b>：追加直後に自動送信されるウェルカムメッセージで無料パーソナリティ診断を開始し、3分以内に「価値の実感」を提供する</li>
+      </ul>
+
+      <h3 id="line-mini-app">LINEミニアプリ連携</h3>
+
+      <p>LINEミニアプリ（LIFF: LINE Front-end Framework）を活用し、LINEアプリ内でWebアプリケーションを展開する。Bot単体では実現困難な複雑なUI（パーソナリティ分析のレーダーチャート、マッチング履歴のタイムライン表示、詳細な設定画面）をLIFF上で提供し、Botとの連携でシームレスな体験を構築する。</p>
+
+      <ul>
+        <li><b>LIFF活用画面</b>：詳細パーソナリティレポート / プロフィール編集エディタ / マッチング分析ダッシュボード / サブスク管理画面</li>
+        <li><b>Bot⇔LIFF連携</b>：Botからのリンクでミニアプリ起動、ミニアプリ内アクションでBotにプッシュ通知トリガー</li>
+        <li><b>LINEミニアプリ検索</b>：LINEアプリ内の「サービス」タブからの自然流入チャネルとして機能</li>
+      </ul>
+
+      <h3 id="viral-mechanics">バイラル・紹介メカニズム</h3>
+
+      <p>LINEの「シェア」機能とグループトーク文化を活用したバイラル獲得戦略は、<a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a>で示された口コミチャネル（CACわずか500円、LTV/CAC比率9.29）を最大化するための最重要施策である。</p>
+
+      <ul>
+        <li><b>診断結果シェア</b>：パーソナリティ診断結果をLINEトークにシェアするためのFlex Message生成。受信者がタップすると友だち追加→自分も診断開始</li>
+        <li><b>紹介報酬プログラム</b>：友だち紹介1件につきプレミアム機能3日間無料開放。被紹介者も初月50%OFF</li>
+        <li><b>グループ診断機能</b>：グループトークにBotを招待して「恋愛力グループ診断」を実施。全員の相性マトリクスを生成し、個別アカウントへの友だち追加を促進</li>
+      </ul>
+
+      <h2 id="push-notification">プッシュ通知戦略とエンゲージメント設計</h2>
+
+      <p>プッシュ通知はLINE Bot型恋愛コーチのリテンションとLTV向上を支える基幹機能である。LINEのプッシュ通知はOS通知と統合されるため、メール通知に比べて開封率が圧倒的に高い（業界平均70〜80%、メール15〜25%）。ただし従量課金のため、ROI最大化のための精緻な配信設計が不可欠となる。</p>
+
+      <h3 id="notification-types">コーチング通知タイプ設計</h3>
+
+      <table>
+        <thead>
+          <tr><th>通知タイプ</th><th>トリガー</th><th>配信タイミング</th><th>期待効果</th><th>対象プラン</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>マッチングリマインド</b></td><td>マッチング後24h未メッセージ</td><td>マッチング翌日20:00</td><td>初回メッセージ送信率+40%</td><td>スタンダード以上</td></tr>
+          <tr><td><b>デートフォローアップ</b></td><td>デート予定日の翌日</td><td>デート翌日11:00</td><td>振り返り→次回改善</td><td>プレミアム以上</td></tr>
+          <tr><td><b>週次アクティビティ</b></td><td>毎週日曜</td><td>日曜19:00</td><td>週次レポート閲覧率+60%</td><td>全有料プラン</td></tr>
+          <tr><td><b>プロフィール鮮度</b></td><td>プロフィール更新30日未実施</td><td>最終更新30日後10:00</td><td>プロフィール更新率+25%</td><td>全有料プラン</td></tr>
+          <tr><td><b>モチベーション維持</b></td><td>アプリ無操作7日</td><td>休眠7日後19:00</td><td>復帰率+35%</td><td>全有料プラン</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="delivery-optimization">配信最適化とA/Bテスト</h3>
+
+      <p>プッシュ通知のROI最大化のため、以下の最適化フレームワークを運用する：</p>
+
+      <ol>
+        <li><b>配信時間の個別最適化</b>：ユーザーごとのLINE利用時間帯（既読時刻のパターン分析）に基づき、開封率が最も高い時間帯にパーソナライズ配信</li>
+        <li><b>メッセージトーンの最適化</b>：<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>で判定したユーザーの性格タイプに応じて、励まし型・データ型・ユーモア型のトーンを使い分け</li>
+        <li><b>配信頻度の自動調整</b>：過去の通知に対する既読率・アクション率をモニタリングし、反応が低下した場合は配信頻度を自動的に低減。過剰通知によるブロック率上昇を防止する</li>
+        <li><b>コスト効率モニタリング</b>：プッシュメッセージ1通あたりのLTV寄与額を計測し、ROIがマイナスになる通知タイプを自動停止</li>
+      </ol>
+
+      <h2 id="subscription-in-line">サブスク課金のLINE内実装と日本市場優位性</h2>
+
+      <p>LINE Bot型恋愛コーチにおけるサブスクリプション課金は、LINE Pay連携による決済のシームレス化と、LINEエコシステムに閉じた購買体験の構築が成功の鍵を握る。</p>
+
+      <h3 id="payment-integration">LINE Pay・IAP連携による課金フロー</h3>
+
+      <p>課金フローの設計においては、ユーザーがLINEトーク画面から一度も離脱することなく決済を完了できる体験を最優先とする。</p>
+
+      <ul>
+        <li><b>LINE Pay定期決済</b>：LINE Pay APIの定期決済機能を利用し、月額自動引き落としを実現。LINE Payの登録ユーザー数（日本国内4,000万人超）がフリクションを最小化する</li>
+        <li><b>LIFF内決済画面</b>：プラン選択・決済確認・完了通知の全フローをLIFF（LINEミニアプリ）内で完結。外部ブラウザへの遷移を排除する</li>
+        <li><b>Botトーク内アップグレード誘導</b>：無料枠の上限到達時にFlex Messageでプラン比較カードを表示し、ワンタップでLIFF決済画面へ遷移</li>
+        <li><b>LINEポイント還元</b>：LINE Pay決済でLINEポイントを付与し、ポイントでのサービス利用を可能にすることで、LINEエコシステム内のロイヤルティループを形成</li>
+      </ul>
+
+      <h3 id="japan-market-advantage">日本市場特有のプラットフォーム優位性</h3>
+
+      <p>LINE Bot型恋愛コーチが日本市場で持つ構造的優位性は、他国のメッセージングプラットフォーム（WhatsApp、WeChat、Telegram）では再現困難な独自のものである。</p>
+
+      <table>
+        <thead>
+          <tr><th>優位性要因</th><th>詳細</th><th>競合優位への貢献</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>圧倒的リーチ</b></td><td>日本人口の約77%がLINEを利用。スマホユーザーの92%がインストール済み</td><td>専用アプリのインストール障壁ゼロ。TAM（到達可能市場）が最大化</td></tr>
+          <tr><td><b>日常利用の習慣化</b></td><td>1日平均40回以上のLINE起動。メッセージングが生活インフラ化</td><td>サービスの「想起率」と「利用頻度」が自然に向上</td></tr>
+          <tr><td><b>トーク画面の信頼性</b></td><td>親しい友人・家族とのコミュニケーション空間にBotが同居</td><td>恋愛という繊細なテーマにおける心理的安全性を確保</td></tr>
+          <tr><td><b>決済インフラ統合</b></td><td>LINE Pay・LINEポイントによるシームレスな課金体験</td><td>クレジットカード入力などの離脱ポイントを排除</td></tr>
+          <tr><td><b>公式アカウント文化</b></td><td>企業・ブランドのLINE公式アカウント利用が一般化</td><td>「AI恋愛コーチを友だち追加」への心理的抵抗が極めて低い</td></tr>
+          <tr><td><b>通知のリーチ力</b></td><td>LINEメッセージ通知の開封率70〜80%（メール比5倍）</td><td>エンゲージメント施策の効果が飛躍的に向上</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="competitive-moat">競合参入障壁の構築</h3>
+
+      <p>LINE Bot型恋愛コーチが構築する競争優位は、単なる技術優位ではなく、プラットフォーム特性を活用した多層的な参入障壁である：</p>
+
+      <ol>
+        <li><b>データネットワーク効果</b>：LINE上で蓄積される会話データ・行動データ・成功パターンデータが、<a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a>の精度を継続的に向上させる。後発参入者がこのデータ資産を追従するには膨大な時間とユーザー数が必要</li>
+        <li><b>スイッチングコスト</b>：蓄積されたパーソナリティプロファイル・コーチング履歴・成長記録はLINEトーク履歴と一体化しており、他サービスへの移行コストが高い</li>
+        <li><b>LINEエコシステム統合深度</b>：リッチメニュー・Flex Message・LIFF・LINE Pay・LINE通知を深く統合したUXは、単純なチャットボットでは再現できない</li>
+        <li><b>口コミの自然伝播</b>：LINEトーク内で診断結果をシェアする行為自体が最強のマーケティングチャネルとなり、CACゼロのオーガニック獲得が拡大する</li>
+      </ol>
+
+      <div class="mermaid-container"><pre class="mermaid">
+graph TD
+    A["LINE Bot型恋愛コーチ"] --> B["ユーザー獲得"]
+    A --> C["エンゲージメント"]
+    A --> D["課金・収益化"]
+    A --> E["競争優位"]
+
+    B --> B1["友だち追加広告<br/>CPF: 150〜400円"]
+    B --> B2["LINEミニアプリ<br/>サービス検索流入"]
+    B --> B3["バイラル・紹介<br/>診断結果シェア"]
+
+    C --> C1["Flex Message UI<br/>リッチ対話体験"]
+    C --> C2["プッシュ通知<br/>開封率70〜80%"]
+    C --> C3["リッチメニュー<br/>常時ナビゲーション"]
+
+    D --> D1["LINE Pay定期決済<br/>フリクションレス課金"]
+    D --> D2["LINEポイント還元<br/>ロイヤルティループ"]
+    D --> D3["LIFF内決済<br/>離脱ゼロの購買体験"]
+
+    E --> E1["データ蓄積<br/>AI精度の持続向上"]
+    E --> E2["スイッチングコスト<br/>履歴・プロファイル"]
+    E --> E3["エコシステム深度<br/>多機能統合UX"]
+
+    B3 -->|"CAC最小化"| E
+    C2 -->|"LTV向上"| D
+    E1 -->|"精度向上→満足度"| C
+      </pre></div>
+
+    </main>
+
+    <aside class="wiki-sidebar">
+      <div class="toc">
+        <div class="toc-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#messaging-api-architecture">LINE Messaging API統合アーキテクチャ</a></li>
+          <li class="toc-h3"><a href="#webhook-pipeline">Webhookパイプラインとコンテキスト管理</a></li>
+          <li class="toc-h3"><a href="#rate-limit-design">レートリミットとコスト制御設計</a></li>
+          <li><a href="#flex-message-ux">Flex Messageによるリッチ対話UI設計</a></li>
+          <li class="toc-h3"><a href="#flex-component-design">コーチング専用Flexコンポーネント</a></li>
+          <li class="toc-h3"><a href="#rich-menu-strategy">リッチメニューの階層設計</a></li>
+          <li><a href="#user-acquisition">LINEユーザー獲得戦略</a></li>
+          <li class="toc-h3"><a href="#line-ads-friends">友だち追加広告（CPF広告）</a></li>
+          <li class="toc-h3"><a href="#line-mini-app">LINEミニアプリ連携</a></li>
+          <li class="toc-h3"><a href="#viral-mechanics">バイラル・紹介メカニズム</a></li>
+          <li><a href="#push-notification">プッシュ通知戦略とエンゲージメント設計</a></li>
+          <li class="toc-h3"><a href="#notification-types">コーチング通知タイプ設計</a></li>
+          <li class="toc-h3"><a href="#delivery-optimization">配信最適化とA/Bテスト</a></li>
+          <li><a href="#subscription-in-line">サブスク課金のLINE内実装と日本市場優位性</a></li>
+          <li class="toc-h3"><a href="#payment-integration">LINE Pay・IAP連携による課金フロー</a></li>
+          <li class="toc-h3"><a href="#japan-market-advantage">日本市場特有のプラットフォーム優位性</a></li>
+          <li class="toc-h3"><a href="#competitive-moat">競合参入障壁の構築</a></li>
+        </ul>
+      </div>
+
+      <div class="related-articles">
+        <div class="related-title">関連記事</div>
+        <ul class="related-list">
+          <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+          <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+          <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+          <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+          <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="wiki-footer">
+    <div class="footer-links">
+      <h4>リンク先</h4>
+      <ul>
+        <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+        <li><a href="personal-renai-consul-ai.html">パーソナル恋愛コンサルAI</a></li>
+        <li><a href="conversational-ai-coaching.html">会話AIコーチング技術</a></li>
+        <li><a href="llm-personality-analysis.html">LLMパーソナリティ解析技術</a></li>
+        <li><a href="matching-app-market.html">マッチングアプリ市場動向と競争環境</a></li>
+      </ul>
+      <h4>被リンク</h4>
+      <ul>
+        <li><a href="ai-dating-business-model.html">AI恋愛サービスの収益モデル</a></li>
+      </ul>
+    </div>
+    <p style="margin-top:12px;">Auto-Wiki で自動生成</p>
+  </footer>
+</div>
+</body>
+</html>

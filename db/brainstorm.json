@@ -1,17 +1,5 @@
 {
-  "queue": [
-    {"proposed_slug":"vector-embedding-personality","proposed_title":"ベクトル埋め込みによるパーソナリティ表現","parent_id":"llm-personality-analysis","interestingness_score":0.85,"depth":2,"status":"queued"},
-    {"proposed_slug":"online-dating-regulation","proposed_title":"オンラインデーティング規制","parent_id":"matching-app-market","interestingness_score":0.85,"depth":2,"status":"queued"},
-    {"proposed_slug":"nlp-sentiment-dating","proposed_title":"恋愛特化NLP感情分析","parent_id":"conversational-ai-coaching","interestingness_score":0.85,"depth":2,"status":"queued"},
-    {"proposed_slug":"ai-dating-pricing-psychology","proposed_title":"AI恋愛サービスの価格心理学","parent_id":"ai-dating-business-model","interestingness_score":0.85,"depth":2,"status":"queued"},
-    {"proposed_slug":"dating-data-flywheel","proposed_title":"恋愛データフライホイール","parent_id":"ai-dating-business-model","interestingness_score":0.84,"depth":2,"status":"queued"},
-    {"proposed_slug":"matching-app-algorithm-analysis","proposed_title":"マッチングアプリアルゴリズム解析","parent_id":"profile-optimization-strategy","interestingness_score":0.82,"depth":2,"status":"queued"},
-    {"proposed_slug":"ai-fairness-matching","proposed_title":"AIマッチングの公平性設計","parent_id":"llm-personality-analysis","interestingness_score":0.82,"depth":2,"status":"queued"},
-    {"proposed_slug":"matching-app-niche-segments","proposed_title":"マッチングアプリのニッチセグメント","parent_id":"matching-app-market","interestingness_score":0.82,"depth":2,"status":"queued"},
-    {"proposed_slug":"line-bot-dating-coach","proposed_title":"LINE Bot型恋愛コーチ","parent_id":"ai-dating-business-model","interestingness_score":0.82,"depth":2,"status":"queued"},
-    {"proposed_slug":"saas-growth-metrics","proposed_title":"SaaS成長指標フレームワーク","parent_id":"ai-dating-business-model","interestingness_score":0.78,"depth":2,"status":"queued"},
-    {"proposed_slug":"emoji-communication-analysis","proposed_title":"絵文字コミュニケーション分析","parent_id":"conversational-ai-coaching","interestingness_score":0.78,"depth":2,"status":"queued"}
-  ],
+  "queue": [],
   "history": [
     {"proposed_slug":"llm-personality-analysis","depth":1,"status":"created"},
     {"proposed_slug":"profile-optimization-strategy","depth":1,"status":"created"},
@@ -27,6 +15,17 @@
     {"proposed_slug":"dating-psychology-ai","depth":2,"status":"created"},
     {"proposed_slug":"marriage-agency-disruption","depth":2,"status":"created"},
     {"proposed_slug":"romance-scam-ai-detection","depth":2,"status":"created"},
-    {"proposed_slug":"ab-testing-methodology","depth":2,"status":"created"}
+    {"proposed_slug":"ab-testing-methodology","depth":2,"status":"created"},
+    {"proposed_slug":"vector-embedding-personality","depth":2,"status":"created"},
+    {"proposed_slug":"online-dating-regulation","depth":2,"status":"created"},
+    {"proposed_slug":"nlp-sentiment-dating","depth":2,"status":"created"},
+    {"proposed_slug":"ai-dating-pricing-psychology","depth":2,"status":"created"},
+    {"proposed_slug":"dating-data-flywheel","depth":2,"status":"created"},
+    {"proposed_slug":"matching-app-algorithm-analysis","depth":2,"status":"created"},
+    {"proposed_slug":"ai-fairness-matching","depth":2,"status":"created"},
+    {"proposed_slug":"matching-app-niche-segments","depth":2,"status":"created"},
+    {"proposed_slug":"line-bot-dating-coach","depth":2,"status":"created"},
+    {"proposed_slug":"saas-growth-metrics","depth":2,"status":"created"},
+    {"proposed_slug":"emoji-communication-analysis","depth":2,"status":"created"}
   ]
 }
