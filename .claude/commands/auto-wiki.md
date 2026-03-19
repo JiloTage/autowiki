@@ -23,7 +23,6 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
 /auto-wiki --request "新トピック"   # 新規記事リクエスト（Phase 4）
 /auto-wiki --expand                 # 手動で拡張サイクル実行（Phase 2）
 /auto-wiki --max-agents N           # サブエージェント数上限（デフォルト: 3）
-/auto-wiki --depth N                # 最大深度（デフォルト: 2）
 ```
 
 ## 実行手順
@@ -75,13 +74,11 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
          "filename": "articles/slug.html",
          "created_at": "ISO8601",
          "updated_at": "ISO8601",
-         "parent_id": null,
-         "depth": 0,
          "links_to": ["related-slug-1", "related-slug-2"],
          "linked_from": [],
          "summary": "要約テキスト",
          "expansion_status": "pending",
-         "interestingness_score": 1.0
+         "origin": "root"
        }
      },
      "root_id": "slug",
@@ -96,10 +93,9 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
         {
           "proposed_slug": "related-slug",
           "proposed_title": "関連トピック",
-          "parent_id": "root-slug",
+          "source_id": "root-slug",
           "rationale": "なぜこの記事が面白いか",
           "interestingness_score": 0.9,
-          "depth": 1,
           "status": "queued"
         }
       ],
@@ -117,16 +113,16 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
 **これが最も重要なフェーズ。**
 
 1. DB読み込み: `db/articles.json`, `db/brainstorm.json`, `db/session.json`
-2. 設定確認: `max_agents`（デフォルト3）, `max_depth`（デフォルト2）, `max_total_articles`（デフォルト50）
+2. 設定確認: `max_agents`（デフォルト3）, `max_total_articles`（デフォルト50）
 3. 総記事数チェック: `total_count >= max_total_articles` なら終了
 
 4. **ブレスト**: expansion_status が "pending" の記事それぞれについて:
    - その記事の内容を読み込む
    - 3〜5個の派生記事候補をブレスト
    - 各候補に面白さスコア（0.0〜1.0）を付与
-   - 深さ減衰を適用: `score × 0.8^depth`
-   - スコア0.3未満は却下
+   - スコア0.5未満は却下
    - `db/brainstorm.json` のqueueに追加
+   - その記事の `expansion_status` を "done" に更新
 
 5. **優先度ソート**: queue全体を `interestingness_score` 降順でソート
 
@@ -137,15 +133,15 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
      以下の記事を作成してください:
      - タイトル: {proposed_title}
      - slug: {proposed_slug}
-     - 親記事: {parent_id} (articles/{parent_id}.html)
-     - 深さ: {depth}
+     - 提案元記事: {source_id} (articles/{source_id}.html)
 
      手順:
      1. templates/article.html テンプレートを読み込む
-     2. 親記事 articles/{parent_id}.html を読み込んで文脈を理解する
+     2. 提案元記事 articles/{source_id}.html を読み込んで文脈を理解する
      3. db/articles.json を読み込んで既存記事を把握する
      4. 記事を作成（3〜6セクション、Mermaidダイアグラム含む）
      5. 既存記事へのリンクと、新規候補記事へのリンクを含める
+        ※既存記事への相互リンクを積極的に行う（フラット構造）
      6. articles/{proposed_slug}.html に書き出す
      7. 作成した記事の情報をJSON形式で報告:
         {
@@ -158,13 +154,12 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
 
 7. **結果収集・DB更新**:
    - 各サブエージェントの結果を収集
-   - `db/articles.json` に新記事を追加
-   - 親記事の `links_to` を更新、新記事の `linked_from` を設定
-   - 親記事HTMLの被リンクセクションも更新
+   - `db/articles.json` に新記事を追加（`origin: "expanded"`）
+   - 提案元記事の `links_to` を更新、新記事の `linked_from` を設定
+   - 提案元記事HTMLの被リンクセクションも更新
    - 新記事から提案された候補を `db/brainstorm.json` のqueueに追加
    - 処理済み候補を `history` に移動
    - 新記事の `expansion_status` を "pending" に設定
-   - 親記事の `expansion_status` を "expanded" に更新
    - `db/graph.json` を再生成（全ノード・全リンク）
    - `index.html` を再生成
    - `db/session.json` を更新
@@ -200,11 +195,10 @@ description: "Self-expanding wiki - creates interconnected HTML articles with au
 2. `db/articles.json` から全既存記事を読み込み
 3. 新トピックと関連性が高い既存記事をリストアップ（最大5件）
 4. 接続候補をユーザーに提示
-5. 新記事を作成（Phase 1と同様の手順だが、関連記事へのリンクを含める）
+5. 新記事を作成（Phase 1と同様の手順だが、関連記事へのリンクを含める。`origin: "requested"`）
 6. 既存の関連記事にも新記事へのリンクを追加（本文の適切な箇所 + footer）
 7. DB更新、graph.json再生成、index.html再生成
-8. 新記事を `expansion_frontier` に追加
-9. Phase 2の拡張対象として登録
+8. 新記事の `expansion_status` を "pending" に設定（Phase 2の拡張対象）
 
 ---
 
@@ -267,7 +261,7 @@ H2, H3要素から目次を自動生成。形式:
     {"id": "slug", "title": "タイトル", "url": "articles/slug.html", "summary": "要約", "is_root": true}
   ],
   "links": [
-    {"source": "parent-slug", "target": "child-slug"}
+    {"source": "slug-a", "target": "slug-b"}
   ]
 }
 ```
@@ -275,8 +269,7 @@ H2, H3要素から目次を自動生成。形式:
 ## 爆発防止メカニズム
 
 - サイクルあたり記事数上限 = `max_agents`（デフォルト3）
-- 深さ制限: `depth > max_depth` の候補は `interestingness_score × 0.5` に減衰
-- 深さ減衰: `score × 0.8^depth`（各深さで20%減衰）
-- スコア0.3未満は自動却下
+- スコア足切り: `interestingness_score` 0.5未満は自動却下
 - セッションあたり総記事数上限: `max_total_articles`（デフォルト50）
 - 重複チェック: 同一slugの候補は却下
+- 類似チェック: 既存記事と意味的に重複するタイトルの候補は却下
