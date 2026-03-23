@@ -10,7 +10,14 @@
 - `assets/js/search.js` - クライアントサイド検索
 - `templates/` - HTML テンプレート
 - `db/` - JSONデータベース（articles.json, brainstorm.json, graph.json, session.json）
-- `.claude/commands/auto-wiki.md` - Skill定義
+- `.claude/commands/auto-wiki.md` - オーケストレータ（メインエントリポイント）
+- `.claude/commands/auto-wiki-create.md` - 記事作成skill
+- `.claude/commands/auto-wiki-expand.md` - 拡張オーケストレーションskill
+- `.claude/commands/auto-wiki-feedback.md` - フィードバック適用skill
+- `.claude/commands/auto-wiki-request.md` - 新規記事リクエストskill
+- `.claude/commands/auto-wiki-sync.md` - DB同期・再生成skill
+- `.claude/commands/auto-wiki-theme.md` - テーマカスタマイズskill（カラー・フォント・ダークモード）
+- `.claude/commands/auto-wiki-layout.md` - レイアウト・テンプレート変更skill
 
 ## 運用ルール
 
