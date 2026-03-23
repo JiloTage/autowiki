@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki Create"
+  short_description: "Create a single Auto-Wiki article"
+  default_prompt: "Use $auto-wiki-create to generate one Wikipedia-style article and its metadata."

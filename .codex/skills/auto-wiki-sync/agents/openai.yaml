@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki Sync"
+  short_description: "Rebuild and sync Auto-Wiki state"
+  default_prompt: "Use $auto-wiki-sync to rebuild article metadata, graph data, and index output."

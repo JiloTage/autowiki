@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki Theme"
+  short_description: "Customize the Auto-Wiki visual theme"
+  default_prompt: "Use $auto-wiki-theme to adjust colors, fonts, graph styling, or Mermaid themes."

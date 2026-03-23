@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki"
+  short_description: "Orchestrate the Auto-Wiki workflow"
+  default_prompt: "Use $auto-wiki to start, resume, expand, or update a self-growing wiki."

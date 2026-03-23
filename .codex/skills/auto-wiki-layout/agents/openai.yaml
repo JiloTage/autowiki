@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki Layout"
+  short_description: "Change Auto-Wiki layouts and templates"
+  default_prompt: "Use $auto-wiki-layout to change templates, page structure, and responsive layout."
