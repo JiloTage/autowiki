@@ -38,7 +38,7 @@ description: Create a new requested Auto-Wiki article and connect it to the exis
 2. 記事本文を作成:
    - 冒頭段落にトピックの定義（タイトルを `<b>` 強調）
    - 3〜6セクション（H2）、必要に応じてH3
-   - Mermaidダイアグラム最低1つ
+   - インラインSVGダイアグラム最低1つ（`<div class="diagram-container"><svg>...</svg></div>` 形式）
    - 関連既存記事への積極的なリンク
    - 新規候補記事へのリンク3〜5個
 3. テンプレートプレースホルダーを置換

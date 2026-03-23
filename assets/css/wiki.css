@@ -319,17 +319,26 @@ a.redlink {
   color: var(--text-secondary);
 }
 
-/* Mermaid diagrams */
-.mermaid-container {
+/* Inline SVG diagrams */
+.diagram-container {
   margin: 16px 0;
   padding: 16px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-light);
   border-radius: 2px;
   overflow-x: auto;
+  text-align: center;
 }
 
-.mermaid-container .mermaid {
+.diagram-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.diagram-caption {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 8px;
   text-align: center;
 }
 

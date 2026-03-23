@@ -6,7 +6,7 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
-description: "Auto-Wiki: Create a single article from a topic with template, links, and Mermaid diagrams"
+description: "Auto-Wiki: Create a single article from a topic with template, links, and inline SVG diagrams"
 ---
 
 # Auto-Wiki: 記事作成
@@ -53,10 +53,22 @@ $ARGUMENTS は以下の形式:
 - **冒頭段落**: トピックの定義。タイトルを `<b>` で強調
 - **H2セクション**: 3〜6個。各セクションに `id` 属性を付与（例: `id="history"`）
 - **H3サブセクション**: 必要に応じて
-- **Mermaidダイアグラム**: 最低1つ。以下の形式:
+- **インラインSVGダイアグラム**: 最低1つ。以下の形式:
   ```html
-  <div class="mermaid-container"><pre class="mermaid">...</pre></div>
+  <div class="diagram-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 [幅] [高さ]" width="[幅]" height="[高さ]">
+      <!-- SVG要素をここに直接記述 -->
+    </svg>
+    <div class="diagram-caption">図の説明</div>
+  </div>
   ```
+  - Mermaidは使用しない。代わりにインラインSVGで図を直接描画する
+  - フローチャート、関係図、構成図、タイムラインなどを `<svg>` 要素で描く
+  - SVGには適切な `viewBox`, `width`, `height` を設定しレスポンシブに対応
+  - テキストには `font-family: sans-serif` を使用
+  - 色は控えめに: 背景 `#f8f9fa`, 枠線 `#a2a9b1`, テキスト `#202122`, アクセント `#36c`
+  - 矢印には `<defs>` 内で `<marker>` を定義して使用
+  - ノードは `<rect>` + `<text>`, 接続は `<line>` または `<path>` で描画
 - **内部リンク**: `<a href="{slug}.html">{タイトル}</a>` 形式
   - 既存記事へのリンク: 積極的に相互リンク（フラット構造）
   - 未作成の関連記事へのリンク: 3〜5個（今後の拡張候補）

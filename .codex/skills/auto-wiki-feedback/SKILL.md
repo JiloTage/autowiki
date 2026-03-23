@@ -37,7 +37,7 @@ description: Apply user feedback to an existing Auto-Wiki article while preservi
 ユーザーのフィードバックに従って記事を修正:
 - 内容の修正・追加・削除
 - セクション構造の変更
-- Mermaidダイアグラムの修正
+- インラインSVGダイアグラムの修正
 - リンクの追加・削除
 
 ### 4. リンク整合性検証
