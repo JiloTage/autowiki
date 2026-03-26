@@ -13,63 +13,51 @@ description: Rebuild and reconcile Auto-Wiki state files. Use after article, tem
 
 ## 実行手順
 
-### 1. 現状スキャン
+### 1. CLI一括同期
 
-1. `articles/` ディレクトリ内の全HTMLファイルをスキャン
-2. `db/articles.json` を読み込む
-3. `db/brainstorm.json` を読み込む
-4. `db/graph.json` を読み込む
+以下のコマンドで整合性チェック・再構築・クリーンアップを一括実行:
 
-### 2. articles.json 整合性検証
+```bash
+uv run awiki sync
+```
 
-1. **ファイル→DB照合**: `articles/` 内の各HTMLファイルが `db/articles.json` にエントリを持つか確認
-   - 無ければ警告を表示（孤立ファイル）
-2. **DB→ファイル照合**: `db/articles.json` の各エントリが `articles/` に実体ファイルを持つか確認
-   - 無ければDBから削除
-3. **total_count** を実際のエントリ数で更新
+このコマンドは以下を自動実行:
+- `articles/` ディレクトリとDBの照合（孤立ファイル・孤立エントリの検出）
+- `linked_from` の全再構築
+- `graph.json` の再生成
+- `brainstorm.json` のクリーンアップ（既存記事の除去、重複削除、履歴100件制限）
+- `session.json` の更新（`last_phase: "sync"`）
 
-### 3. リンク整合性検証
-
-各記事HTMLファイルから `<a href="...html">` を抽出し:
-
-1. `links_to` の再構築: HTMLから実際に抽出されたリンク先で上書き
-2. `linked_from` の再構築: 全記事を走査して被リンクを再計算
-3. 双方向リンクの一致を検証
-
-### 4. graph.json 再生成
-
-`db/articles.json` から完全に再生成:
-
+結果はJSON形式で返される:
 ```json
 {
-  "nodes": [
-    {
-      "id": "slug",
-      "title": "タイトル",
-      "url": "articles/slug.html",
-      "summary": "要約",
-      "is_root": true|false
-    }
-  ],
-  "links": [
-    {"source": "slug-a", "target": "slug-b"}
-  ]
+  "articles_count": N,
+  "orphan_db_entries": [],
+  "untracked_html_files": [],
+  "graph_nodes": N,
+  "graph_links": N,
+  "brainstorm_cleaned": N
 }
 ```
 
-- `is_root`: `origin === "root"` の記事のみtrue
-- `links`: 全記事の `links_to` からリンクが実在する（双方のノードが存在する）もののみ
+### 2. リンク整合性検証（HTMLベース）
 
-### 5. index.html 再生成
+CLIの `sync` はDB内の `links_to` からの再構築を行う。
+HTMLから実際のリンクを抽出して `links_to` を更新する必要がある場合は、各記事について:
+
+1. 記事HTMLから `<a href="...html">` を抽出
+2. `uv run awiki article set-links {slug} --links "{link1},{link2}"` で更新
+
+### 3. index.html 再生成
 
 `templates/index.html` テンプレートを読み込み、プレースホルダーを置換:
 
 | プレースホルダー | 内容 |
 |---|---|
 | `{{LANG}}` | 言語コード（デフォルト "ja"） |
-| `{{TOTAL_COUNT}}` | `db/articles.json` の総記事数 |
-| `{{LINK_COUNT}}` | `db/graph.json` のlinks配列長 |
-| `{{ARTICLE_ROWS}}` | 記事一覧テーブル行 |
+| `{{TOTAL_COUNT}}` | `uv run awiki article list` の `total_count` |
+| `{{LINK_COUNT}}` | `uv run awiki graph rebuild` の links 配列長 |
+| `{{ARTICLE_ROWS}}` | 記事一覧テーブル行（下記形式） |
 
 記事行の形式:
 ```html
@@ -83,26 +71,7 @@ description: Rebuild and reconcile Auto-Wiki state files. Use after article, tem
 
 記事は `updated_at` 降順でソート。
 
-### 6. brainstorm.json クリーンアップ
-
-1. queueから既に記事が存在するslugの候補を削除
-2. queueから重複候補を削除（同一slug）
-3. historyが100件を超えたら古い順に切り詰め
-
-### 7. session.json 更新
-
-```json
-{
-  "last_phase": "sync",
-  "last_run": "ISO8601",
-  "total_articles": N,
-  "queue_size": N,
-  "max_agents": 3,
-  "max_total_articles": 50
-}
-```
-
-### 8. 完了報告
+### 4. 完了報告
 
 - 総記事数
 - 総リンク数

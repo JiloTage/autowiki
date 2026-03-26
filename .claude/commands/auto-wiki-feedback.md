@@ -27,8 +27,8 @@ $ARGUMENTS:
 
 ### 1. 記事特定
 
-1. `db/articles.json` を読み込む
-2. 指定された文字列でslugまたはタイトルを検索
+1. `uv run awiki article list` で全記事を取得
+2. 指定された文字列でslugまたはタイトルを検索（JSONの出力から判定）
 3. 該当記事が見つからない場合:
    - 部分一致で候補を提示
    - ユーザーに確認
@@ -36,7 +36,7 @@ $ARGUMENTS:
 ### 2. 記事読み込み
 
 1. `articles/{slug}.html` を読み込む
-2. `db/articles.json` から記事メタデータを取得
+2. `uv run awiki article get {slug}` で記事メタデータを取得
 3. 現在の `links_to` と `linked_from` を記録
 
 ### 3. フィードバック適用
@@ -51,39 +51,23 @@ $ARGUMENTS:
 
 修正後のHTMLから全 `<a href="...html">` を抽出し:
 
-1. **新しいリンクの検出**:
-   - 修正前に無かったリンク先を特定
-   - リンク先が `db/articles.json` に存在する場合:
-     - リンク先記事の `linked_from` にこの記事slugを追加
-   - リンク先が存在しない場合:
-     - `db/brainstorm.json` のqueueに候補として追加
-     ```json
-     {
-       "proposed_slug": "new-slug",
-       "proposed_title": "リンクテキストから推定",
-       "source_id": "this-article-slug",
-       "rationale": "フィードバックによる追加リンク",
-       "interestingness_score": 0.7,
-       "status": "queued"
-     }
-     ```
+1. **リンクの一括更新**: 修正後のHTMLから全 `<a href="...html">` を抽出し、CLIで更新:
+   ```bash
+   uv run awiki article set-links {slug} --links "{link1},{link2},{link3}"
+   ```
+   これにより `links_to` の更新と、関連記事の `linked_from` の追加・削除が自動で行われる。
 
-2. **削除されたリンクの検出**:
-   - 修正前にあったが修正後に無いリンク先を特定
-   - リンク先記事の `linked_from` からこの記事slugを削除
-
-3. **`links_to` 更新**:
-   - 修正後のHTMLから抽出したリンク先で `links_to` を再構築
+2. **存在しないリンク先の候補追加**: リンク先が既存記事に無い場合:
+   ```bash
+   uv run awiki brainstorm add --slug "{new-slug}" --title "{リンクテキストから推定}" --source-id "{this-article-slug}" --rationale "フィードバックによる追加リンク" --score 0.7
+   ```
 
 ### 5. DB更新
 
-1. `db/articles.json`:
-   - `updated_at` を更新
-   - `links_to` を更新
-   - 影響を受けた他記事の `linked_from` を更新
-2. `db/brainstorm.json`: 新候補があれば追加
-3. `db/graph.json` を再生成（全ノード・全リンク）
-4. `index.html` を再生成（`templates/index.html` テンプレートから）:
+Step 4で `article set-links` と `brainstorm add` を実行済み。残りの更新:
+
+1. グラフ再構築: `uv run awiki graph rebuild`
+2. `index.html` を再生成（`templates/index.html` テンプレートから）:
    - `{{TOTAL_COUNT}}`, `{{LINK_COUNT}}`, `{{ARTICLE_ROWS}}` を更新
 
 ### 6. 完了報告

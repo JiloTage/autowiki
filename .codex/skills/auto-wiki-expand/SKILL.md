@@ -17,9 +17,10 @@ description: Run an Auto-Wiki expansion cycle. Use when pending articles should 
 
 ### 1. DB読み込み
 
-1. `db/articles.json` を読み込む
-2. `db/brainstorm.json` を読み込む
-3. `db/session.json` を読み込む
+以下のコマンドでDB状態を取得:
+1. `uv run awiki article list`
+2. `uv run awiki brainstorm list`
+3. `uv run awiki session get`
 
 ### 2. 設定確認
 
@@ -45,18 +46,14 @@ description: Run an Auto-Wiki expansion cycle. Use when pending articles should 
    - 同一slugが `db/articles.json` に存在 → 却下
    - 同一slugが `db/brainstorm.json` のqueueに存在 → 却下
    - 既存記事と意味的に重複するタイトル → 却下
-6. `db/brainstorm.json` のqueueに追加:
-   ```json
-   {
-     "proposed_slug": "candidate-slug",
-     "proposed_title": "候補タイトル",
-     "source_id": "parent-slug",
-     "rationale": "なぜこの記事が面白いか",
-     "interestingness_score": 0.85,
-     "status": "queued"
-   }
+6. queueに追加（バッチ処理）:
+   ```bash
+   uv run awiki brainstorm add-batch --json '[{"proposed_slug":"candidate-slug","proposed_title":"候補タイトル","source_id":"parent-slug","rationale":"なぜこの記事が面白いか","interestingness_score":0.85}]'
    ```
-7. その記事の `expansion_status` を `"done"` に更新
+7. その記事の `expansion_status` を `"done"` に更新:
+   ```bash
+   uv run awiki article update {slug} --expansion-status done
+   ```
 
 ### 5. 優先度ソート
 
@@ -77,44 +74,40 @@ queueの上位 `max_agents` 件を取り出す。各候補について `auto-wik
 
 ### 7. 結果収集・DB更新
 
-各記事の作成結果を収集し:
+各記事の作成結果を収集し、以下のCLIコマンドで一括更新:
 
-1. `db/articles.json` に新記事を追加:
-   ```json
-   {
-     "id": "slug",
-     "title": "記事タイトル",
-     "filename": "articles/slug.html",
-     "created_at": "ISO8601",
-     "updated_at": "ISO8601",
-     "links_to": ["linked-slug-1"],
-     "linked_from": ["source-slug"],
-     "summary": "要約",
-     "expansion_status": "pending",
-     "origin": "expanded"
-   }
+1. 新記事をDBに登録:
+   ```bash
+   uv run awiki article add --slug {slug} --title "{title}" --filename "articles/{slug}.html" --summary "{summary}" --links-to "{link1},{link2}" --origin expanded --source-id {source_slug}
    ```
-2. 提案元記事の `links_to` に新記事slugを追加（未含なら）
+
+2. 提案元記事のリンクを更新（既存リンクに新記事を追加）:
+   ```bash
+   uv run awiki article set-links {source_slug} --links "{既存link1},{既存link2},{new_slug}"
+   ```
+
 3. 提案元記事HTMLの被リンクセクション（`{{LINKED_FROM}}`部分）を更新
-4. 新記事から提案された候補を `db/brainstorm.json` のqueueに追加
-5. 処理済み候補を `db/brainstorm.json` の `history` に移動
-6. `db/graph.json` を再生成:
-   ```json
-   {
-     "nodes": [
-       {"id": "slug", "title": "タイトル", "url": "articles/slug.html", "summary": "要約", "is_root": false}
-     ],
-     "links": [
-       {"source": "slug-a", "target": "slug-b"}
-     ]
-   }
+
+4. 新記事から提案された候補をqueueに追加:
+   ```bash
+   uv run awiki brainstorm add-batch --json '[...]'
    ```
-7. `index.html` を再生成（`templates/index.html` テンプレートから）:
+
+5. グラフを再構築:
+   ```bash
+   uv run awiki graph rebuild
+   ```
+
+6. `index.html` を再生成（`templates/index.html` テンプレートから）:
    - `{{LANG}}`: 言語コード
    - `{{TOTAL_COUNT}}`: 総記事数
    - `{{LINK_COUNT}}`: 総リンク数
    - `{{ARTICLE_ROWS}}`: 記事一覧テーブル行
-8. `db/session.json` を更新
+
+7. セッション状態を更新:
+   ```bash
+   uv run awiki session update --phase phase_2
+   ```
 
 ### 8. 継続判定
 

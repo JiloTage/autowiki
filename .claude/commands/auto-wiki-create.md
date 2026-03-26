@@ -29,13 +29,12 @@ $ARGUMENTS は以下の形式:
 
 ### 1. 準備
 
-1. プロジェクトルート: `/Users/toshihideyukitake/Project/autowiki/`
-2. `db/articles.json` を読み込み、既存記事を把握
-3. slugを決定:
+1. `uv run awiki article list` で既存記事を把握
+2. slugを決定:
    - 指定がある場合はそのまま使用
    - 日本語トピックはローマ字変換 → kebab-case
    - 英語トピックはkebab-case
-4. 重複チェック: 同一slugが存在する場合はエラーを返す
+3. 重複チェック: `uv run awiki article exists {slug}` で確認（終了コード0なら存在）。存在する場合はエラーを返す
 
 ### 2. テンプレート読み込み
 

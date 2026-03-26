@@ -24,9 +24,9 @@ $ARGUMENTS:
 
 ### 1. コンテキスト把握
 
-1. `db/articles.json` から全既存記事を読み込む
+1. `uv run awiki article list` で全既存記事を取得
 2. 新トピックからslugを生成（日本語はローマ字変換、英語はkebab-case）
-3. 重複チェック: 同一slugが存在する場合はエラー
+3. 重複チェック: `uv run awiki article exists {slug}` で確認。存在する場合はエラー
 
 ### 2. 関連記事分析
 
@@ -63,23 +63,17 @@ Phase 1と同様の手順で記事を作成:
 
 ### 5. DB更新
 
-1. `db/articles.json` に新記事を追加:
-   ```json
-   {
-     "id": "slug",
-     "title": "記事タイトル",
-     "filename": "articles/slug.html",
-     "created_at": "ISO8601",
-     "updated_at": "ISO8601",
-     "links_to": ["related-slug-1", ...],
-     "linked_from": ["existing-slug-1", ...],
-     "summary": "要約",
-     "expansion_status": "pending",
-     "origin": "requested"
-   }
+CLIコマンドで一括更新:
+
+1. 新記事をDBに登録:
+   ```bash
+   uv run awiki article add --slug {slug} --title "{title}" --filename "articles/{slug}.html" --summary "{summary}" --links-to "{link1},{link2}" --origin requested
    ```
-2. `db/brainstorm.json`: 新規候補記事をqueueに追加
-3. `db/graph.json` を再生成
+2. 新規候補記事をqueueに追加:
+   ```bash
+   uv run awiki brainstorm add-batch --json '[{"proposed_slug":"...","proposed_title":"...","source_id":"{slug}","rationale":"...","interestingness_score":0.8}]'
+   ```
+3. グラフ再構築: `uv run awiki graph rebuild`
 4. `index.html` を再生成
 
 ### 6. 完了報告

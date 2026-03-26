@@ -44,10 +44,9 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 
 ### Step 2: 状態確認
 
-1. プロジェクトルート確認: `/Users/toshihideyukitake/Project/autowiki/`
-2. `db/session.json` を読み込み、現在の状態を把握
-3. `db/articles.json` を読み込み、既存記事数を確認
-4. `--max-agents N` が指定されていれば抽出（デフォルト: 3）
+1. `uv run awiki session get` で現在の状態を把握
+2. `uv run awiki article list` で既存記事数を確認
+3. `--max-agents N` が指定されていれば抽出（デフォルト: 3）
 
 ### Step 3: Phase別ディスパッチ
 
@@ -81,8 +80,8 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 
 #### Phase 5→2: セッション再開
 
-1. `db/session.json` を読み込む
-2. `db/articles.json`, `db/brainstorm.json` を読み込む
+1. `uv run awiki session get` でセッション状態を取得
+2. `uv run awiki article list` と `uv run awiki brainstorm list` で現在のデータを取得
 3. 現在の状態をサマリー表示:
    - 総記事数
    - 拡張待ちの記事一覧（`expansion_status: "pending"`）
@@ -93,16 +92,9 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 ### Step 4: セッション状態更新
 
 各Phase完了後:
-1. `db/session.json` を更新:
-   ```json
-   {
-     "last_phase": "phase_N",
-     "last_run": "ISO8601",
-     "total_articles": N,
-     "queue_size": N,
-     "max_agents": N,
-     "max_total_articles": 50
-   }
+1. セッション状態を更新:
+   ```bash
+   uv run awiki session update --phase phase_N
    ```
 2. 結果サマリーを表示
 
