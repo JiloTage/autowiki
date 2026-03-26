@@ -1,0 +1,56 @@
+name: Auto-Wiki Skill Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      skill:
+        description: "Skill to run"
+        required: true
+        type: choice
+        options:
+          - "/auto-wiki"
+          - "/auto-wiki-expand"
+          - "/auto-wiki-sync"
+          - "/auto-wiki-react"
+          - "/auto-wiki-portal"
+      args:
+        description: "Arguments (e.g. topic name, --wiki id)"
+        required: false
+        type: string
+        default: ""
+      max_turns:
+        description: "Max turns"
+        required: false
+        type: number
+        default: 30
+
+jobs:
+  run-skill:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Run the following Auto-Wiki skill:
+            ${{ inputs.skill }} ${{ inputs.args }}
+
+            After completion, commit the changes and push to this branch.
+          claude_args: "--max-turns ${{ inputs.max_turns }}"
+          timeout_minutes: 60
