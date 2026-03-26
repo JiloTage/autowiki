@@ -1,4 +1,4 @@
 interface:
   display_name: "Auto-Wiki Expand"
-  short_description: "Run Auto-Wiki expansion cycles"
-  default_prompt: "Use $auto-wiki-expand to brainstorm, queue, and create the next wave of articles."
+  short_description: "Run expansion cycles within a specific wiki"
+  default_prompt: "Use $auto-wiki-expand to brainstorm, queue, and create the next wave of articles in a wiki."

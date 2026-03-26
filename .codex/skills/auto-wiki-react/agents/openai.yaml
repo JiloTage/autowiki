@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki React"
+  short_description: "Trigger cross-wiki chemical reactions"
+  default_prompt: "Use $auto-wiki-react to scan for affinities between wikis and create bridge/synthesis articles."

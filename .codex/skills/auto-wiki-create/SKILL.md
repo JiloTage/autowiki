@@ -1,19 +1,20 @@
 ---
 name: auto-wiki-create
-description: Create a single Wikipedia-style HTML article for Auto-Wiki. Use when a root article, expanded article, or requested article needs to be generated from templates/article.html and linked into the wiki graph.
+description: Create a single Wikipedia-style HTML article within a specific wiki. Use when a root article, expanded article, or requested article needs to be generated from templates/article.html and linked into the wiki graph.
 ---
 
-# Auto-Wiki: 記事作成
+# Auto-Wiki: 記事作成 (Multi-Wiki)
 
-単一のWikipedia風HTML記事を作成するスキル。オーケストレータまたは他のスキルから呼び出される。
+特定wiki内に単一のWikipedia風HTML記事を作成するスキル。
 
 ## 入力
 
 ```
-[topic] --slug [slug] --origin [root|expanded|requested] --source [source-slug]
+[topic] --wiki [wiki-id] --slug [slug] --origin [root|expanded|requested] --source [source-slug]
 ```
 
 - `topic`: 記事トピック（必須）
+- `--wiki`: 対象wiki ID（必須、CLIは自動解決可）
 - `--slug`: slug指定（省略時は自動生成）
 - `--origin`: 作成起源（デフォルト: "root"）
 - `--source`: 提案元記事slug（expanded/requestedの場合）
@@ -22,12 +23,13 @@ description: Create a single Wikipedia-style HTML article for Auto-Wiki. Use whe
 
 ### 1. 準備
 
-1. `uv run awiki article list` で既存記事を把握
-2. slugを決定:
+1. `uv run awiki article list --wiki {wiki-id}` で既存記事を把握
+2. `uv run awiki wiki get {wiki-id}` でwiki情報（title, color等）を取得
+3. slugを決定:
    - 指定がある場合はそのまま使用
    - 日本語トピックはローマ字変換 → kebab-case
    - 英語トピックはkebab-case
-3. 重複チェック: `uv run awiki article exists {slug}` で確認（終了コード0なら存在）。存在する場合はエラーを返す
+4. 重複チェック: `uv run awiki article exists --wiki {wiki-id} {slug}`
 
 ### 2. テンプレート読み込み
 
@@ -35,7 +37,7 @@ description: Create a single Wikipedia-style HTML article for Auto-Wiki. Use whe
 
 ### 3. コンテキスト把握
 
-- `--source` がある場合: `articles/{source-slug}.html` を読み込んで文脈を理解
+- `--source` がある場合: `wikis/{wiki-id}/articles/{source-slug}.html` を読み込んで文脈を理解
 - 既存記事一覧から、関連性の高い記事を特定
 
 ### 4. 記事本文作成
@@ -43,28 +45,24 @@ description: Create a single Wikipedia-style HTML article for Auto-Wiki. Use whe
 以下の構造でHTML本文を作成:
 
 - **冒頭段落**: トピックの定義。タイトルを `<b>` で強調
-- **H2セクション**: 3〜6個。各セクションに `id` 属性を付与（例: `id="history"`）
+- **H2セクション**: 3〜6個。各セクションに `id` 属性を付与
 - **H3サブセクション**: 必要に応じて
 - **インラインSVGダイアグラム**: 最低1つ。以下の形式:
   ```html
   <div class="diagram-container">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 [幅] [高さ]" width="[幅]" height="[高さ]">
-      <!-- SVG要素をここに直接記述 -->
+      <!-- SVG要素 -->
     </svg>
     <div class="diagram-caption">図の説明</div>
   </div>
   ```
-  - Mermaidは使用しない。代わりにインラインSVGで図を直接描画する
-  - フローチャート、関係図、構成図、タイムラインなどを `<svg>` 要素で描く
-  - SVGには適切な `viewBox`, `width`, `height` を設定しレスポンシブに対応
-  - テキストには `font-family: sans-serif` を使用
-  - 色は控えめに: 背景 `#f8f9fa`, 枠線 `#a2a9b1`, テキスト `#202122`, アクセント `#36c`
-  - 矢印には `<defs>` 内で `<marker>` を定義して使用
-  - ノードは `<rect>` + `<text>`, 接続は `<line>` または `<path>` で描画
-- **内部リンク**: `<a href="{slug}.html">{タイトル}</a>` 形式
-  - 既存記事へのリンク: 積極的に相互リンク（フラット構造）
-  - 未作成の関連記事へのリンク: 3〜5個（今後の拡張候補）
-  - リンクは記事内の文脈に自然に組み込む
+  - Mermaidは使用しない。インラインSVGで直接描画
+  - 色: 背景 `#f8f9fa`, 枠線 `#a2a9b1`, テキスト `#202122`, アクセント `#36c`
+- **内部リンク**:
+  - 同一wiki内: `<a href="{slug}.html">{タイトル}</a>`
+  - 他wikiへのクロスリンク: `<a href="../../{other-wiki-id}/articles/{slug}.html">{タイトル}</a>`
+  - 既存記事へは積極的にリンク
+  - 未作成の関連記事へのリンク: 3〜5個
 - **外部リンクは含めない**（自己完結wiki）
 
 ### 5. テンプレート適用
@@ -74,6 +72,7 @@ description: Create a single Wikipedia-style HTML article for Auto-Wiki. Use whe
 | プレースホルダー | 内容 |
 |---|---|
 | `{{TITLE}}` | 記事タイトル |
+| `{{WIKI_TITLE}}` | wiki名 |
 | `{{LANG}}` | 言語コード（デフォルト "ja"） |
 | `{{UPDATED_AT}}` | 現在日時 |
 | `{{SUMMARY}}` | 1-2文の要約 |
@@ -81,7 +80,7 @@ description: Create a single Wikipedia-style HTML article for Auto-Wiki. Use whe
 | `{{TOC}}` | H2/H3から自動生成する目次 |
 | `{{RELATED_ARTICLES}}` | リンク先記事リスト |
 | `{{LINKS_TO}}` | リンク先一覧 |
-| `{{LINKED_FROM}}` | 被リンク一覧（新規は空、requestedの場合は提案元） |
+| `{{LINKED_FROM}}` | 被リンク一覧 |
 
 ### 6. TOC生成
 
@@ -93,16 +92,23 @@ H2, H3要素から目次を自動生成:
 
 ### 7. ファイル書き出し
 
-`articles/{slug}.html` に書き出す。
+`wikis/{wiki-id}/articles/{slug}.html` に書き出す。
 
-### 8. 結果報告
+### 8. DB登録
+
+```bash
+uv run awiki article add --wiki {wiki-id} --slug {slug} --title "{title}" --filename "wikis/{wiki-id}/articles/{slug}.html" --summary "{summary}" --links-to "{link1},{link2}" --origin {origin} --source-id {source}
+```
+
+### 9. 結果報告
 
 以下のJSON形式で結果を返す:
 ```json
 {
+  "wiki": "wiki-id",
   "slug": "article-slug",
   "title": "記事タイトル",
-  "filename": "articles/slug.html",
+  "filename": "wikis/wiki-id/articles/slug.html",
   "summary": "要約テキスト",
   "links_to": ["existing-slug-1", "new-slug-1"],
   "origin": "root|expanded|requested",

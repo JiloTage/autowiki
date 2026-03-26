@@ -1,4 +1,4 @@
 interface:
   display_name: "Auto-Wiki Request"
-  short_description: "Create requested Auto-Wiki articles"
-  default_prompt: "Use $auto-wiki-request to add a new requested topic and connect it to the wiki."
+  short_description: "Create a user-requested article in a specific wiki"
+  default_prompt: "Use $auto-wiki-request to add a new topic to a wiki and connect it to existing articles."

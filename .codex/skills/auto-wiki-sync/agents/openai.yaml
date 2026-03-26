@@ -1,4 +1,4 @@
 interface:
   display_name: "Auto-Wiki Sync"
-  short_description: "Rebuild and sync Auto-Wiki state"
-  default_prompt: "Use $auto-wiki-sync to rebuild article metadata, graph data, and index output."
+  short_description: "Synchronize a wiki's databases and regenerate its index"
+  default_prompt: "Use $auto-wiki-sync to rebuild and reconcile a wiki's state files."

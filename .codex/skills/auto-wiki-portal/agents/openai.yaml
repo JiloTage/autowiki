@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto-Wiki Portal"
+  short_description: "Rebuild the unified wiki portal"
+  default_prompt: "Use $auto-wiki-portal to regenerate the portal page with unified graph and reaction log."
