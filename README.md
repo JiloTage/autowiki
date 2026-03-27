@@ -135,6 +135,32 @@ uv run awiki reaction list
 uv run awiki portal rebuild
 ```
 
+## GitHub Actions でスキル実行
+
+Actions タブから手動でAuto-Wikiスキルを実行できます。
+
+### APIキーの取得と登録
+
+1. [claude.ai/settings/api](https://claude.ai/settings/api) にアクセス（Claude Max / Pro プラン）
+2. 「Create API Key」でキーを生成（`sk-ant-...` 形式）
+3. リポジトリの Settings > Secrets and variables > Actions を開く
+4. 「New repository secret」をクリック
+5. Name: `ANTHROPIC_API_KEY`、Value: 取得したAPIキーを入力して保存
+
+### 実行方法
+
+1. Actions タブ > 「Auto-Wiki Skill Runner」を選択
+2. 「Run workflow」をクリック
+3. スキルを選択、引数を入力して実行
+
+| スキル | 用途 | 引数例 |
+|--------|------|--------|
+| `/auto-wiki` | wiki作成・拡張 | `人工知能 --wiki ai` |
+| `/auto-wiki-expand` | 記事拡張 | `--wiki ai` |
+| `/auto-wiki-sync` | DB同期 | `--wiki ai` |
+| `/auto-wiki-react` | wiki間反応 | `--wikis ai,philosophy` |
+| `/auto-wiki-portal` | ポータル再生成 | (なし) |
+
 ## GitHub Pages でデプロイ
 
 1. GitHubにリポジトリを作成してpush
