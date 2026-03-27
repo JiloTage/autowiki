@@ -32,6 +32,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -61,4 +62,3 @@ jobs:
 
             After completion, create a new branch named "auto-wiki/${{ github.run_id }}", commit all changes, push, and create a pull request to main.
           claude_args: "--max-turns ${{ inputs.max_turns }}"
-          timeout_minutes: 60
