@@ -47,7 +47,7 @@ autowiki/
 │   ├── db.py
 │   └── cli.py
 │
-└── portal.html              # 生成済みポータル
+└── index.html               # 生成済みポータル
 ```
 
 ## Data Models
@@ -186,7 +186,7 @@ uv run awiki reaction create --id ID --type TYPE --reagent-a A:slug --reagent-b 
 uv run awiki reaction get {id}
 
 # Portal
-uv run awiki portal rebuild    # portal.html + cross-graph
+uv run awiki portal rebuild    # index.html + cross-graph
 ```
 
 ## Skill Commands
@@ -200,7 +200,7 @@ uv run awiki portal rebuild    # portal.html + cross-graph
 | `/auto-wiki-react [--wikis A,B]` | **NEW**: Scan for affinities, create reaction articles |
 | `/auto-wiki-portal` | **NEW**: Rebuild portal page |
 
-## Portal (portal.html)
+## Portal (index.html)
 
 - 全wikiカード一覧（色分け、記事数、最終更新）
 - 統合グラフ: 全wikiの全ノード表示、wiki別色分け、反応リンクは太線

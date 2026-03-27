@@ -23,7 +23,7 @@ uv run awiki reaction list            # 全反応一覧
 uv run awiki portal rebuild           # cross-graph.json再構築
 ```
 
-### 2. portal.html 生成
+### 2. index.html 生成
 
 `templates/portal.html` テンプレートのプレースホルダーを置換:
 
@@ -52,7 +52,7 @@ uv run awiki portal rebuild           # cross-graph.json再構築
 
 ### 5. ファイル出力
 
-`portal.html`（プロジェクトルート）に書き出す。
+`index.html`（プロジェクトルート）に書き出す。
 
 ### 6. 完了報告
 

@@ -114,7 +114,7 @@ autowiki/
 ├── tools/
 │   ├── db.py                   # JSON DB操作
 │   └── cli.py                  # CLIエントリポイント
-├── portal.html                 # 生成済みポータル
+├── index.html                  # 生成済みポータル
 └── .claude/commands/           # Skill定義
 ```
 
@@ -175,12 +175,14 @@ claude setup-token
 | `/auto-wiki-sync` | DB同期 | `--wiki ai` |
 | `/auto-wiki-react` | wiki間反応 | `--wikis ai,philosophy` |
 | `/auto-wiki-portal` | ポータル再生成 | (なし) |
+| `/auto-wiki-feedback` | 記事フィードバック | `--wiki ai "article-slug" 修正内容` |
+| `/auto-wiki-request` | 新規記事リクエスト | `--wiki ai "新トピック"` |
 
 ## GitHub Pages でデプロイ
 
 1. GitHubにリポジトリを作成してpush
 2. Settings > Pages > Source で「GitHub Actions」を選択
-3. `portal.html` がトップページとして公開されます
+3. `index.html` がトップページとして公開されます
 
 ## 技術スタック
 

@@ -18,11 +18,11 @@
 - `templates/` - HTML テンプレート（共有）
   - `article.html` - 記事ページ
   - `wiki-index.html` - wiki個別トップ
-  - `portal.html` - 全wiki統合ポータル
+  - `portal.html` - 全wiki統合ポータルテンプレート
 - `tools/` - Python CLIツール（uv管理）
   - `tools/db.py` - JSON DB操作ライブラリ
   - `tools/cli.py` - CLIエントリポイント（`awiki` コマンド）
-- `portal.html` - 全wiki統合ポータル（`/auto-wiki-sync` で毎回再生成）
+- `index.html` - 全wiki統合ポータル（`/auto-wiki-sync` で毎回再生成）
 - `docs/multi-wiki-design.md` - 設計ドキュメント
 - `.claude/commands/` - Skillコマンド
   - `auto-wiki.md` - オーケストレータ（メインエントリポイント）

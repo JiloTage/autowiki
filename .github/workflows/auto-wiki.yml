@@ -13,6 +13,8 @@ on:
           - "/auto-wiki-sync"
           - "/auto-wiki-react"
           - "/auto-wiki-portal"
+          - "/auto-wiki-feedback"
+          - "/auto-wiki-request"
       args:
         description: "Arguments (e.g. topic name, --wiki id)"
         required: false
@@ -22,7 +24,7 @@ on:
         description: "Max turns"
         required: false
         type: number
-        default: 30
+        default: 50
 
 jobs:
   run-skill:
@@ -51,6 +53,12 @@ jobs:
             Run the following Auto-Wiki skill:
             ${{ inputs.skill }} ${{ inputs.args }}
 
-            After completion, commit the changes and push to this branch.
+            IMPORTANT: This is running in a non-interactive CI environment.
+            - Do NOT ask for user confirmation at any step. Automatically continue all phases.
+            - For /auto-wiki: proceed through all phases without pausing for confirmation.
+            - For /auto-wiki-expand: run one expansion cycle and finish without asking to continue.
+            - For /auto-wiki-react: automatically process all affinity pairs with score >= 0.7 without asking for selection.
+
+            After completion, create a new branch named "auto-wiki/${{ github.run_id }}", commit all changes, push, and create a pull request to main.
           claude_args: "--max-turns ${{ inputs.max_turns }}"
           timeout_minutes: 60

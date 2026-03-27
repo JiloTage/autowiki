@@ -122,7 +122,7 @@ uv run awiki graph rebuild --wiki {product-wiki}
 uv run awiki portal rebuild
 ```
 
-wiki index.html と portal.html を再生成。
+wiki index.html とルートの index.html（ポータル）を再生成。
 
 ### 7. 完了報告
 
