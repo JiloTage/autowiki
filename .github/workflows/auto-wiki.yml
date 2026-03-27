@@ -63,3 +63,24 @@ jobs:
 
             After completion, create a new branch named "auto-wiki/${{ github.run_id }}", commit all changes, push, and create a pull request to main.
           claude_args: "--max-turns ${{ inputs.max_turns }}"
+          display_report: "true"
+          settings: |
+            {
+              "permissions": {
+                "allow": [
+                  "Bash(*)",
+                  "Read(*)",
+                  "Write(*)",
+                  "Edit(*)",
+                  "Glob(*)",
+                  "Grep(*)",
+                  "Agent(*)",
+                  "Task(*)",
+                  "WebFetch(*)",
+                  "WebSearch(*)",
+                  "TodoRead",
+                  "TodoWrite",
+                  "NotebookEdit"
+                ]
+              }
+            }
