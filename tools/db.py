@@ -274,7 +274,7 @@ def graph_rebuild(wiki_id: str) -> dict:
         nodes.append({
             "id": slug,
             "title": art["title"],
-            "url": art["filename"],
+            "url": f"articles/{slug}.html",
             "summary": art.get("summary", ""),
             "is_root": slug == root_id,
         })
