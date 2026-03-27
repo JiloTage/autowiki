@@ -139,6 +139,15 @@ uv run awiki portal rebuild
 
 Actions タブから手動でAuto-Wikiスキルを実行できます。
 
+### 必要なトークン
+
+ワークフローは以下の2つのトークンを使用します:
+
+| トークン | 用途 | 設定方法 |
+|----------|------|----------|
+| `CLAUDE_CODE_OAUTH_TOKEN` | Claude API 認証 | 手動でリポジトリシークレットに登録 |
+| `GITHUB_TOKEN` | リポジトリ操作（PR作成・push等） | GitHub Actions が自動提供（設定不要） |
+
 ### OAuthトークンの取得と登録
 
 Claude Max / Pro サブスクリプションに含まれるClaude CodeのOAuth認証を使います。追加のAPI課金は発生しません。
@@ -161,6 +170,19 @@ claude setup-token
 4. Value: 上記で取得したトークンを入力して保存
 
 > **注意**: `ANTHROPIC_API_KEY`（従量課金のAPIキー）とは別物です。環境に `ANTHROPIC_API_KEY` が設定されているとそちらが優先され、サブスク外の課金が発生します。
+
+### ワークフローのパーミッション
+
+ワークフロー（`.github/workflows/auto-wiki.yml`）には以下のパーミッションが必要です:
+
+```yaml
+permissions:
+  contents: write       # ブランチ作成・コミット・push
+  pull-requests: write  # PR作成
+  id-token: write       # OIDC認証（claude-code-action が使用）
+```
+
+これらはワークフローファイルに設定済みです。リポジトリ側の Settings > Actions > General > Workflow permissions が「Read and write permissions」になっていることを確認してください。
 
 ### 実行方法
 
