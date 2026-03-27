@@ -141,11 +141,14 @@ Actions タブから手動でAuto-Wikiスキルを実行できます。
 
 ### APIキーの取得と登録
 
-1. [claude.ai/settings/api](https://claude.ai/settings/api) にアクセス（Claude Max / Pro プラン）
-2. 「Create API Key」でキーを生成（`sk-ant-...` 形式）
-3. リポジトリの Settings > Secrets and variables > Actions を開く
-4. 「New repository secret」をクリック
-5. Name: `ANTHROPIC_API_KEY`、Value: 取得したAPIキーを入力して保存
+Claude Max（または Pro）サブスクリプションにはAPIアクセスが含まれており、追加のトークン課金なしでGitHub Actionsから利用できます。
+
+1. [claude.ai](https://claude.ai) にログイン（Max / Pro プラン）
+2. Settings > API Keys を開く
+3. 「Create API Key」でキーを生成
+4. GitHub リポジトリの Settings > Secrets and variables > Actions を開く
+5. 「New repository secret」をクリック
+6. Name: `ANTHROPIC_API_KEY`、Value: 取得したキーを入力して保存
 
 ### 実行方法
 
