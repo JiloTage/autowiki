@@ -34,7 +34,6 @@ jobs:
           mkdir -p _site
           cp -r assets _site/ 2>/dev/null || true
           cp -r wikis _site/ 2>/dev/null || true
-          cp -r templates _site/ 2>/dev/null || true
           cp index.html _site/ 2>/dev/null || true
 
       - name: Setup Pages
