@@ -877,6 +877,12 @@ a.redlink {
   font-size: 0.8rem;
 }
 
+.admin-repo-hint {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
 /* Run status */
 .admin-runs {
   display: flex;

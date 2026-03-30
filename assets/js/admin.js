@@ -5,10 +5,11 @@
 const AutoWikiAdmin = (() => {
   const WORKFLOW_FILE = 'auto-wiki.yml';
   const STORAGE_KEY = 'autowiki_gh_token';
+  const STORAGE_KEY_REPO = 'autowiki_gh_repo'; // "owner/repo"
   const POLL_INTERVAL = 8000; // 8秒
   const MAX_POLLS = 150; // 最大20分
 
-  // Auto-detected from GitHub Pages URL or db/registry.json
+  // Resolved from: GitHub Pages URL > registry.json > localStorage
   let OWNER = null;
   let REPO = null;
 
@@ -102,6 +103,35 @@ const AutoWikiAdmin = (() => {
     return null;
   }
 
+  function getSavedRepo() {
+    const val = localStorage.getItem(STORAGE_KEY_REPO);
+    if (!val) return null;
+    const parts = val.split('/');
+    if (parts.length === 2 && parts[0] && parts[1]) return { owner: parts[0], repo: parts[1] };
+    return null;
+  }
+
+  function saveRepo(owner, repo) {
+    localStorage.setItem(STORAGE_KEY_REPO, `${owner}/${repo}`);
+  }
+
+  function clearRepo() {
+    localStorage.removeItem(STORAGE_KEY_REPO);
+  }
+
+  function resolveRepo() {
+    // 1. GitHub Pages URL (most reliable for deployed sites)
+    const fromURL = detectGitHubRepoFromURL();
+    if (fromURL) { OWNER = fromURL.owner; REPO = fromURL.repo; return; }
+
+    // 2. localStorage (user manually configured via admin panel)
+    const fromStorage = getSavedRepo();
+    if (fromStorage) { OWNER = fromStorage.owner; REPO = fromStorage.repo; return; }
+
+    // 3. registry.json github field (set via CLI)
+    // Already loaded in loadWikiList if available
+  }
+
   // --- Wiki Registry ---
   async function loadWikiList() {
     try {
@@ -125,14 +155,8 @@ const AutoWikiAdmin = (() => {
       wikiList = [];
     }
 
-    // URL detection as fallback (or override if registry has no github config)
-    if (!OWNER || !REPO) {
-      const detected = detectGitHubRepoFromURL();
-      if (detected) {
-        OWNER = detected.owner;
-        REPO = detected.repo;
-      }
-    }
+    // Override with URL detection or localStorage
+    resolveRepo();
   }
 
   function buildWikiSelectHTML(skillId, mode) {
@@ -145,6 +169,21 @@ const AutoWikiAdmin = (() => {
         <option value="">-- Wiki選択 --</option>
         ${options}
       </select>
+    `;
+  }
+
+  function buildRepoSetupHTML() {
+    return `
+      <div class="admin-section">
+        <h3 class="admin-section-title">GitHub リポジトリ設定</h3>
+        <p class="admin-repo-hint">このwikiが置かれているGitHubリポジトリを設定してください。</p>
+        <div class="admin-token-row">
+          <input type="text" id="admin-repo-input"
+            placeholder="owner/repo（例: myname/my-wiki）"
+            class="admin-input" />
+          <button id="admin-repo-save" class="admin-btn admin-btn-small admin-btn-primary">設定</button>
+        </div>
+      </div>
     `;
   }
 
@@ -235,12 +274,7 @@ const AutoWikiAdmin = (() => {
           <span class="admin-toggle-arrow" id="admin-arrow">\u25BC</span>
         </div>
         <div class="admin-body" id="admin-body">
-          ${!repoDetected ? `
-          <div class="admin-section admin-locked">
-            GitHub リポジトリ情報が未設定です。以下のコマンドを実行してください:<br>
-            <code>uv run awiki config github</code>
-          </div>
-          ` : `
+          ${!repoDetected ? buildRepoSetupHTML() : `
           <!-- Token設定 -->
           <div class="admin-section admin-token-section">
             <div class="admin-token-row">
@@ -256,7 +290,7 @@ const AutoWikiAdmin = (() => {
             <div class="admin-token-hint">
               scope: <code>repo</code>, <code>workflow</code> が必要 ·
               <a href="https://github.com/settings/tokens/new?scopes=repo,workflow&description=autowiki-admin" target="_blank" rel="noopener">トークン作成</a>
-              · repo: <code>${OWNER}/${REPO}</code>
+              · repo: <code>${OWNER}/${REPO}</code>${getSavedRepo() ? ' · <a href="#" id="admin-repo-reset">リセット</a>' : ''}
             </div>
           </div>
 
@@ -397,6 +431,23 @@ const AutoWikiAdmin = (() => {
       });
     }
 
+    // Repo save
+    const repoSaveBtn = container.querySelector('#admin-repo-save');
+    if (repoSaveBtn) {
+      repoSaveBtn.addEventListener('click', () => {
+        const input = container.querySelector('#admin-repo-input');
+        const val = (input.value || '').trim();
+        const parts = val.split('/');
+        if (parts.length === 2 && parts[0] && parts[1]) {
+          saveRepo(parts[0], parts[1]);
+          init('admin-container');
+        } else {
+          input.classList.add('admin-input-error');
+          setTimeout(() => input.classList.remove('admin-input-error'), 2000);
+        }
+      });
+    }
+
     // Token save
     const saveBtn = container.querySelector('#admin-token-save');
     if (saveBtn) {
@@ -407,6 +458,16 @@ const AutoWikiAdmin = (() => {
           setToken(val);
           init('admin-container'); // re-render
         }
+      });
+    }
+
+    // Repo reset
+    const repoResetLink = container.querySelector('#admin-repo-reset');
+    if (repoResetLink) {
+      repoResetLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        clearRepo();
+        init('admin-container');
       });
     }
 
