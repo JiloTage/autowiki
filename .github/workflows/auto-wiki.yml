@@ -32,7 +32,7 @@ on:
         description: "Max turns"
         required: false
         type: number
-        default: 50
+        default: 100
 
 jobs:
   run-skill:
@@ -68,6 +68,54 @@ jobs:
             - For /auto-wiki: proceed through all phases without pausing for confirmation.
             - For /auto-wiki-expand: run one expansion cycle and finish without asking to continue.
             - For /auto-wiki-react: automatically process all affinity pairs with score >= 0.7 without asking for selection.
+
+            After completion, commit all changes and push directly to the current branch.
+          claude_args: "--max-turns ${{ inputs.max_turns }}"
+          display_report: "true"
+          settings: |
+            {
+              "permissions": {
+                "allow": [
+                  "Bash(*)",
+                  "Read(*)",
+                  "Write(*)",
+                  "Edit(*)",
+                  "Glob(*)",
+                  "Grep(*)",
+                  "Agent(*)",
+                  "Task(*)",
+                  "WebFetch(*)",
+                  "WebSearch(*)",
+                  "TodoRead",
+                  "TodoWrite",
+                  "NotebookEdit"
+                ]
+              }
+            }
+
+      # Auto-react: after expand, check if cross-wiki reaction should fire
+      - name: Check auto-react conditions
+        if: inputs.skill == '/auto-wiki-expand'
+        id: check-react
+        run: |
+          result=$(uv run awiki reaction should-react --threshold 5)
+          echo "$result"
+          should=$(echo "$result" | python3 -c "import sys,json; print(json.load(sys.stdin)['should_react'])")
+          echo "should_react=$should" >> "$GITHUB_OUTPUT"
+
+      - uses: anthropics/claude-code-action@v1
+        if: inputs.skill == '/auto-wiki-expand' && steps.check-react.outputs.should_react == 'True'
+        with:
+          model: ${{ inputs.model }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Run the following Auto-Wiki skill:
+            /auto-wiki-react
+
+            IMPORTANT: This is running in a non-interactive CI environment.
+            - Do NOT ask for user confirmation at any step.
+            - Automatically process all affinity pairs with score >= 0.7 without asking for selection.
 
             After completion, commit all changes and push directly to the current branch.
           claude_args: "--max-turns ${{ inputs.max_turns }}"

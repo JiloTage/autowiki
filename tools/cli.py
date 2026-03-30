@@ -321,6 +321,15 @@ def cmd_reaction_create(args):
     _print_json(result)
 
 
+def cmd_reaction_should_react(args):
+    threshold = args.threshold if args.threshold else 5
+    _print_json(db.reaction_should_react(threshold))
+
+
+def cmd_reaction_mark_reacted(args):
+    _print_json(db.reaction_mark_reacted())
+
+
 def cmd_reaction_list(args):
     _print_json(db.reaction_list())
 
@@ -519,6 +528,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--catalyst", required=True)
     p.add_argument("--score", type=float, required=True)
     p.set_defaults(func=cmd_reaction_create)
+
+    p = rx_sub.add_parser("should-react", help="Check if auto-react conditions are met")
+    p.add_argument("--threshold", type=int, default=5, help="New articles threshold (default: 5)")
+    p.set_defaults(func=cmd_reaction_should_react)
+
+    p = rx_sub.add_parser("mark-reacted", help="Record current state as last react checkpoint")
+    p.set_defaults(func=cmd_reaction_mark_reacted)
 
     p = rx_sub.add_parser("list", help="List all reactions")
     p.set_defaults(func=cmd_reaction_list)

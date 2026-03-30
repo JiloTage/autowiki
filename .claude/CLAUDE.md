@@ -78,6 +78,8 @@ uv run awiki sync --wiki W
 # 反応（wiki間）
 uv run awiki reaction add-affinity --wiki-a A --article-a SA --wiki-b B --article-b SB --score 0.8 --type TYPE --rationale R
 uv run awiki reaction create --type TYPE --reagent-a A:slug --reagent-b B:slug --product-wiki W --product-slug S --product-title T --catalyst C --score 0.8
+uv run awiki reaction should-react [--threshold N]
+uv run awiki reaction mark-reacted
 uv run awiki reaction list
 uv run awiki reaction get {id}
 

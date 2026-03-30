@@ -488,6 +488,8 @@ def reaction_create(
         "created_at": _now(),
     }
     db["reactions"].append(reaction)
+    db["last_react_total_articles"] = _total_article_count()
+    db["last_react_at"] = _now()
 
     # Remove matching pending affinity if exists
     db["pending_affinities"] = [
@@ -499,6 +501,58 @@ def reaction_create(
     ]
     _save_global("reactions.json", db)
     return reaction
+
+
+def reaction_mark_reacted() -> dict:
+    """Record current total article count as the last react checkpoint."""
+    db = _ensure_reactions()
+    total = _total_article_count()
+    db["last_react_total_articles"] = total
+    db["last_react_at"] = _now()
+    _save_global("reactions.json", db)
+    return {"last_react_total_articles": total, "last_react_at": db["last_react_at"]}
+
+
+def reaction_should_react(threshold: int = 5) -> dict:
+    """Check if auto-react conditions are met.
+
+    Conditions:
+    - At least 2 active wikis
+    - New articles since last react >= threshold
+    """
+    reg = _ensure_registry()
+    active_wikis = [wid for wid, w in reg["wikis"].items() if w.get("status") == "active"]
+    wiki_count = len(active_wikis)
+
+    total = _total_article_count()
+    db = _ensure_reactions()
+    last_total = db.get("last_react_total_articles", 0)
+    new_articles = total - last_total
+
+    should = wiki_count >= 2 and new_articles >= threshold
+    return {
+        "should_react": should,
+        "wiki_count": wiki_count,
+        "total_articles": total,
+        "last_react_total_articles": last_total,
+        "new_articles_since_react": new_articles,
+        "threshold": threshold,
+    }
+
+
+def _total_article_count() -> int:
+    """Sum article counts across all active wikis."""
+    reg = _ensure_registry()
+    total = 0
+    for wiki_id, wiki_info in reg["wikis"].items():
+        if wiki_info.get("status") != "active":
+            continue
+        try:
+            articles_db = _load(wiki_id, "articles.json")
+            total += articles_db.get("total_count", 0)
+        except FileNotFoundError:
+            pass
+    return total
 
 
 def reaction_list() -> dict:

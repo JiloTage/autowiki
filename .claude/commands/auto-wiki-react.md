@@ -124,7 +124,14 @@ uv run awiki portal rebuild
 
 wiki index.html とルートの index.html（ポータル）を再生成。
 
-### 7. 完了報告
+### 7. 反応チェックポイント記録
+
+反応完了後、次回の自動発火判定のためにチェックポイントを記録:
+```bash
+uv run awiki reaction mark-reacted
+```
+
+### 8. 完了報告
 
 - 生成された反応記事一覧
 - 各反応のタイプと帰属先wiki
