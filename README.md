@@ -205,6 +205,21 @@ permissions:
 | `/auto-wiki-feedback` | 記事フィードバック | `--wiki ai "article-slug" 修正内容` |
 | `/auto-wiki-request` | 新規記事リクエスト | `--wiki ai "新トピック"` |
 
+## テンプレートの更新を取り込む
+
+テンプレートリポジトリの更新を反映するには:
+
+```bash
+# 初回のみ: upstreamを追加
+git remote add upstream https://github.com/JiloTage/autowiki.git
+
+# 更新を取り込む
+git fetch upstream
+git merge upstream/main --allow-unrelated-histories
+```
+
+`.gitattributes` により、ユーザーデータ（`db/`、`wikis/`、`index.html`）はマージ時に上書きされません。
+
 ## GitHub Pages でデプロイ
 
 1. GitHubにリポジトリを作成してpush

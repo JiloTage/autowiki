@@ -1,0 +1,6 @@
+# User data — preserve on upstream merge (merge=ours)
+db/registry.json merge=ours
+db/reactions.json merge=ours
+db/cross-graph.json merge=ours
+wikis/** merge=ours
+index.html merge=ours
