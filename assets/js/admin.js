@@ -18,6 +18,7 @@ const AutoWikiAdmin = (() => {
       description: 'トピックから新しいwikiを作成し、ルート記事と初期拡張を行う',
       argsPlaceholder: 'トピック名（例: 量子コンピュータ）',
       argsRequired: true,
+      wikiSelect: false,
       icon: '+',
     },
     {
@@ -25,8 +26,9 @@ const AutoWikiAdmin = (() => {
       skill: '/auto-wiki-expand',
       label: '記事を拡張',
       description: '既存記事から関連トピックをブレストし、新しい記事を生成する',
-      argsPlaceholder: '--wiki ID（1つなら省略可）',
+      argsPlaceholder: '追加オプション（省略可）',
       argsRequired: false,
+      wikiSelect: 'required',
       icon: '\u21C0', // ⇀
     },
     {
@@ -36,6 +38,7 @@ const AutoWikiAdmin = (() => {
       description: '複数wikiの記事間の親和性を検出し、橋渡し・統合記事を生成する',
       argsPlaceholder: '',
       argsRequired: false,
+      wikiSelect: false,
       icon: '\u2194', // ↔
     },
     {
@@ -43,8 +46,9 @@ const AutoWikiAdmin = (() => {
       skill: '/auto-wiki-request',
       label: '記事リクエスト',
       description: '特定のトピックの記事を指定wikiに作成する',
-      argsPlaceholder: '記事タイトル --wiki ID',
+      argsPlaceholder: '記事タイトル',
       argsRequired: true,
+      wikiSelect: 'required',
       icon: '\u270E', // ✎
     },
     {
@@ -52,8 +56,9 @@ const AutoWikiAdmin = (() => {
       skill: '/auto-wiki-sync',
       label: 'DB同期',
       description: 'データベースの整合性チェック、グラフ再構築、インデックス再生成',
-      argsPlaceholder: '--wiki ID（1つなら省略可）',
+      argsPlaceholder: '追加オプション（省略可）',
       argsRequired: false,
+      wikiSelect: 'required',
       icon: '\u21BB', // ↻
     },
     {
@@ -61,8 +66,9 @@ const AutoWikiAdmin = (() => {
       skill: '/auto-wiki-feedback',
       label: 'フィードバック',
       description: '既存記事に修正・改善を適用する',
-      argsPlaceholder: 'slug 修正内容 --wiki ID',
+      argsPlaceholder: 'slug 修正内容',
       argsRequired: true,
+      wikiSelect: 'required',
       icon: '\u2709', // ✉
     },
     {
@@ -72,11 +78,44 @@ const AutoWikiAdmin = (() => {
       description: '統合ポータル（このページ）を最新状態に再生成する',
       argsPlaceholder: '',
       argsRequired: false,
+      wikiSelect: false,
       icon: '\u2302', // ⌂
     },
   ];
 
+  let wikiList = []; // { id, title, color } from registry.json
+
   let pollingTimers = {};
+
+  // --- Wiki Registry ---
+  async function loadWikiList() {
+    try {
+      const resp = await fetch('db/registry.json');
+      if (!resp.ok) return;
+      const data = await resp.json();
+      const wikis = data.wikis || {};
+      wikiList = Object.entries(wikis).map(([id, info]) => ({
+        id,
+        title: info.title || id,
+        color: info.color || '#4a7ebb',
+      }));
+    } catch {
+      wikiList = [];
+    }
+  }
+
+  function buildWikiSelectHTML(skillId, mode) {
+    if (!mode) return '';
+    const options = wikiList.map(w =>
+      `<option value="${w.id}">${w.title} (${w.id})</option>`
+    ).join('');
+    return `
+      <select class="admin-select admin-wiki-select" data-skill="${skillId}" required>
+        <option value="">-- Wiki選択 --</option>
+        ${options}
+      </select>
+    `;
+  }
 
   // --- Storage ---
   function getToken() {
@@ -142,10 +181,11 @@ const AutoWikiAdmin = (() => {
   }
 
   // --- UI Rendering ---
-  function init(containerId) {
+  async function init(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
+    await loadWikiList();
     container.innerHTML = buildPanelHTML();
     bindEvents(container);
     refreshStatus();
@@ -196,6 +236,7 @@ const AutoWikiAdmin = (() => {
         </div>
         <div class="admin-skill-desc">${s.description}</div>
         <div class="admin-skill-form">
+          ${s.wikiSelect ? buildWikiSelectHTML(s.id, s.wikiSelect) : ''}
           ${s.argsPlaceholder ? `<input type="text" class="admin-input admin-skill-args" placeholder="${s.argsPlaceholder}" data-skill="${s.id}" />` : ''}
           <div class="admin-skill-actions">
             <select class="admin-select admin-model-select" data-skill="${s.id}">
@@ -366,14 +407,27 @@ const AutoWikiAdmin = (() => {
     const skillCmd = btn.dataset.skillCmd;
     const skillDef = SKILLS.find(s => s.id === skillId);
     const argsInput = container.querySelector(`.admin-skill-args[data-skill="${skillId}"]`);
-    const args = argsInput ? argsInput.value.trim() : '';
+    const wikiSelect = container.querySelector(`.admin-wiki-select[data-skill="${skillId}"]`);
+    const argsText = argsInput ? argsInput.value.trim() : '';
+    const selectedWiki = wikiSelect ? wikiSelect.value : '';
 
-    if (skillDef.argsRequired && !args) {
+    if (skillDef.argsRequired && !argsText) {
       argsInput.classList.add('admin-input-error');
       argsInput.focus();
       setTimeout(() => argsInput.classList.remove('admin-input-error'), 2000);
       return;
     }
+
+    if (skillDef.wikiSelect && !selectedWiki) {
+      wikiSelect.classList.add('admin-input-error');
+      wikiSelect.focus();
+      setTimeout(() => wikiSelect.classList.remove('admin-input-error'), 2000);
+      return;
+    }
+
+    // Build args: user text + --wiki flag from dropdown
+    const wikiFlag = selectedWiki ? `--wiki ${selectedWiki}` : '';
+    const args = [argsText, wikiFlag].filter(Boolean).join(' ');
 
     const modelSelect = container.querySelector(`.admin-model-select[data-skill="${skillId}"]`);
     const model = modelSelect ? modelSelect.value : 'claude-opus-4-6';

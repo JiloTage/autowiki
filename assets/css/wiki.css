@@ -870,6 +870,13 @@ a.redlink {
   border-color: var(--accent);
 }
 
+.admin-wiki-select {
+  width: 100%;
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+}
+
 /* Run status */
 .admin-runs {
   display: flex;
