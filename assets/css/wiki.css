@@ -634,3 +634,342 @@ a.redlink {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 100;
 }
+
+/* ===== Admin Panel ===== */
+.admin-panel {
+  border: 1px solid var(--border-color);
+  margin: 16px 24px;
+  background: var(--bg-primary);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+.admin-header:hover {
+  background: var(--border-light);
+}
+
+.admin-header-icon {
+  font-size: 1rem;
+}
+
+.admin-toggle-arrow {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.admin-body {
+  border-top: 1px solid var(--border-light);
+}
+
+.admin-section {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.admin-section:last-child {
+  border-bottom: none;
+}
+
+.admin-section-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: normal;
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-token-section {
+  background: var(--bg-secondary);
+}
+
+.admin-token-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-token-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.admin-token-hint code {
+  background: var(--bg-tertiary);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 0.7rem;
+}
+
+.admin-locked {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 20px;
+  font-size: 0.85rem;
+}
+
+/* Admin inputs */
+.admin-input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  min-width: 0;
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.admin-input-error {
+  border-color: var(--link-red);
+  box-shadow: 0 0 0 1px var(--link-red);
+  animation: admin-shake 0.3s ease;
+}
+
+@keyframes admin-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Admin buttons */
+.admin-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  background: var(--bg-primary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.admin-btn:hover {
+  background: var(--bg-secondary);
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-small {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+.admin-btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.admin-btn-primary:hover {
+  background: #2855a3;
+}
+
+.admin-btn-danger {
+  color: var(--link-red);
+  border-color: var(--link-red);
+}
+
+.admin-btn-danger:hover {
+  background: #fdf0f0;
+}
+
+.admin-btn-success {
+  background: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+/* Skills grid */
+.admin-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.admin-skill-card {
+  border: 1px solid var(--border-light);
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border-radius: 2px;
+}
+
+.admin-skill-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.admin-skill-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-skill-label {
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.admin-skill-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.admin-skill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-skill-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Run status */
+.admin-runs {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.admin-run {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--bg-tertiary);
+  font-size: 0.8rem;
+}
+
+.admin-run:last-child {
+  border-bottom: none;
+}
+
+.admin-run-active {
+  background: #fffbe6;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin: 0 -6px;
+  border-radius: 2px;
+}
+
+.admin-run-status {
+  width: 18px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.status-queued { color: var(--text-muted); }
+.status-running { color: #e08600; }
+.status-success { color: #28a745; }
+.status-failure { color: var(--link-red); }
+.status-cancelled { color: var(--text-muted); }
+.status-unknown { color: var(--text-muted); }
+
+.admin-run-skill {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.admin-run-time {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.admin-run-link {
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.admin-loading,
+.admin-empty,
+.admin-error {
+  padding: 12px 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.admin-error {
+  color: var(--link-red);
+}
+
+/* Notification toast */
+.admin-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 18px;
+  border-radius: 2px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: opacity 0.3s, transform 0.3s;
+  animation: admin-slide-in 0.3s ease;
+}
+
+.admin-notification-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.admin-notification-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.admin-notification-hide {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@keyframes admin-slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .admin-skills-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-token-row {
+    flex-wrap: wrap;
+  }
+  .admin-notification {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+}
