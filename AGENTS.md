@@ -17,8 +17,7 @@
 1. 記事は必ず `templates/article.html` テンプレートベースで生成する
 2. 記事作成・修正時は必ず `db/articles.json`, `db/graph.json`, `index.html` を同期更新する
 3. リンク整合性を常に維持する（`links_to` と `linked_from` の双方向同期）
-4. サブエージェントは `max_agents` 上限を超えない
-5. `db/session.json` でセッション状態を永続化する
+4. `db/session.json` でセッション状態を永続化する
 
 ## スキル一覧
 

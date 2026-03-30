@@ -24,7 +24,6 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 /auto-wiki --feedback "slug"                # wikiが1つなら自動選択
 /auto-wiki --request "新トピック"            # wikiが1つなら自動選択
 /auto-wiki --expand                         # wikiが1つなら自動選択
-/auto-wiki --max-agents N                   # サブエージェント数上限（デフォルト: 3）
 ```
 
 ## 実行手順
@@ -59,7 +58,6 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 1. `uv run awiki wiki get {wiki-id}` でwiki情報を取得（存在しなければ作成）
 2. `uv run awiki session get --wiki {wiki-id}` で現在の状態を把握
 3. `uv run awiki article list --wiki {wiki-id}` で既存記事数を確認
-4. `--max-agents N` が指定されていれば抽出（デフォルト: 3）
 
 ### Step 3: Phase別ディスパッチ
 
@@ -81,7 +79,7 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 #### Phase 2: 拡張サイクル
 
 1. `/auto-wiki-expand` を `Skill` で呼び出す:
-   - 引数: `--wiki {wiki-id} --max-agents N`
+   - 引数: `--wiki {wiki-id}`
 2. 完了後、`/auto-wiki-sync` を `Skill` で呼び出して同期
 
 #### Phase 3: フィードバック
@@ -114,7 +112,6 @@ description: "Self-expanding wiki - orchestrator that coordinates article creati
 
 ## 爆発防止メカニズム
 
-- サイクルあたり記事数上限 = `max_agents`（デフォルト3）
 - スコア足切り: `interestingness_score` 0.5未満は自動却下
 - セッションあたり総記事数上限: `max_total_articles`（デフォルト50）
 - 重複チェック: 同一slugの候補は却下

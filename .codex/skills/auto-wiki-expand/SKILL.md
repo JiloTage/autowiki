@@ -1,6 +1,6 @@
 ---
 name: auto-wiki-expand
-description: Run an Auto-Wiki expansion cycle within a specific wiki. Use when pending articles should brainstorm follow-up topics, prioritize queued candidates, generate up to max_agents new articles, and update the wiki's db/ plus index.html.
+description: Run an Auto-Wiki expansion cycle within a specific wiki. Use when pending articles should brainstorm follow-up topics, prioritize queued candidates, generate new articles, and update the wiki's db/ plus index.html.
 ---
 
 # Auto-Wiki: 拡張オーケストレーション (Multi-Wiki)
@@ -10,11 +10,10 @@ description: Run an Auto-Wiki expansion cycle within a specific wiki. Use when p
 ## 入力
 
 ```
---wiki WIKI_ID --max-agents N
+--wiki WIKI_ID
 ```
 
 - `--wiki`: 対象wiki ID（省略時: 自動解決）
-- `--max-agents`: 同時作成記事数上限（デフォルト: 3）
 
 ## 実行手順
 
@@ -28,7 +27,6 @@ description: Run an Auto-Wiki expansion cycle within a specific wiki. Use when p
 
 ### 2. 設定確認
 
-- `max_agents`: デフォルト3（引数で上書き可能）
 - `max_total_articles`: デフォルト50
 
 ### 3. 上限チェック
@@ -55,7 +53,7 @@ description: Run an Auto-Wiki expansion cycle within a specific wiki. Use when p
 
 ### 5. 記事作成
 
-queueの上位 `max_agents` 件を `uv run awiki brainstorm pop --wiki {wiki-id} --n N` で取り出し、各候補について `auto-wiki-create` スキルの手順に従い記事を作成する。
+queueの全候補を `uv run awiki brainstorm pop --wiki {wiki-id}` で取り出し、各候補について `auto-wiki-create` スキルの手順に従い記事を作成する。
 
 ### 6. 結果収集・DB更新
 

@@ -63,7 +63,6 @@ _WIKI_DB_INIT = {
         "last_phase": None,
         "expansion_frontier": [],
         "settings": {
-            "max_agents": 3,
             "max_total_articles": 50,
             "score_threshold": 0.5,
             "language": "ja",

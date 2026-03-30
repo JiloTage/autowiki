@@ -99,8 +99,7 @@ uv run awiki portal rebuild
 1. 記事は必ず `templates/article.html` テンプレートベースで生成する
 2. 記事作成・修正時は必ず `uv run awiki` コマンドでDB更新する（JSONファイル直接編集禁止）
 3. リンク整合性を常に維持する（`article set-links` が `linked_from` を自動同期）
-4. サブエージェントは `max_agents` 上限を超えない
-5. `uv run awiki session update --wiki W` でセッション状態を永続化する
+4. `uv run awiki session update --wiki W` でセッション状態を永続化する
 6. wiki間の化学反応は `/auto-wiki-react` で明示的に実行する
 7. 反応記事はどちらかのwikiに帰属させる（独立した反応記事ディレクトリは無い）
 

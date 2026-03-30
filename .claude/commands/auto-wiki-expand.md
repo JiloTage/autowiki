@@ -18,7 +18,7 @@ description: "Auto-Wiki: Expansion orchestration - brainstorm candidates, launch
 
 $ARGUMENTS:
 ```
---wiki WIKI_ID --max-agents N
+--wiki WIKI_ID
 ```
 
 ## 実行手順
@@ -33,7 +33,6 @@ $ARGUMENTS:
 
 ### 2. 設定確認
 
-- `max_agents`: デフォルト3（引数で上書き可能）
 - `max_total_articles`: デフォルト50
 
 ### 3. 上限チェック
@@ -60,7 +59,7 @@ $ARGUMENTS:
 
 ### 5. サブエージェント起動
 
-queueの上位 `max_agents` 件を `uv run awiki brainstorm pop --wiki {wiki-id} --n N` で取り出し、**並列で** Agent toolを起動。
+queueの全候補を `uv run awiki brainstorm pop --wiki {wiki-id}` で取り出し、**並列で** Agent toolを起動。
 
 各サブエージェントへの指示:
 ```
