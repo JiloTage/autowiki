@@ -29,6 +29,9 @@
     <span>反応数: <span class="stat-value">{{REACTION_COUNT}}</span></span>
   </div>
 
+  <!-- Admin Panel -->
+  <div id="admin-container"></div>
+
   <div class="search-container">
     <input type="text" id="search-input" class="search-input" placeholder="全wikiを横断検索...">
   </div>
@@ -55,10 +58,12 @@
 
 <script src="assets/js/graph.js"></script>
 <script src="assets/js/search.js"></script>
+<script src="assets/js/admin.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     AutoWikiGraph.init('graph', 'db/cross-graph.json', { portal: true });
     AutoWikiSearch.init('search-input', 'search-results', null, { portal: true });
+    AutoWikiAdmin.init('admin-container');
   });
 </script>
 </body>

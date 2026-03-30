@@ -28,9 +28,6 @@
     <span>リンク数: <span class="stat-value" id="stat-links">{{LINK_COUNT}}</span></span>
   </div>
 
-  <!-- Admin Panel -->
-  <div id="admin-container"></div>
-
   <div class="search-container">
     <input type="text" id="search-input" class="search-input" placeholder="このwiki内を検索...">
   </div>
@@ -62,12 +59,10 @@
 
 <script src="../../assets/js/graph.js"></script>
 <script src="../../assets/js/search.js"></script>
-<script src="../../assets/js/admin.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     AutoWikiGraph.init('graph', 'db/graph.json');
     AutoWikiSearch.init('search-input', 'search-results', 'db/articles.json');
-    AutoWikiAdmin.init('admin-container');
   });
 </script>
 </body>
