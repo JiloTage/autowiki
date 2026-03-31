@@ -140,3 +140,37 @@ jobs:
                 ]
               }
             }
+
+      # Final step: rebuild portal page after any skill execution
+      - name: Rebuild portal
+        if: inputs.skill != '/auto-wiki-portal'
+        uses: anthropics/claude-code-action@v1
+        with:
+          model: ${{ inputs.model }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Run the following Auto-Wiki skill:
+            /auto-wiki-portal
+
+            IMPORTANT: This is running in a non-interactive CI environment.
+            - Do NOT ask for user confirmation at any step.
+
+            After completion, commit all changes and push directly to the current branch.
+          claude_args: "--max-turns 30"
+          display_report: "true"
+          settings: |
+            {
+              "permissions": {
+                "allow": [
+                  "Bash(*)",
+                  "Read(*)",
+                  "Write(*)",
+                  "Edit(*)",
+                  "Glob(*)",
+                  "Grep(*)",
+                  "TodoRead",
+                  "TodoWrite"
+                ]
+              }
+            }
