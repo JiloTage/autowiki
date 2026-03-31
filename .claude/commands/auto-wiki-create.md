@@ -6,6 +6,8 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
 description: "Auto-Wiki: Create a single article in a wiki with template, links, and inline SVG diagrams"
 ---
 

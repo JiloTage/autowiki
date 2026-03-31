@@ -6,6 +6,8 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
   - Agent
   - Skill
 description: "Auto-Wiki: Cross-wiki reaction - scan for affinities between wikis and create bridge/synthesis articles"
