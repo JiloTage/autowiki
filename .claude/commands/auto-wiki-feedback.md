@@ -6,6 +6,8 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
 description: "Auto-Wiki: Apply user feedback to an existing article and maintain link integrity"
 ---
 

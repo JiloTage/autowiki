@@ -6,6 +6,8 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
 description: "Auto-Wiki: Handle user requests for new articles with automatic cross-linking to existing articles"
 ---
 

@@ -6,6 +6,8 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
   - Agent
 description: "Auto-Wiki: Expansion orchestration - brainstorm candidates, launch sub-agents, collect results"
 ---
