@@ -9,7 +9,6 @@ allowed-tools:
   - WebSearch
   - WebFetch
   - Agent
-  - Skill
 description: "Auto-Wiki: Cross-wiki reaction - scan for affinities between wikis and create bridge/synthesis articles"
 ---
 
@@ -134,14 +133,9 @@ wiki index.html とルートの index.html（ポータル）を再生成。
 uv run awiki reaction mark-reacted
 ```
 
-### 8. ポータル更新
-
-`/auto-wiki-portal` skillを呼び出して、統合ポータルページを再生成する。
-
-### 9. 完了報告
+### 8. 完了報告
 
 - 生成された反応記事一覧
 - 各反応のタイプと帰属先wiki
 - クロスリンクが追加された記事
 - 統合グラフの更新状況
-- ポータル更新完了
