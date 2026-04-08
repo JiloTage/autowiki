@@ -4,6 +4,41 @@
  */
 const AutoWikiAdmin = (() => {
   const WORKFLOW_FILE = 'auto-wiki.yml';
+  const DEFAULT_EXECUTION_CONFIG = {
+    defaultProvider: 'codex',
+    providers: [
+      {
+        id: 'codex',
+        label: 'Codex',
+        ciSupported: true,
+        runner: 'codex-action',
+        defaultModel: 'gpt-5.4',
+        lockModel: true,
+        effort: 'medium',
+        effortOptions: [
+          { id: 'none', label: 'Default' },
+          { id: 'low', label: 'Low' },
+          { id: 'medium', label: 'Medium' },
+          { id: 'high', label: 'High' },
+          { id: 'xhigh', label: 'XHigh' },
+        ],
+        models: [
+          { id: 'gpt-5.4', label: 'GPT-5.4' },
+        ],
+      },
+      {
+        id: 'claude',
+        label: 'Claude',
+        ciSupported: true,
+        runner: 'claude-code-action',
+        defaultModel: 'claude-opus-4-6',
+        models: [
+          { id: 'claude-opus-4-6', label: 'Opus' },
+          { id: 'claude-sonnet-4-6', label: 'Sonnet' },
+        ],
+      },
+    ],
+  };
   const STORAGE_KEY = 'autowiki_gh_token';
   const STORAGE_KEY_REPO = 'autowiki_gh_repo'; // "owner/repo"
   const POLL_INTERVAL = 8000; // 8秒
@@ -87,8 +122,94 @@ const AutoWikiAdmin = (() => {
   ];
 
   let wikiList = []; // { id, title, color } from registry.json
+  let executionConfig = DEFAULT_EXECUTION_CONFIG;
 
   let pollingTimers = {};
+
+  function getExecutionProviders() {
+    return Array.isArray(executionConfig.providers) && executionConfig.providers.length
+      ? executionConfig.providers
+      : DEFAULT_EXECUTION_CONFIG.providers;
+  }
+
+  function getDefaultProviderId() {
+    return executionConfig.defaultProvider || DEFAULT_EXECUTION_CONFIG.defaultProvider;
+  }
+
+  function getProviderConfig(providerId) {
+    const resolvedProviderId = providerId || getDefaultProviderId();
+    const providers = getExecutionProviders();
+    return providers.find(provider => provider.id === resolvedProviderId) || null;
+  }
+
+  function getModelConfig(providerId, modelId) {
+    const provider = getProviderConfig(providerId);
+    if (!provider) return null;
+    const resolvedModelId = modelId || provider.defaultModel;
+    return (provider.models || []).find(model => model.id === resolvedModelId) || null;
+  }
+
+  function buildProviderOptions(selectedProviderId) {
+    return getExecutionProviders().map(provider => {
+      const selected = provider.id === selectedProviderId ? ' selected' : '';
+      return `<option value="${provider.id}"${selected}>${provider.label}</option>`;
+    }).join('');
+  }
+
+  function buildModelOptions(providerId, selectedModelId) {
+    const provider = getProviderConfig(providerId);
+    if (!provider) return '';
+    const fallbackModelId = selectedModelId || provider.defaultModel;
+    return (provider.models || []).map(model => {
+      const selected = model.id === fallbackModelId ? ' selected' : '';
+      return `<option value="${model.id}"${selected}>${model.label}</option>`;
+    }).join('');
+  }
+
+  function buildProviderSettingOptions(providerId, selectedValue) {
+    const provider = getProviderConfig(providerId);
+    if (!provider) return '';
+
+    if (provider.id === 'codex') {
+      return buildEffortOptions(providerId, selectedValue);
+    }
+
+    return buildModelOptions(providerId, selectedValue);
+  }
+
+  function buildEffortOptions(providerId, selectedEffort) {
+    const provider = getProviderConfig(providerId);
+    if (!provider || !Array.isArray(provider.effortOptions)) return '';
+    const fallbackEffort = selectedEffort || provider.effort || '';
+    return provider.effortOptions.map(option => {
+      const selected = option.id === fallbackEffort ? ' selected' : '';
+      return `<option value="${option.id}"${selected}>${option.label}</option>`;
+    }).join('');
+  }
+
+  function syncSkillControls(skillId, providerId, container) {
+    const provider = getProviderConfig(providerId);
+    const settingSelect = container.querySelector(`.admin-provider-setting-select[data-skill="${skillId}"]`);
+
+    if (settingSelect) {
+      const currentValue = settingSelect.value;
+      settingSelect.innerHTML = buildProviderSettingOptions(providerId, currentValue);
+      settingSelect.disabled = !provider || (provider.id === 'codex' ? false : !!provider.lockModel);
+    }
+  }
+
+  async function loadExecutionConfig() {
+    try {
+      const resp = await fetch('config/execution-providers.json', { cache: 'no-store' });
+      if (!resp.ok) return;
+      const data = await resp.json();
+      if (data && Array.isArray(data.providers) && data.providers.length) {
+        executionConfig = data;
+      }
+    } catch {
+      executionConfig = DEFAULT_EXECUTION_CONFIG;
+    }
+  }
 
   // --- GitHub Repo Detection ---
   function detectGitHubRepoFromURL() {
@@ -224,7 +345,7 @@ const AutoWikiAdmin = (() => {
     return resp.json();
   }
 
-  async function triggerWorkflow(skill, args, maxTurns, model) {
+  async function triggerWorkflow(skill, args, maxTurns, provider, model, effort) {
     await ghFetch(`/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
       method: 'POST',
       body: JSON.stringify({
@@ -232,7 +353,9 @@ const AutoWikiAdmin = (() => {
         inputs: {
           skill: skill,
           args: args || '',
-          model: model || 'claude-opus-4-6',
+          provider: provider || getDefaultProviderId(),
+          model: model || (getProviderConfig(provider || getDefaultProviderId()) || {}).defaultModel || 'gpt-5.4',
+          effort: effort || (getProviderConfig(provider || getDefaultProviderId()) || {}).effort || '',
           max_turns: String(maxTurns || 50),
         },
       }),
@@ -255,6 +378,7 @@ const AutoWikiAdmin = (() => {
     const container = document.getElementById(containerId);
     if (!container) return;
 
+    await loadExecutionConfig();
     await loadWikiList();
     container.innerHTML = buildPanelHTML();
     bindEvents(container);
@@ -302,6 +426,7 @@ const AutoWikiAdmin = (() => {
   }
 
   function buildSkillsHTML() {
+    const defaultProviderId = getDefaultProviderId();
     const cards = SKILLS.map(s => `
       <div class="admin-skill-card" data-skill-id="${s.id}">
         <div class="admin-skill-header">
@@ -313,9 +438,11 @@ const AutoWikiAdmin = (() => {
           ${s.wikiSelect ? buildWikiSelectHTML(s.id, s.wikiSelect) : ''}
           ${s.argsPlaceholder ? `<input type="text" class="admin-input admin-skill-args" placeholder="${s.argsPlaceholder}" data-skill="${s.id}" />` : ''}
           <div class="admin-skill-actions">
-            <select class="admin-select admin-model-select" data-skill="${s.id}">
-              <option value="claude-opus-4-6">Opus</option>
-              <option value="claude-sonnet-4-6">Sonnet</option>
+            <select class="admin-select admin-provider-select" data-skill="${s.id}">
+              ${buildProviderOptions(defaultProviderId)}
+            </select>
+            <select class="admin-select admin-provider-setting-select" data-skill="${s.id}">
+              ${buildModelOptions(defaultProviderId)}
             </select>
             <button class="admin-btn admin-btn-primary admin-run-btn" data-skill="${s.id}" data-skill-cmd="${s.skill}">
               実行
@@ -485,6 +612,13 @@ const AutoWikiAdmin = (() => {
       btn.addEventListener('click', () => handleRun(btn, container));
     });
 
+    container.querySelectorAll('.admin-provider-select').forEach(select => {
+      syncSkillControls(select.dataset.skill, select.value, container);
+      select.addEventListener('change', () => {
+        syncSkillControls(select.dataset.skill, select.value, container);
+      });
+    });
+
     // Refresh
     const refreshBtn = container.querySelector('#admin-refresh');
     if (refreshBtn) {
@@ -530,20 +664,35 @@ const AutoWikiAdmin = (() => {
     const wikiFlag = selectedWiki ? `--wiki ${selectedWiki}` : '';
     const args = [argsText, wikiFlag].filter(Boolean).join(' ');
 
-    const modelSelect = container.querySelector(`.admin-model-select[data-skill="${skillId}"]`);
-    const model = modelSelect ? modelSelect.value : 'claude-opus-4-6';
+    const providerSelect = container.querySelector(`.admin-provider-select[data-skill="${skillId}"]`);
+    const providerId = providerSelect ? providerSelect.value : getDefaultProviderId();
+    const providerConfig = getProviderConfig(providerId);
+    const providerSettingSelect = container.querySelector(`.admin-provider-setting-select[data-skill="${skillId}"]`);
+    const model = providerConfig && providerConfig.id === 'claude'
+      ? ((providerSettingSelect && providerSettingSelect.value) || providerConfig.defaultModel || '')
+      : ((providerConfig && providerConfig.defaultModel) || 'gpt-5.4');
+    const effort = providerConfig && providerConfig.id === 'codex'
+      ? ((providerSettingSelect && providerSettingSelect.value) || providerConfig.effort || '')
+      : '';
+
+    if (!providerConfig || providerConfig.ciSupported === false) {
+      showNotification(`Execution provider "${providerId}" is not available in GitHub Actions.`, 'error');
+      return;
+    }
 
     // Confirm
     const label = skillDef.label;
     const argDisplay = args ? ` (${args})` : '';
-    const modelDisplay = model.includes('opus') ? 'Opus' : 'Sonnet';
-    if (!confirm(`「${label}${argDisplay}」を ${modelDisplay} で実行しますか？`)) return;
+    const modelLabel = getModelConfig(providerId, model)?.label || model;
+    const effortLabel = (providerConfig.effortOptions || []).find(option => option.id === effort)?.label || '';
+    const runTarget = effortLabel ? `${providerConfig.label} / ${modelLabel} / ${effortLabel}` : `${providerConfig.label} / ${modelLabel}`;
+    if (!confirm(`Run "${label}${argDisplay}" with ${runTarget}?`)) return;
 
     btn.disabled = true;
     btn.textContent = '送信中...';
 
     try {
-      await triggerWorkflow(skillCmd, args, 50, model);
+      await triggerWorkflow(skillCmd, args, 50, providerId, model, effort);
 
       btn.textContent = '発火済';
       btn.classList.add('admin-btn-success');

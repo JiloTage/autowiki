@@ -1,0 +1,48 @@
+{
+  "defaultProvider": "codex",
+  "providers": [
+    {
+      "id": "codex",
+      "label": "Codex",
+      "ciSupported": true,
+      "runner": "codex-action",
+      "defaultModel": "gpt-5.4",
+      "lockModel": true,
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "safetyStrategy": "drop-sudo",
+      "commitStrategy": "workflow",
+      "effortOptions": [
+        { "id": "none", "label": "Default" },
+        { "id": "low", "label": "Low" },
+        { "id": "medium", "label": "Medium" },
+        { "id": "high", "label": "High" },
+        { "id": "xhigh", "label": "XHigh" }
+      ],
+      "models": [
+        {
+          "id": "gpt-5.4",
+          "label": "GPT-5.4"
+        }
+      ]
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "ciSupported": true,
+      "runner": "claude-code-action",
+      "defaultModel": "claude-opus-4-6",
+      "commitStrategy": "workflow",
+      "models": [
+        {
+          "id": "claude-opus-4-6",
+          "label": "Opus"
+        },
+        {
+          "id": "claude-sonnet-4-6",
+          "label": "Sonnet"
+        }
+      ]
+    }
+  ]
+}

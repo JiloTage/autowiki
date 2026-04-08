@@ -20,14 +20,21 @@ on:
         required: false
         type: string
         default: ""
-      model:
-        description: "Claude model"
+      provider:
+        description: "Execution provider"
         required: false
-        type: choice
-        options:
-          - "claude-opus-4-6"
-          - "claude-sonnet-4-6"
-        default: "claude-opus-4-6"
+        type: string
+        default: "codex"
+      model:
+        description: "Execution model"
+        required: false
+        type: string
+        default: "gpt-5.4"
+      effort:
+        description: "Reasoning effort"
+        required: false
+        type: string
+        default: "medium"
       max_turns:
         description: "Max turns"
         required: false
@@ -54,44 +61,56 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Prepare execution
+        id: prepare
+        run: >
+          uv run python -m tools.ci_runner prepare
+          --provider "${{ inputs.provider }}"
+          --model "${{ inputs.model }}"
+          --effort "${{ inputs.effort }}"
+          --skill "${{ inputs.skill }}"
+          --args "${{ inputs.args }}"
+
+      - name: Fail unsupported execution provider
+        if: steps.prepare.outputs.provider_supported != 'true'
+        run: |
+          echo "::error::${{ steps.prepare.outputs.provider_error }}"
+          exit 1
+
+      - name: Require Codex API key
+        if: steps.prepare.outputs.runner == 'codex-action' && secrets.OPENAI_API_KEY == ''
+        run: |
+          echo "::error::OPENAI_API_KEY is required when provider=codex."
+          exit 1
+
+      - name: Require Claude OAuth token
+        if: steps.prepare.outputs.runner == 'claude-code-action' && secrets.CLAUDE_CODE_OAUTH_TOKEN == ''
+        run: |
+          echo "::error::CLAUDE_CODE_OAUTH_TOKEN is required when provider=claude."
+          exit 1
+
       - uses: anthropics/claude-code-action@v1
+        if: steps.prepare.outputs.runner == 'claude-code-action'
         with:
-          model: ${{ inputs.model }}
+          model: ${{ steps.prepare.outputs.model }}
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          prompt: |
-            Run the following Auto-Wiki skill:
-            ${{ inputs.skill }} ${{ inputs.args }}
-
-            IMPORTANT: This is running in a non-interactive CI environment.
-            - Do NOT ask for user confirmation at any step. Automatically continue all phases.
-            - For /auto-wiki: proceed through all phases without pausing for confirmation.
-            - For /auto-wiki-expand: run one expansion cycle and finish without asking to continue.
-            - For /auto-wiki-react: automatically process all affinity pairs with score >= 0.7 without asking for selection.
-
-            After completion, commit all changes and push directly to the current branch.
+          prompt: ${{ steps.prepare.outputs.main_prompt }}
           claude_args: "--max-turns ${{ inputs.max_turns }}"
           display_report: "true"
-          settings: |
-            {
-              "permissions": {
-                "allow": [
-                  "Bash(*)",
-                  "Read(*)",
-                  "Write(*)",
-                  "Edit(*)",
-                  "Glob(*)",
-                  "Grep(*)",
-                  "Agent(*)",
-                  "Task(*)",
-                  "WebFetch(*)",
-                  "WebSearch(*)",
-                  "TodoRead",
-                  "TodoWrite",
-                  "NotebookEdit"
-                ]
-              }
-            }
+          settings: ${{ steps.prepare.outputs.main_settings_json }}
+
+      - name: Run Codex
+        id: run_codex
+        if: steps.prepare.outputs.runner == 'codex-action'
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: ${{ steps.prepare.outputs.main_prompt }}
+          model: ${{ steps.prepare.outputs.model }}
+          effort: ${{ steps.prepare.outputs.effort }}
+          sandbox: ${{ steps.prepare.outputs.sandbox }}
+          safety-strategy: ${{ steps.prepare.outputs.safety_strategy }}
 
       # Auto-react: after expand, check if cross-wiki reaction should fire
       - name: Check auto-react conditions
@@ -104,73 +123,61 @@ jobs:
           echo "should_react=$should" >> "$GITHUB_OUTPUT"
 
       - uses: anthropics/claude-code-action@v1
-        if: inputs.skill == '/auto-wiki-expand' && steps.check-react.outputs.should_react == 'True'
+        if: inputs.skill == '/auto-wiki-expand' && steps.check-react.outputs.should_react == 'True' && steps.prepare.outputs.runner == 'claude-code-action'
         with:
-          model: ${{ inputs.model }}
+          model: ${{ steps.prepare.outputs.model }}
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          prompt: |
-            Run the following Auto-Wiki skill:
-            /auto-wiki-react
-
-            IMPORTANT: This is running in a non-interactive CI environment.
-            - Do NOT ask for user confirmation at any step.
-            - Automatically process all affinity pairs with score >= 0.7 without asking for selection.
-
-            After completion, commit all changes and push directly to the current branch.
+          prompt: ${{ steps.prepare.outputs.react_prompt }}
           claude_args: "--max-turns ${{ inputs.max_turns }}"
           display_report: "true"
-          settings: |
-            {
-              "permissions": {
-                "allow": [
-                  "Bash(*)",
-                  "Read(*)",
-                  "Write(*)",
-                  "Edit(*)",
-                  "Glob(*)",
-                  "Grep(*)",
-                  "Agent(*)",
-                  "Task(*)",
-                  "WebFetch(*)",
-                  "WebSearch(*)",
-                  "TodoRead",
-                  "TodoWrite",
-                  "NotebookEdit"
-                ]
-              }
-            }
+          settings: ${{ steps.prepare.outputs.react_settings_json }}
+
+      - name: Run Codex auto-react
+        if: inputs.skill == '/auto-wiki-expand' && steps.check-react.outputs.should_react == 'True' && steps.prepare.outputs.runner == 'codex-action'
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: ${{ steps.prepare.outputs.react_prompt }}
+          model: ${{ steps.prepare.outputs.model }}
+          effort: ${{ steps.prepare.outputs.effort }}
+          sandbox: ${{ steps.prepare.outputs.sandbox }}
+          safety-strategy: ${{ steps.prepare.outputs.safety_strategy }}
 
       # Final step: rebuild portal page after any skill execution
       - name: Rebuild portal
-        if: inputs.skill != '/auto-wiki-portal'
+        if: inputs.skill != '/auto-wiki-portal' && steps.prepare.outputs.runner == 'claude-code-action'
         uses: anthropics/claude-code-action@v1
         with:
-          model: ${{ inputs.model }}
+          model: ${{ steps.prepare.outputs.model }}
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          prompt: |
-            Run the following Auto-Wiki skill:
-            /auto-wiki-portal
-
-            IMPORTANT: This is running in a non-interactive CI environment.
-            - Do NOT ask for user confirmation at any step.
-
-            After completion, commit all changes and push directly to the current branch.
+          prompt: ${{ steps.prepare.outputs.portal_prompt }}
           claude_args: "--max-turns 30"
           display_report: "true"
-          settings: |
-            {
-              "permissions": {
-                "allow": [
-                  "Bash(*)",
-                  "Read(*)",
-                  "Write(*)",
-                  "Edit(*)",
-                  "Glob(*)",
-                  "Grep(*)",
-                  "TodoRead",
-                  "TodoWrite"
-                ]
-              }
-            }
+          settings: ${{ steps.prepare.outputs.portal_settings_json }}
+
+      - name: Rebuild portal with Codex
+        if: inputs.skill != '/auto-wiki-portal' && steps.prepare.outputs.runner == 'codex-action'
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: ${{ steps.prepare.outputs.portal_prompt }}
+          model: ${{ steps.prepare.outputs.model }}
+          effort: ${{ steps.prepare.outputs.effort }}
+          sandbox: ${{ steps.prepare.outputs.sandbox }}
+          safety-strategy: ${{ steps.prepare.outputs.safety_strategy }}
+
+      - name: Commit and push workflow changes
+        if: steps.prepare.outputs.commit_strategy == 'workflow'
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Run Auto-Wiki skill via ${{ steps.prepare.outputs.provider_label }}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
